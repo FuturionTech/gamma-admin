@@ -1,197 +1,205 @@
 <template>
-  <!-- Page Header -->
-  <PageHeader title="Create Client" />
+  <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+    <div class="d-flex flex-column flex-column-fluid">
+      <div id="kt_app_content" class="app-content flex-column-fluid">
+        <div id="kt_app_content_container" class="app-container container-fluid">
+          <!-- Page Header -->
+          <PageHeader title="Create Client" />
 
-  <div class="card">
-    <div class="card-body">
-      <!-- Form -->
-      <form @submit.prevent="handleSubmit" :class="{ 'opacity-50 pe-none': isSubmitting }">
-          <div class="row">
-            <!-- Left Column: Basic Info -->
-            <div class="col-lg-8">
-              <div class="card card-flush mb-5">
-                <div class="card-header">
-                  <h3 class="card-title">Basic Information</h3>
-                </div>
-                <div class="card-body pt-0">
-                  <!-- Client Name -->
-                  <div class="mb-5">
-                    <label class="form-label required">Client Name</label>
-                    <input
-                      type="text"
-                      v-model="form.name"
-                      class="form-control"
-                      :class="{ 'is-invalid': errors.name }"
-                      placeholder="Enter client name"
-                      @input="errors.name = ''"
-                    />
-                    <div v-if="errors.name" class="invalid-feedback">
-                      {{ errors.name }}
+          <div class="card">
+            <div class="card-body">
+              <!-- Form -->
+              <form @submit.prevent="handleSubmit" :class="{ 'opacity-50 pe-none': isSubmitting }">
+                  <div class="row">
+                    <!-- Left Column: Basic Info -->
+                    <div class="col-lg-8">
+                      <div class="card card-flush mb-5">
+                        <div class="card-header">
+                          <h3 class="card-title">Basic Information</h3>
+                        </div>
+                        <div class="card-body pt-0">
+                          <!-- Client Name -->
+                          <div class="mb-5">
+                            <label class="form-label required">Client Name</label>
+                            <input
+                              type="text"
+                              v-model="form.name"
+                              class="form-control"
+                              :class="{ 'is-invalid': errors.name }"
+                              placeholder="Enter client name"
+                              @input="errors.name = ''"
+                            />
+                            <div v-if="errors.name" class="invalid-feedback">
+                              {{ errors.name }}
+                            </div>
+                          </div>
+
+                          <!-- Industry -->
+                          <div class="mb-5">
+                            <label class="form-label">Industry</label>
+                            <select
+                              v-model="form.industry"
+                              class="form-select"
+                              :class="{ 'is-invalid': errors.industry }"
+                            >
+                              <option :value="null">Select an industry</option>
+                              <option
+                                v-for="industry in INDUSTRIES"
+                                :key="industry"
+                                :value="industry"
+                              >
+                                {{ industry }}
+                              </option>
+                            </select>
+                            <div v-if="errors.industry" class="invalid-feedback">
+                              {{ errors.industry }}
+                            </div>
+                          </div>
+
+                          <!-- Website URL -->
+                          <div class="mb-5">
+                            <label class="form-label">Website URL</label>
+                            <input
+                              type="url"
+                              v-model="form.website_url"
+                              class="form-control"
+                              :class="{ 'is-invalid': errors.website_url }"
+                              placeholder="https://example.com"
+                              @input="errors.website_url = ''"
+                            />
+                            <div v-if="errors.website_url" class="invalid-feedback">
+                              {{ errors.website_url }}
+                            </div>
+                            <div class="form-text">Client's website URL (optional)</div>
+                          </div>
+
+                          <!-- Display Order -->
+                          <div class="mb-5">
+                            <label class="form-label">Display Order</label>
+                            <input
+                              type="number"
+                              v-model.number="form.order"
+                              class="form-control"
+                              :class="{ 'is-invalid': errors.order }"
+                              min="0"
+                              placeholder="0"
+                            />
+                            <div v-if="errors.order" class="invalid-feedback">
+                              {{ errors.order }}
+                            </div>
+                            <div class="form-text">Display order (lower = shown first)</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Right Column: Logo & Settings -->
+                    <div class="col-lg-4">
+                      <!-- Logo Upload -->
+                      <div class="card card-flush mb-5">
+                        <div class="card-header">
+                          <h3 class="card-title">Logo</h3>
+                        </div>
+                        <div class="card-body text-center pt-0">
+                          <!-- Logo Preview -->
+                          <div class="image-input image-input-outline mb-5" data-kt-image-input="true">
+                            <div
+                              class="image-input-wrapper w-125px h-125px"
+                              :style="logoPreview ? `background-image: url(${logoPreview})` : ''"
+                            ></div>
+
+                            <!-- Upload Button -->
+                            <label
+                              class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                              data-kt-image-input-action="change"
+                              data-bs-toggle="tooltip"
+                              title="Change logo"
+                            >
+                              <i class="ki-duotone ki-pencil fs-7">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                              </i>
+                              <input
+                                type="file"
+                                name="logo"
+                                accept="image/*"
+                                @change="handleLogoChange"
+                              />
+                            </label>
+
+                            <!-- Remove Button -->
+                            <span
+                              v-if="logoPreview"
+                              class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                              data-kt-image-input-action="remove"
+                              data-bs-toggle="tooltip"
+                              title="Remove logo"
+                              @click="handleLogoRemove"
+                            >
+                              <i class="ki-duotone ki-cross fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                              </i>
+                            </span>
+                          </div>
+
+                          <div class="form-text">Upload client logo (PNG, JPG, SVG)</div>
+                        </div>
+                      </div>
+
+                      <!-- Settings -->
+                      <div class="card card-flush">
+                        <div class="card-header">
+                          <h3 class="card-title">Settings</h3>
+                        </div>
+                        <div class="card-body pt-0">
+                          <!-- Active Status -->
+                          <div class="mb-0">
+                            <label class="form-check form-switch form-check-custom form-check-solid">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                v-model="form.is_active"
+                              />
+                              <span class="form-check-label fw-semibold text-muted">
+                                Active
+                              </span>
+                            </label>
+                            <div class="form-text">Enable or disable this client</div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  <!-- Industry -->
-                  <div class="mb-5">
-                    <label class="form-label">Industry</label>
-                    <select
-                      v-model="form.industry"
-                      class="form-select"
-                      :class="{ 'is-invalid': errors.industry }"
+                  <!-- Form Actions -->
+                  <div class="d-flex justify-content-end gap-3 mt-10 pt-10 border-top">
+                    <NuxtLink
+                      to="/clients"
+                      class="btn btn-light"
                     >
-                      <option :value="null">Select an industry</option>
-                      <option
-                        v-for="industry in INDUSTRIES"
-                        :key="industry"
-                        :value="industry"
-                      >
-                        {{ industry }}
-                      </option>
-                    </select>
-                    <div v-if="errors.industry" class="invalid-feedback">
-                      {{ errors.industry }}
-                    </div>
-                  </div>
-
-                  <!-- Website URL -->
-                  <div class="mb-5">
-                    <label class="form-label">Website URL</label>
-                    <input
-                      type="url"
-                      v-model="form.website_url"
-                      class="form-control"
-                      :class="{ 'is-invalid': errors.website_url }"
-                      placeholder="https://example.com"
-                      @input="errors.website_url = ''"
-                    />
-                    <div v-if="errors.website_url" class="invalid-feedback">
-                      {{ errors.website_url }}
-                    </div>
-                    <div class="form-text">Client's website URL (optional)</div>
-                  </div>
-
-                  <!-- Display Order -->
-                  <div class="mb-5">
-                    <label class="form-label">Display Order</label>
-                    <input
-                      type="number"
-                      v-model.number="form.order"
-                      class="form-control"
-                      :class="{ 'is-invalid': errors.order }"
-                      min="0"
-                      placeholder="0"
-                    />
-                    <div v-if="errors.order" class="invalid-feedback">
-                      {{ errors.order }}
-                    </div>
-                    <div class="form-text">Display order (lower = shown first)</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Right Column: Logo & Settings -->
-            <div class="col-lg-4">
-              <!-- Logo Upload -->
-              <div class="card card-flush mb-5">
-                <div class="card-header">
-                  <h3 class="card-title">Logo</h3>
-                </div>
-                <div class="card-body text-center pt-0">
-                  <!-- Logo Preview -->
-                  <div class="image-input image-input-outline mb-5" data-kt-image-input="true">
-                    <div
-                      class="image-input-wrapper w-125px h-125px"
-                      :style="logoPreview ? `background-image: url(${logoPreview})` : ''"
-                    ></div>
-
-                    <!-- Upload Button -->
-                    <label
-                      class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                      data-kt-image-input-action="change"
-                      data-bs-toggle="tooltip"
-                      title="Change logo"
+                      Cancel
+                    </NuxtLink>
+                    <button
+                      type="submit"
+                      class="btn btn-primary"
+                      :disabled="!isFormValid || isSubmitting"
                     >
-                      <i class="ki-duotone ki-pencil fs-7">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                      </i>
-                      <input
-                        type="file"
-                        name="logo"
-                        accept="image/*"
-                        @change="handleLogoChange"
-                      />
-                    </label>
-
-                    <!-- Remove Button -->
-                    <span
-                      v-if="logoPreview"
-                      class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                      data-kt-image-input-action="remove"
-                      data-bs-toggle="tooltip"
-                      title="Remove logo"
-                      @click="handleLogoRemove"
-                    >
-                      <i class="ki-duotone ki-cross fs-2">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                      </i>
-                    </span>
-                  </div>
-
-                  <div class="form-text">Upload client logo (PNG, JPG, SVG)</div>
-                </div>
-              </div>
-
-              <!-- Settings -->
-              <div class="card card-flush">
-                <div class="card-header">
-                  <h3 class="card-title">Settings</h3>
-                </div>
-                <div class="card-body pt-0">
-                  <!-- Active Status -->
-                  <div class="mb-0">
-                    <label class="form-check form-switch form-check-custom form-check-solid">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        v-model="form.is_active"
-                      />
-                      <span class="form-check-label fw-semibold text-muted">
-                        Active
+                      <span v-if="!isSubmitting">
+                        <i class="ki-duotone ki-check fs-2"></i>
+                        Save
                       </span>
-                    </label>
-                    <div class="form-text">Enable or disable this client</div>
+                      <span v-else>
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        Loading...
+                      </span>
+                    </button>
                   </div>
-                </div>
-              </div>
+                </form>
             </div>
           </div>
-
-          <!-- Form Actions -->
-          <div class="d-flex justify-content-end gap-3 mt-10 pt-10 border-top">
-            <NuxtLink
-              to="/clients"
-              class="btn btn-light"
-            >
-              Cancel
-            </NuxtLink>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              :disabled="!isFormValid || isSubmitting"
-            >
-              <span v-if="!isSubmitting">
-                <i class="ki-duotone ki-check fs-2"></i>
-                Save
-              </span>
-              <span v-else>
-                <span class="spinner-border spinner-border-sm me-2"></span>
-                Loading...
-              </span>
-            </button>
-          </div>
-        </form>
+        </div>
+      </div>
     </div>
   </div>
 </template>
