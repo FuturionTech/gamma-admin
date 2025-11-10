@@ -4,7 +4,6 @@ export const CREATE_PROJECT = gql`
   mutation CreateProject($input: CreateProjectInput!) {
     createProject(input: $input) {
       id
-      application_id
       title
       slug
       description
@@ -28,7 +27,6 @@ export const UPDATE_PROJECT = gql`
   mutation UpdateProject($id: ID!, $input: UpdateProjectInput!) {
     updateProject(id: $id, input: $input) {
       id
-      application_id
       title
       slug
       description

@@ -227,7 +227,6 @@ const { generateSlug } = useBlogActions()
 const isSubmitting = ref(false)
 
 const formData = reactive<CreateBlogPostInput>({
-  application_id: '1', // Default application ID
   title: '',
   slug: null,
   excerpt: null,

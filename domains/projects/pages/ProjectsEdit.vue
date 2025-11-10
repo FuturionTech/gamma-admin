@@ -345,7 +345,7 @@
         </div>
 
         <div class="d-flex justify-content-end gap-3 mt-10 pt-10 border-top">
-          <NuxtLink to="/projects" class="btn btn-light">
+          <NuxtLink to="/projects/list" class="btn btn-light">
             Cancel
           </NuxtLink>
           <button
@@ -477,7 +477,7 @@ const handleSubmit = async () => {
   try {
     await projectsStore.updateProject(projectId.value, form)
     showSuccess('Project updated successfully')
-    await router.push('/projects')
+    await router.push('/projects/list')
   } catch (err: any) {
     console.error('Error updating project:', err)
     showError(err.message || 'Failed to save')
@@ -528,9 +528,8 @@ onMounted(async () => {
   if (project.value) {
     breadcrumbStore.setBreadcrumb([
       { title: 'Home', path: '/' },
-      { title: 'Projects', path: '/projects' },
-      { title: project.value.title, path: `/projects/${project.value.id}` },
-      { title: 'Edit', path: `/projects/${project.value.id}/edit` }
+      { title: 'Projects', path: '/projects/list' },
+      { title: project.value.title, path: `/projects/edit/${project.value.id}` }
     ])
   }
 })

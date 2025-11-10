@@ -289,7 +289,7 @@
                   >
                     <div class="menu-item px-3">
                       <NuxtLink
-                        :to="`/services/${service.id}`"
+                        :to="`/services/edit/${service.id}`"
                         class="menu-link px-3"
                       >
                         View
@@ -297,7 +297,7 @@
                     </div>
                     <div class="menu-item px-3">
                       <NuxtLink
-                        :to="`/services/${service.id}/edit`"
+                        :to="`/services/edit/${service.id}`"
                         class="menu-link px-3"
                       >
                         Edit
@@ -480,7 +480,7 @@ const handleExport = () => {
 onMounted(async () => {
   breadcrumbStore.setBreadcrumb([
     { title: 'Home', path: '/' },
-    { title: 'Services', path: '/services' }
+    { title: 'Services', path: '/services/list' }
   ])
 
   await servicesStore.initialize()

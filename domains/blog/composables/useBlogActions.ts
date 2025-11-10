@@ -169,7 +169,6 @@ export const useBlogActions = () => {
   const duplicatePost = async (post: BlogPost): Promise<boolean> => {
     try {
       const newPost = {
-        application_id: post.application_id,
         title: `${post.title} (Copie)`,
         slug: `${post.slug}-copy-${Date.now()}`,
         excerpt: post.excerpt,

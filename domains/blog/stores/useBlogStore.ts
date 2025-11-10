@@ -35,7 +35,6 @@ export const useBlogStore = defineStore('blog', {
       status: null,
       category: null,
       author_id: null,
-      application_id: '1', // Default application ID
       dateFrom: null,
       dateTo: null
     },
@@ -186,7 +185,6 @@ export const useBlogStore = defineStore('blog', {
         status: null,
         category: null,
         author_id: null,
-        application_id: this.filters.application_id,
         dateFrom: null,
         dateTo: null
       }
@@ -232,7 +230,6 @@ export const useBlogStore = defineStore('blog', {
 
       try {
         const variables: any = {
-          application_id: this.filters.application_id,
           limit: 100
         }
 

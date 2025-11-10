@@ -422,7 +422,7 @@
           <!-- Form Actions -->
           <div class="d-flex justify-content-end gap-3 mt-10 pt-10 border-top">
             <NuxtLink
-              to="/projects"
+              to="/projects/list"
               class="btn btn-light"
             >
               Cancel
@@ -467,7 +467,6 @@ const { uploadFeaturedImage, uploadGalleryImages } = useProjectActions()
 
 // Form state
 const form = reactive<ProjectFormData>({
-  application_id: '1', // TODO: Get from app config
   title: '',
   slug: null,
   description: null,
@@ -590,7 +589,6 @@ const handleSubmit = async () => {
   try {
     // Prepare input
     const input = {
-      application_id: form.application_id,
       title: form.title,
       slug: form.slug || generateSlug(form.title),
       description: form.description || null,
@@ -612,7 +610,7 @@ const handleSubmit = async () => {
     showSuccess('Project created successfully')
 
     // Redirect to list
-    await router.push('/projects')
+    await router.push('/projects/list')
   } catch (error: any) {
     console.error('Error creating project:', error)
     showError(error.message || 'Failed to save')
@@ -625,7 +623,7 @@ const handleSubmit = async () => {
 onMounted(() => {
   breadcrumbStore.setBreadcrumb([
     { title: 'Home', path: '/' },
-    { title: 'Projects', path: '/projects' },
+    { title: 'Projects', path: '/projects/list' },
     { title: 'Create Project', path: '/projects/create' }
   ])
 })

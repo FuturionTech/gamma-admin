@@ -89,7 +89,7 @@
         <!-- Form Actions -->
         <div class="d-flex justify-content-end gap-3 mt-10 pt-10 border-top">
           <NuxtLink
-            to="/services"
+            to="/services/list"
             class="btn btn-light"
           >
             Cancel
@@ -225,7 +225,7 @@ const handleSubmit = async () => {
     showSuccess('Service created successfully')
 
     // Redirect to list
-    await router.push('/services')
+    await router.push('/services/list')
   } catch (error: any) {
     console.error('Error creating service:', error)
     showError(error.message || 'Failed to save service')
@@ -238,7 +238,7 @@ const handleSubmit = async () => {
 onMounted(() => {
   breadcrumbStore.setBreadcrumb([
     { title: 'Home', path: '/' },
-    { title: 'Services', path: '/services' },
+    { title: 'Services', path: '/services/list' },
     { title: 'Create Service', path: '/services/create' }
   ])
 })

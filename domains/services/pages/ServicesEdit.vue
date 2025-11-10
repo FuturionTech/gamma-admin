@@ -135,7 +135,7 @@
           <!-- Form Actions -->
           <div class="d-flex justify-content-end gap-3 mt-10 pt-10 border-top">
             <NuxtLink
-              to="/services"
+              to="/services/list"
               class="btn btn-light"
             >
               Cancel
@@ -299,7 +299,7 @@ const handleSubmit = async () => {
     showSuccess('Service updated successfully')
 
     // Redirect to list
-    await router.push('/services')
+    await router.push('/services/list')
   } catch (error: any) {
     console.error('Error updating service:', error)
     showError(error.message || 'Failed to save service')
@@ -313,7 +313,7 @@ const handleDelete = async () => {
 
   const deleted = await confirmAndDeleteService(service.value)
   if (deleted) {
-    await router.push('/services')
+    await router.push('/services/list')
   }
 }
 
@@ -326,8 +326,8 @@ onMounted(async () => {
     if (service.value) {
       breadcrumbStore.setBreadcrumb([
         { title: 'Home', path: '/' },
-        { title: 'Services', path: '/services' },
-        { title: service.value.title, path: `/services/${serviceId.value}/edit` }
+        { title: 'Services', path: '/services/list' },
+        { title: service.value.title, path: `/services/edit/${serviceId.value}` }
       ])
     }
   } catch (error) {

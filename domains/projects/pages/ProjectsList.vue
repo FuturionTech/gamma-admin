@@ -281,7 +281,7 @@
                 <td>
                   <div class="d-flex flex-column">
                     <NuxtLink
-                      :to="`/projects/${project.id}`"
+                      :to="`/projects/edit/${project.id}`"
                       class="text-gray-800 fw-bold text-hover-primary"
                     >
                       {{ project.title }}
@@ -344,7 +344,7 @@
                   >
                     <div class="menu-item px-3">
                       <NuxtLink
-                        :to="`/projects/${project.id}`"
+                        :to="`/projects/edit/${project.id}`"
                         class="menu-link px-3"
                       >
                         View
@@ -352,7 +352,7 @@
                     </div>
                     <div class="menu-item px-3">
                       <NuxtLink
-                        :to="`/projects/${project.id}/edit`"
+                        :to="`/projects/edit/${project.id}`"
                         class="menu-link px-3"
                       >
                         Edit
@@ -551,7 +551,7 @@ const handleExport = () => {
 onMounted(async () => {
   breadcrumbStore.setBreadcrumb([
     { title: 'Home', path: '/' },
-    { title: 'Projects', path: '/projects' }
+    { title: 'Projects', path: '/projects/list' }
   ])
 
   await projectsStore.initialize()

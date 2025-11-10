@@ -168,7 +168,6 @@ export const useProjectActions = () => {
   const duplicateProject = async (project: Project): Promise<boolean> => {
     try {
       const newProject = {
-        application_id: project.application_id,
         title: `${project.title} (Copie)`,
         slug: `${project.slug}-copy-${Date.now()}`,
         description: project.description,

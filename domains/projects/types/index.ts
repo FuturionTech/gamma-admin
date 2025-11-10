@@ -1,5 +1,3 @@
-import type { Application } from '~/domains/shared/types/application'
-
 export enum ProjectStatus {
   DRAFT = 'DRAFT',
   PUBLISHED = 'PUBLISHED'
@@ -7,7 +5,6 @@ export enum ProjectStatus {
 
 export interface Project {
   id: string
-  application_id: string
   title: string
   slug: string
   description?: string | null
@@ -23,11 +20,9 @@ export interface Project {
   completion_date?: string | null
   created_at: string
   updated_at: string
-  application?: Application
 }
 
 export interface CreateProjectInput {
-  application_id: string
   title: string
   slug?: string | null
   description?: string | null
@@ -64,7 +59,6 @@ export interface ProjectFilterInput {
   status?: ProjectStatus | null
   industry?: string | null
   completion_year?: number | null
-  application_id?: string
 }
 
 export interface ProjectStatistics {

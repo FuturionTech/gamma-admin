@@ -4,7 +4,6 @@ export const CREATE_BLOG_POST = gql`
   mutation CreateBlogPost($input: CreateBlogPostInput!) {
     createBlogPost(input: $input) {
       id
-      application_id
       title
       slug
       excerpt
@@ -31,7 +30,6 @@ export const UPDATE_BLOG_POST = gql`
   mutation UpdateBlogPost($id: ID!, $input: UpdateBlogPostInput!) {
     updateBlogPost(id: $id, input: $input) {
       id
-      application_id
       title
       slug
       excerpt

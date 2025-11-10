@@ -1,5 +1,3 @@
-import type { Application } from '~/domains/shared/types/application'
-
 export enum PostStatus {
   DRAFT = 'draft',
   PUBLISHED = 'published'
@@ -7,7 +5,6 @@ export enum PostStatus {
 
 export interface BlogPost {
   id: string
-  application_id: string
   title: string
   slug: string
   excerpt?: string | null
@@ -21,7 +18,6 @@ export interface BlogPost {
   view_count: number
   created_at: string
   updated_at: string
-  application?: Application
   author?: {
     id: string
     first_name: string
@@ -30,7 +26,6 @@ export interface BlogPost {
 }
 
 export interface CreateBlogPostInput {
-  application_id: string
   title: string
   slug?: string | null
   excerpt?: string | null
@@ -61,7 +56,6 @@ export interface BlogPostFilterInput {
   status?: PostStatus | null
   category?: string | null
   author_id?: string | null
-  application_id?: string
   dateFrom?: string | null
   dateTo?: string | null
 }

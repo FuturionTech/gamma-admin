@@ -34,8 +34,7 @@ export const useProjectsStore = defineStore('projects', {
       search: null,
       status: null,
       industry: null,
-      completion_year: null,
-      application_id: '1' // Default application ID - should be set from config
+      completion_year: null
     },
     statistics: {
       total: 0,
@@ -173,8 +172,7 @@ export const useProjectsStore = defineStore('projects', {
         search: null,
         status: null,
         industry: null,
-        completion_year: null,
-        application_id: this.filters.application_id
+        completion_year: null
       }
     },
 
@@ -205,9 +203,7 @@ export const useProjectsStore = defineStore('projects', {
       this.setError(null)
 
       try {
-        const variables: any = {
-          application_id: this.filters.application_id
-        }
+        const variables: any = {}
 
         // Only add optional filters if they have values
         if (this.filters.status) {
