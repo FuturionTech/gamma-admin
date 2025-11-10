@@ -188,34 +188,6 @@
           ]
         },
         {
-          "key": "banners",
-          "title": {
-            "fr": "Bannières",
-            "en": "Banners"
-          },
-          "icon": "fas fa-image fs-2",
-          "children": [
-            {
-              "key": "banners_list",
-              "title": {
-                "fr": "Toutes les Bannières",
-                "en": "All Banners"
-              },
-              "path": "/banners",
-              "icon": "fas fa-list fs-2"
-            },
-            {
-              "key": "banners_create",
-              "title": {
-                "fr": "Créer une Bannière",
-                "en": "Create Banner"
-              },
-              "path": "/banners/create",
-              "icon": "fas fa-plus fs-2"
-            }
-          ]
-        },
-        {
           "key": "stats",
           "title": {
             "fr": "Statistiques",
