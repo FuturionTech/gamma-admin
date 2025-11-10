@@ -82,7 +82,6 @@
         </div>
       </div>
     </div>
-  </div>
 
     <!-- Statistics Skeleton -->
     <div class="row g-5 g-xl-8 mb-5 mb-xl-8" v-else>
