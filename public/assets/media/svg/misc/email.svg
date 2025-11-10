@@ -1,0 +1,20 @@
+<svg width="162" height="162" viewBox="0 0 162 162" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background Rectangle -->
+    <rect width="162" height="162" rx="24" fill="#E5EBF4"/>
+
+    <!-- Outer Envelope Border -->
+    <path d="M32 50C32 45.0294 36.0294 41 41 41H121C125.971 41 130 45.0294 130 50V112C130 116.971 125.971 121 121 121H41C36.0294 121 32 116.971 32 112V50Z" fill="#B5B5C3"/>
+
+    <!-- Inner Envelope -->
+    <path d="M41 46H121C123.209 46 125 47.7909 125 50V112C125 114.209 123.209 116 121 116H41C38.7909 116 37 114.209 37 112V50C37 47.7909 38.7909 46 41 46Z" fill="#FFFFFF"/>
+
+    <!-- Envelope Flap -->
+    <path d="M41 50L81 86L121 50V50H41Z" fill="#E5EBF4"/>
+
+    <!-- Bottom Half of Envelope -->
+    <path d="M121 112L81 76L41 112H121Z" fill="#E5EBF4"/>
+
+    <!-- Email Lines -->
+    <line x1="50" y1="70" x2="112" y2="70" stroke="#B5B5C3" stroke-width="4"/>
+    <line x1="50" y1="85" x2="112" y2="85" stroke="#B5B5C3" stroke-width="4"/>
+</svg>

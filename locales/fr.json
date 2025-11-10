@@ -1,0 +1,552 @@
+{
+  "common": {
+    "actions": {
+      "create": "Créer",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "saveChanges": "Enregistrer les modifications",
+      "back": "Retour",
+      "search": "Rechercher",
+      "filter": "Filtrer",
+      "export": "Exporter",
+      "import": "Importer",
+      "refresh": "Actualiser",
+      "view": "Voir",
+      "more": "Plus",
+      "close": "Fermer",
+      "confirm": "Confirmer",
+      "yes": "Oui",
+      "no": "Non"
+    },
+    "status": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "enabled": "Activé",
+      "disabled": "Désactivé",
+      "published": "Publié",
+      "draft": "Brouillon"
+    },
+    "messages": {
+      "loading": "Chargement en cours...",
+      "noData": "Aucune donnée disponible",
+      "noResults": "Aucun résultat trouvé",
+      "error": "Une erreur s'est produite",
+      "success": "Opération réussie",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet élément ?",
+      "deleteWarning": "Cette action est irréversible.",
+      "createSuccess": "Élément créé avec succès",
+      "updateSuccess": "Élément mis à jour avec succès",
+      "deleteSuccess": "Élément supprimé avec succès",
+      "saveFailed": "Échec de l'enregistrement",
+      "loadFailed": "Échec du chargement des données",
+      "or": "ou"
+    },
+    "pagination": {
+      "showing": "Affichage de {from} à {to} sur {total} éléments",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "page": "Page",
+      "of": "sur",
+      "perPage": "par page"
+    },
+    "filter": {
+      "allIndustries": "Toutes les industries",
+      "allCategories": "Toutes les catégories"
+    },
+    "form": {
+      "required": "Ce champ est requis",
+      "invalid": "Ce champ est invalide",
+      "emailInvalid": "Adresse e-mail invalide",
+      "urlInvalid": "URL invalide",
+      "minLength": "Minimum {min} caractères",
+      "maxLength": "Maximum {max} caractères",
+      "selectOption": "Sélectionner une option",
+      "chooseFile": "Choisir un fichier",
+      "dropFile": "Déposer le fichier ici",
+      "uploading": "Téléchargement en cours...",
+      "uploadSuccess": "Fichier téléchargé avec succès",
+      "uploadFailed": "Échec du téléchargement"
+    },
+    "table": {
+      "id": "ID",
+      "title": "Titre",
+      "name": "Nom",
+      "description": "Description",
+      "status": "Statut",
+      "createdAt": "Créé le",
+      "updatedAt": "Mis à jour le",
+      "actions": "Actions",
+      "noData": "Aucune donnée à afficher",
+      "selectAll": "Tout sélectionner",
+      "selected": "{count} sélectionné(s)",
+      "bulkDelete": "Supprimer la sélection"
+    },
+    "navigation": {
+      "home": "Accueil",
+      "dashboard": "Tableau de bord",
+      "contentManagement": "Gestion de contenu"
+    }
+  },
+  "services": {
+    "title": "Services",
+    "subtitle": "Gérer vos services",
+    "createNew": "Créer un service",
+    "editService": "Modifier le service",
+    "viewService": "Voir le service",
+    "statistics": {
+      "total": "Total des services",
+      "active": "Services actifs",
+      "inactive": "Services inactifs",
+      "byCategory": "Par catégorie"
+    },
+    "list": {
+      "searchPlaceholder": "Rechercher par titre, catégorie...",
+      "noResults": "Aucun service trouvé",
+      "emptyState": "Aucun service créé pour le moment",
+      "createFirst": "Créez votre premier service"
+    },
+    "form": {
+      "sections": {
+        "basicInfo": "Informations de base",
+        "settings": "Paramètres"
+      },
+      "labels": {
+        "title": "Titre",
+        "description": "Description",
+        "icon": "Icône",
+        "category": "Catégorie",
+        "slug": "Slug",
+        "order": "Ordre",
+        "isActive": "Actif"
+      },
+      "placeholders": {
+        "title": "Entrez le titre du service",
+        "description": "Entrez la description du service",
+        "icon": "URL ou chemin de l'icône",
+        "category": "Ex: AI, Data Engineering, Cybersecurity",
+        "slug": "Généré automatiquement à partir du titre",
+        "order": "0"
+      },
+      "hints": {
+        "title": "Le titre sera affiché sur le site web",
+        "description": "Description complète du service",
+        "icon": "Téléchargez une icône ou entrez une URL",
+        "category": "Catégorie du service pour le regroupement",
+        "slug": "URL-friendly identifier (auto-généré si vide)",
+        "order": "Ordre d'affichage (plus petit = affiché en premier)",
+        "isActive": "Activer ou désactiver ce service sur le site web"
+      },
+      "validation": {
+        "titleRequired": "Le titre est requis",
+        "titleMaxLength": "Le titre ne peut pas dépasser 255 caractères",
+        "slugRequired": "Le slug est requis",
+        "categoryRequired": "La catégorie est requise",
+        "orderMin": "L'ordre doit être un nombre positif"
+      }
+    },
+    "table": {
+      "icon": "Icône",
+      "title": "Titre",
+      "category": "Catégorie",
+      "slug": "Slug",
+      "status": "Statut",
+      "order": "Ordre",
+      "actions": "Actions"
+    },
+    "actions": {
+      "create": "Créer un service",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "view": "Voir",
+      "toggleStatus": "Changer le statut",
+      "export": "Exporter les services"
+    },
+    "messages": {
+      "createSuccess": "Service créé avec succès",
+      "updateSuccess": "Service mis à jour avec succès",
+      "deleteSuccess": "Service supprimé avec succès",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer le service \"{title}\" ?",
+      "deleteWarning": "Cette action est irréversible et supprimera définitivement ce service.",
+      "bulkDeleteConfirm": "Êtes-vous sûr de vouloir supprimer {count} service(s) ?",
+      "activateSuccess": "Service activé avec succès",
+      "deactivateSuccess": "Service désactivé avec succès",
+      "loadFailed": "Impossible de charger les services",
+      "saveFailed": "Impossible d'enregistrer le service",
+      "deleteFailed": "Impossible de supprimer le service",
+      "exportSuccess": "Services exportés avec succès"
+    }
+  },
+  "solutions": {
+    "title": "Solutions",
+    "subtitle": "Gérer vos solutions",
+    "createNew": "Créer une solution",
+    "editSolution": "Modifier la solution",
+    "viewSolution": "Voir la solution",
+    "statistics": {
+      "total": "Total des solutions",
+      "active": "Solutions actives",
+      "inactive": "Solutions inactives",
+      "totalFeatures": "Total des fonctionnalités",
+      "totalBenefits": "Total des avantages"
+    },
+    "list": {
+      "searchPlaceholder": "Rechercher par titre, sous-titre...",
+      "noResults": "Aucune solution trouvée",
+      "emptyState": "Aucune solution créée pour le moment",
+      "createFirst": "Créez votre première solution"
+    },
+    "form": {
+      "sections": {
+        "basicInfo": "Informations de base",
+        "settings": "Paramètres",
+        "visuals": "Visuels"
+      },
+      "labels": {
+        "title": "Titre",
+        "subtitle": "Sous-titre",
+        "description": "Description",
+        "icon": "Icône",
+        "iconColor": "Couleur de l'icône",
+        "heroImage": "Image héro",
+        "slug": "Slug",
+        "order": "Ordre",
+        "isActive": "Actif"
+      },
+      "placeholders": {
+        "title": "Entrez le titre de la solution",
+        "subtitle": "Entrez le sous-titre",
+        "description": "Entrez la description de la solution",
+        "icon": "URL ou chemin de l'icône",
+        "iconColor": "#3B82F6",
+        "heroImage": "URL de l'image héro",
+        "slug": "Généré automatiquement à partir du titre",
+        "order": "0"
+      },
+      "hints": {
+        "title": "Le titre sera affiché sur le site web",
+        "subtitle": "Sous-titre complémentaire",
+        "description": "Description complète de la solution",
+        "icon": "Icône représentant la solution",
+        "iconColor": "Couleur hexadécimale pour l'icône",
+        "heroImage": "Image principale de la solution",
+        "slug": "URL-friendly identifier (auto-généré si vide)",
+        "order": "Ordre d'affichage (plus petit = affiché en premier)",
+        "isActive": "Activer ou désactiver cette solution sur le site web"
+      },
+      "validation": {
+        "titleRequired": "Le titre est requis",
+        "titleMaxLength": "Le titre ne peut pas dépasser 255 caractères",
+        "slugRequired": "Le slug est requis",
+        "orderMin": "L'ordre doit être un nombre positif"
+      }
+    },
+    "table": {
+      "icon": "Icône",
+      "title": "Titre",
+      "subtitle": "Sous-titre",
+      "slug": "Slug",
+      "status": "Statut",
+      "order": "Ordre",
+      "features": "Fonctionnalités",
+      "benefits": "Avantages",
+      "actions": "Actions"
+    },
+    "actions": {
+      "create": "Créer une solution",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "view": "Voir",
+      "toggleStatus": "Changer le statut",
+      "export": "Exporter les solutions",
+      "manageFeatures": "Gérer les fonctionnalités",
+      "manageBenefits": "Gérer les avantages"
+    },
+    "messages": {
+      "createSuccess": "Solution créée avec succès",
+      "updateSuccess": "Solution mise à jour avec succès",
+      "deleteSuccess": "Solution supprimée avec succès",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer la solution \"{title}\" ?",
+      "deleteWarning": "Cette action est irréversible et supprimera définitivement cette solution ainsi que toutes ses fonctionnalités et avantages.",
+      "bulkDeleteConfirm": "Êtes-vous sûr de vouloir supprimer {count} solution(s) ?",
+      "activateSuccess": "Solution activée avec succès",
+      "deactivateSuccess": "Solution désactivée avec succès",
+      "loadFailed": "Impossible de charger les solutions",
+      "saveFailed": "Impossible d'enregistrer la solution",
+      "deleteFailed": "Impossible de supprimer la solution",
+      "exportSuccess": "Solutions exportées avec succès"
+    }
+  },
+  "clients": {
+    "title": "Clients",
+    "subtitle": "Gérer vos clients",
+    "createNew": "Créer un client",
+    "edit": "Modifier le client",
+    "viewClient": "Voir le client",
+    "statistics": {
+      "total": "Total des clients",
+      "active": "Clients actifs",
+      "inactive": "Clients inactifs",
+      "byIndustry": "Par industrie"
+    },
+    "list": {
+      "searchPlaceholder": "Rechercher par nom, industrie...",
+      "noResults": "Aucun client trouvé",
+      "emptyState": "Aucun client créé pour le moment",
+      "createFirst": "Créez votre premier client"
+    },
+    "form": {
+      "sections": {
+        "basicInfo": "Informations de base",
+        "logo": "Logo",
+        "settings": "Paramètres"
+      },
+      "fields": {
+        "name": "Nom du client",
+        "industry": "Industrie",
+        "website": "Site web",
+        "order": "Ordre d'affichage",
+        "isActive": "Client actif"
+      },
+      "placeholders": {
+        "name": "Ex: Entreprise ABC",
+        "industry": "Sélectionnez une industrie",
+        "website": "https://www.example.com",
+        "order": "0"
+      },
+      "hints": {
+        "name": "Le nom sera affiché sur le site web",
+        "industry": "Secteur d'activité du client",
+        "website": "URL complète du site web du client",
+        "logo": "Format recommandé: PNG ou SVG avec fond transparent",
+        "order": "Ordre d'affichage (plus petit = affiché en premier)",
+        "isActive": "Activer ou désactiver ce client sur le site web"
+      },
+      "validation": {
+        "nameRequired": "Le nom du client est requis",
+        "nameMaxLength": "Le nom ne peut pas dépasser 255 caractères",
+        "websiteInvalid": "URL invalide",
+        "orderMin": "L'ordre doit être un nombre positif"
+      }
+    },
+    "table": {
+      "logo": "Logo",
+      "name": "Nom",
+      "industry": "Industrie",
+      "website": "Site web",
+      "status": "Statut",
+      "order": "Ordre",
+      "actions": "Actions"
+    },
+    "actions": {
+      "create": "Créer un client",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "view": "Voir",
+      "toggleStatus": "Changer le statut",
+      "export": "Exporter les clients"
+    },
+    "messages": {
+      "createSuccess": "Client créé avec succès",
+      "updateSuccess": "Client mis à jour avec succès",
+      "deleteSuccess": "Client supprimé avec succès",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer le client \"{name}\" ?",
+      "deleteWarning": "Cette action est irréversible et supprimera définitivement ce client.",
+      "bulkDeleteConfirm": "Êtes-vous sûr de vouloir supprimer {count} client(s) ?",
+      "activateSuccess": "Client activé avec succès",
+      "deactivateSuccess": "Client désactivé avec succès",
+      "loadFailed": "Impossible de charger les clients",
+      "saveFailed": "Impossible d'enregistrer le client",
+      "deleteFailed": "Impossible de supprimer le client",
+      "exportSuccess": "Clients exportés avec succès"
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de Bord",
+    "subtitle": "Vue d'ensemble du système de gestion de contenu Gamma Neutral",
+    "breadcrumb": "Tableau de bord",
+    "refresh": "Actualiser",
+    "recentActivity": "Activité Récente",
+    "latestActions": "Dernières actions",
+    "noRecentActivity": "Aucune activité récente",
+    "contentOverview": "Aperçu du Contenu",
+    "contentDistribution": "Distribution du contenu",
+    "totalContent": "Total du contenu",
+    "items": "éléments",
+    "quickActions": "Actions Rapides",
+    "accessMainSections": "Accès aux sections principales",
+    "services": "Gérer les Services",
+    "servicesDesc": "Créer et gérer les services",
+    "solutions": "Gérer les Solutions",
+    "solutionsDesc": "Créer et gérer les solutions",
+    "blog": "Gérer le Blog",
+    "blogDesc": "Créer et publier des articles",
+    "projects": "Gérer les Projets",
+    "projectsDesc": "Créer et gérer les études de cas",
+    "team": "Gérer l'Équipe",
+    "teamDesc": "Gérer les membres de l'équipe",
+    "partners": "Gérer les Partenaires",
+    "partnersDesc": "Gérer les partenaires",
+    "clients": "Gérer les Clients",
+    "clientsDesc": "Gérer les clients",
+    "faqs": "Gérer les FAQs",
+    "faqsDesc": "Gérer les questions fréquentes",
+    "metrics": {
+      "services": "Services",
+      "solutions": "Solutions",
+      "blog": "Articles de Blog",
+      "projects": "Projets",
+      "team": "Membres de l'Équipe",
+      "partners": "Partenaires",
+      "clients": "Clients",
+      "certifications": "Certifications",
+      "faqs": "FAQs",
+      "careers": "Offres d'Emploi",
+      "testimonials": "Témoignages",
+      "stats": "Statistiques"
+    },
+    "active": "Actif",
+    "inactive": "Inactif",
+    "published": "Publié",
+    "draft": "Brouillon",
+    "closed": "Fermé",
+    "thisMonth": "ce mois",
+    "activeStatus": "{count} actifs",
+    "features": "fonctionnalités",
+    "benefits": "avantages",
+    "views": "vues",
+    "openPositions": "postes ouverts",
+    "industries": "industries",
+    "categories": "catégories",
+    "rating": "note",
+    "avgRating": "Note moyenne",
+    "totalValue": "valeur totale",
+    "showLess": "Afficher moins",
+    "viewAll": "Voir tout",
+    "activityTypes": {
+      "blog": "Article de blog",
+      "project": "Projet",
+      "service": "Service",
+      "team": "Membre de l'équipe",
+      "solution": "Solution",
+      "partner": "Partenaire",
+      "client": "Client"
+    },
+    "statuses": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "published": "Publié",
+      "draft": "Brouillon"
+    },
+    "timeAgo": {
+      "justNow": "À l'instant",
+      "minutes": "Il y a {count} min",
+      "hours": "Il y a {count}h",
+      "days": "Il y a {count}j"
+    }
+  },
+  "certifications": {
+    "title": "Certifications",
+    "subtitle": "Gérer vos certifications et récompenses",
+    "createNew": "Créer une certification",
+    "statistics": {
+      "total": "Total des certifications",
+      "active": "Certifications actives",
+      "byCategory": "Catégories",
+      "recent": "Récentes (< 1 an)"
+    },
+    "list": {
+      "searchPlaceholder": "Rechercher par titre, catégorie...",
+      "noResults": "Aucune certification trouvée",
+      "emptyState": "Aucune certification créée pour le moment",
+      "createFirst": "Créez votre première certification",
+      "issued": "Émise"
+    },
+    "form": {
+      "title": "Titre",
+      "titlePlaceholder": "Ex: ISO 9001:2015",
+      "category": "Catégorie",
+      "selectCategory": "Sélectionner une catégorie",
+      "file": "Fichier (PDF ou Image)",
+      "fileHelp": "Formats acceptés: PDF, JPG, PNG. Taille max: 10MB",
+      "currentFile": "Fichier actuel",
+      "replaceFile": "Remplacer le fichier",
+      "replaceFileHelp": "Laissez vide pour conserver le fichier actuel",
+      "issuedDate": "Date d'émission",
+      "issuedDatePlaceholder": "Sélectionner la date",
+      "issuedDateHelp": "Date à laquelle la certification a été émise",
+      "isActive": "Certification active"
+    },
+    "table": {
+      "file": "Fichier",
+      "title": "Titre",
+      "category": "Catégorie",
+      "issuedDate": "Date d'émission",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "actions": {
+      "create": "Créer une certification",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "view": "Voir",
+      "download": "Télécharger",
+      "export": "Exporter les certifications"
+    },
+    "view": {
+      "title": "Certification",
+      "subtitle": "Détails de la certification",
+      "details": "Détails",
+      "preview": "Aperçu",
+      "openInNewTab": "Ouvrir dans un nouvel onglet",
+      "pdfNotSupported": "Votre navigateur ne supporte pas l'affichage de PDF. Veuillez télécharger le fichier.",
+      "recent": "Récent",
+      "actions": "Actions",
+      "actionsSubtitle": "Gérer cette certification"
+    },
+    "create": {
+      "subtitle": "Créer une nouvelle certification",
+      "formTitle": "Informations de la certification"
+    },
+    "edit": {
+      "formTitle": "Modifier la certification"
+    },
+    "validation": {
+      "titleRequired": "Le titre est requis",
+      "categoryRequired": "La catégorie est requise",
+      "fileRequired": "Le fichier est requis"
+    },
+    "messages": {
+      "created": "Certification créée avec succès",
+      "updated": "Certification mise à jour avec succès",
+      "deleted": "Certification supprimée avec succès",
+      "activated": "Certification activée avec succès",
+      "deactivated": "Certification désactivée avec succès",
+      "createError": "Échec de la création de la certification",
+      "updateError": "Échec de la mise à jour de la certification",
+      "deleteError": "Échec de la suppression de la certification",
+      "notFound": "Certification introuvable",
+      "invalidFileType": "Type de fichier invalide. Formats acceptés: PDF, JPG, PNG",
+      "fileTooLarge": "Le fichier est trop volumineux. Taille maximale: 10MB",
+      "uploadFailed": "Échec du téléchargement du fichier",
+      "noDataToExport": "Aucune donnée à exporter",
+      "confirmDelete": {
+        "title": "Êtes-vous sûr ?",
+        "text": "Supprimer cette certification ?"
+      },
+      "confirmBulkDelete": {
+        "title": "Êtes-vous sûr ?",
+        "text": "Supprimer {count} certification(s) ?"
+      },
+      "deleted": {
+        "title": "Supprimée !",
+        "text": "La certification a été supprimée."
+      },
+      "bulkDeleted": {
+        "title": "Supprimées !",
+        "text": "{count} certification(s) supprimée(s)."
+      }
+    }
+  }
+}

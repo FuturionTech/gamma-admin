@@ -1,0 +1,465 @@
+{
+  "common": {
+    "actions": {
+      "create": "Create",
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "save": "Save",
+      "saveChanges": "Save Changes",
+      "back": "Back",
+      "search": "Search",
+      "filter": "Filter",
+      "export": "Export",
+      "import": "Import",
+      "refresh": "Refresh",
+      "view": "View",
+      "more": "More",
+      "close": "Close",
+      "confirm": "Confirm",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "status": {
+      "all": "All Statuses",
+      "active": "Active",
+      "inactive": "Inactive",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "published": "Published",
+      "draft": "Draft"
+    },
+    "messages": {
+      "loading": "Loading...",
+      "noData": "No data available",
+      "noResults": "No results found",
+      "error": "An error occurred",
+      "success": "Operation successful",
+      "confirmDelete": "Are you sure you want to delete this item?",
+      "deleteWarning": "This action is irreversible.",
+      "createSuccess": "Item created successfully",
+      "updateSuccess": "Item updated successfully",
+      "deleteSuccess": "Item deleted successfully",
+      "saveFailed": "Failed to save",
+      "loadFailed": "Failed to load data",
+      "or": "or"
+    },
+    "pagination": {
+      "showing": "Showing {from} to {to} of {total} items",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page",
+      "of": "of",
+      "perPage": "per page"
+    },
+    "form": {
+      "required": "This field is required",
+      "invalid": "This field is invalid",
+      "emailInvalid": "Invalid email address",
+      "urlInvalid": "Invalid URL",
+      "minLength": "Minimum {min} characters",
+      "maxLength": "Maximum {max} characters",
+      "selectOption": "Select an option",
+      "chooseFile": "Choose a file",
+      "dropFile": "Drop file here",
+      "uploading": "Uploading...",
+      "uploadSuccess": "File uploaded successfully",
+      "uploadFailed": "Upload failed"
+    },
+    "table": {
+      "id": "ID",
+      "title": "Title",
+      "name": "Name",
+      "description": "Description",
+      "status": "Status",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "actions": "Actions",
+      "noData": "No data to display",
+      "selectAll": "Select All",
+      "selected": "{count} selected",
+      "bulkDelete": "Delete Selected"
+    },
+    "navigation": {
+      "home": "Home",
+      "dashboard": "Dashboard",
+      "contentManagement": "Content Management"
+    }
+  },
+  "services": {
+    "title": "Services",
+    "subtitle": "Manage your services",
+    "createNew": "Create Service",
+    "editService": "Edit Service",
+    "viewService": "View Service",
+    "statistics": {
+      "total": "Total Services",
+      "active": "Active Services",
+      "inactive": "Inactive Services",
+      "byCategory": "By Category"
+    },
+    "list": {
+      "searchPlaceholder": "Search by title, category...",
+      "noResults": "No services found",
+      "emptyState": "No services created yet",
+      "createFirst": "Create your first service"
+    },
+    "form": {
+      "sections": {
+        "basicInfo": "Basic Information",
+        "settings": "Settings"
+      },
+      "labels": {
+        "title": "Title",
+        "description": "Description",
+        "icon": "Icon",
+        "category": "Category",
+        "slug": "Slug",
+        "order": "Order",
+        "isActive": "Active"
+      },
+      "placeholders": {
+        "title": "Enter service title",
+        "description": "Enter service description",
+        "icon": "Icon URL or path",
+        "category": "e.g. AI, Data Engineering, Cybersecurity",
+        "slug": "Auto-generated from title",
+        "order": "0"
+      },
+      "hints": {
+        "title": "The title will be displayed on the website",
+        "description": "Full description of the service",
+        "icon": "Upload an icon or enter a URL",
+        "category": "Service category for grouping",
+        "slug": "URL-friendly identifier (auto-generated if empty)",
+        "order": "Display order (lower = shown first)",
+        "isActive": "Enable or disable this service on the website"
+      },
+      "validation": {
+        "titleRequired": "Title is required",
+        "titleMaxLength": "Title cannot exceed 255 characters",
+        "slugRequired": "Slug is required",
+        "categoryRequired": "Category is required",
+        "orderMin": "Order must be a positive number"
+      }
+    },
+    "table": {
+      "icon": "Icon",
+      "title": "Title",
+      "category": "Category",
+      "slug": "Slug",
+      "status": "Status",
+      "order": "Order",
+      "actions": "Actions"
+    },
+    "actions": {
+      "create": "Create Service",
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View",
+      "toggleStatus": "Toggle Status",
+      "export": "Export Services"
+    },
+    "messages": {
+      "createSuccess": "Service created successfully",
+      "updateSuccess": "Service updated successfully",
+      "deleteSuccess": "Service deleted successfully",
+      "deleteConfirm": "Are you sure you want to delete the service \"{title}\"?",
+      "deleteWarning": "This action is irreversible and will permanently delete this service.",
+      "bulkDeleteConfirm": "Are you sure you want to delete {count} service(s)?",
+      "activateSuccess": "Service activated successfully",
+      "deactivateSuccess": "Service deactivated successfully",
+      "loadFailed": "Failed to load services",
+      "saveFailed": "Failed to save service",
+      "deleteFailed": "Failed to delete service",
+      "exportSuccess": "Services exported successfully"
+    }
+  },
+  "solutions": {
+    "title": "Solutions",
+    "subtitle": "Manage your solutions",
+    "createNew": "Create Solution",
+    "editSolution": "Edit Solution",
+    "viewSolution": "View Solution",
+    "statistics": {
+      "total": "Total Solutions",
+      "active": "Active Solutions",
+      "inactive": "Inactive Solutions",
+      "totalFeatures": "Total Features",
+      "totalBenefits": "Total Benefits"
+    },
+    "list": {
+      "searchPlaceholder": "Search by title, subtitle...",
+      "noResults": "No solutions found",
+      "emptyState": "No solutions created yet",
+      "createFirst": "Create your first solution"
+    },
+    "form": {
+      "sections": {
+        "basicInfo": "Basic Information",
+        "settings": "Settings",
+        "visuals": "Visuals"
+      },
+      "labels": {
+        "title": "Title",
+        "subtitle": "Subtitle",
+        "description": "Description",
+        "icon": "Icon",
+        "iconColor": "Icon Color",
+        "heroImage": "Hero Image",
+        "slug": "Slug",
+        "order": "Order",
+        "isActive": "Active"
+      },
+      "placeholders": {
+        "title": "Enter solution title",
+        "subtitle": "Enter subtitle",
+        "description": "Enter solution description",
+        "icon": "Icon URL or path",
+        "iconColor": "#3B82F6",
+        "heroImage": "Hero image URL",
+        "slug": "Auto-generated from title",
+        "order": "0"
+      },
+      "hints": {
+        "title": "The title will be displayed on the website",
+        "subtitle": "Complementary subtitle",
+        "description": "Full description of the solution",
+        "icon": "Icon representing the solution",
+        "iconColor": "Hexadecimal color for the icon",
+        "heroImage": "Main image for the solution",
+        "slug": "URL-friendly identifier (auto-generated if empty)",
+        "order": "Display order (lower = shown first)",
+        "isActive": "Enable or disable this solution on the website"
+      },
+      "validation": {
+        "titleRequired": "Title is required",
+        "titleMaxLength": "Title cannot exceed 255 characters",
+        "slugRequired": "Slug is required",
+        "orderMin": "Order must be a positive number"
+      }
+    },
+    "table": {
+      "icon": "Icon",
+      "title": "Title",
+      "subtitle": "Subtitle",
+      "slug": "Slug",
+      "status": "Status",
+      "order": "Order",
+      "features": "Features",
+      "benefits": "Benefits",
+      "actions": "Actions"
+    },
+    "actions": {
+      "create": "Create Solution",
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View",
+      "toggleStatus": "Toggle Status",
+      "export": "Export Solutions",
+      "manageFeatures": "Manage Features",
+      "manageBenefits": "Manage Benefits"
+    },
+    "messages": {
+      "createSuccess": "Solution created successfully",
+      "updateSuccess": "Solution updated successfully",
+      "deleteSuccess": "Solution deleted successfully",
+      "deleteConfirm": "Are you sure you want to delete the solution \"{title}\"?",
+      "deleteWarning": "This action is irreversible and will permanently delete this solution along with all its features and benefits.",
+      "bulkDeleteConfirm": "Are you sure you want to delete {count} solution(s)?",
+      "activateSuccess": "Solution activated successfully",
+      "deactivateSuccess": "Solution deactivated successfully",
+      "loadFailed": "Failed to load solutions",
+      "saveFailed": "Failed to save solution",
+      "deleteFailed": "Failed to delete solution",
+      "exportSuccess": "Solutions exported successfully"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Gamma Neutral Content Management System Overview",
+    "breadcrumb": "Dashboard",
+    "refresh": "Refresh",
+    "recentActivity": "Recent Activity",
+    "latestActions": "Latest actions",
+    "noRecentActivity": "No recent activity",
+    "contentOverview": "Content Overview",
+    "contentDistribution": "Content distribution",
+    "totalContent": "Total content",
+    "items": "items",
+    "quickActions": "Quick Actions",
+    "accessMainSections": "Access to main sections",
+    "services": "Manage Services",
+    "servicesDesc": "Create and manage services",
+    "solutions": "Manage Solutions",
+    "solutionsDesc": "Create and manage solutions",
+    "blog": "Manage Blog",
+    "blogDesc": "Create and publish articles",
+    "projects": "Manage Projects",
+    "projectsDesc": "Create and manage case studies",
+    "team": "Manage Team",
+    "teamDesc": "Manage team members",
+    "partners": "Manage Partners",
+    "partnersDesc": "Manage partners",
+    "clients": "Manage Clients",
+    "clientsDesc": "Manage clients",
+    "faqs": "Manage FAQs",
+    "faqsDesc": "Manage frequently asked questions",
+    "metrics": {
+      "services": "Services",
+      "solutions": "Solutions",
+      "blog": "Blog Posts",
+      "projects": "Projects",
+      "team": "Team Members",
+      "partners": "Partners",
+      "clients": "Clients",
+      "certifications": "Certifications",
+      "faqs": "FAQs",
+      "careers": "Career Opportunities",
+      "testimonials": "Testimonials",
+      "stats": "Statistics"
+    },
+    "active": "Active",
+    "inactive": "Inactive",
+    "published": "Published",
+    "draft": "Draft",
+    "closed": "Closed",
+    "thisMonth": "this month",
+    "activeStatus": "{count} active",
+    "features": "features",
+    "benefits": "benefits",
+    "views": "views",
+    "openPositions": "open positions",
+    "industries": "industries",
+    "categories": "categories",
+    "rating": "rating",
+    "avgRating": "Avg rating",
+    "totalValue": "total value",
+    "showLess": "Show less",
+    "viewAll": "View all",
+    "activityTypes": {
+      "blog": "Blog post",
+      "project": "Project",
+      "service": "Service",
+      "team": "Team member",
+      "solution": "Solution",
+      "partner": "Partner",
+      "client": "Client"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "published": "Published",
+      "draft": "Draft"
+    },
+    "timeAgo": {
+      "justNow": "Just now",
+      "minutes": "{count} min ago",
+      "hours": "{count}h ago",
+      "days": "{count}d ago"
+    }
+  },
+  "certifications": {
+    "title": "Certifications",
+    "subtitle": "Manage your certifications and awards",
+    "createNew": "Create Certification",
+    "statistics": {
+      "total": "Total Certifications",
+      "active": "Active Certifications",
+      "byCategory": "Categories",
+      "recent": "Recent (< 1 year)"
+    },
+    "list": {
+      "searchPlaceholder": "Search by title, category...",
+      "noResults": "No certifications found",
+      "emptyState": "No certifications created yet",
+      "createFirst": "Create your first certification",
+      "issued": "Issued"
+    },
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "e.g. ISO 9001:2015",
+      "category": "Category",
+      "selectCategory": "Select a category",
+      "file": "File (PDF or Image)",
+      "fileHelp": "Accepted formats: PDF, JPG, PNG. Max size: 10MB",
+      "currentFile": "Current file",
+      "replaceFile": "Replace file",
+      "replaceFileHelp": "Leave empty to keep current file",
+      "issuedDate": "Issue Date",
+      "issuedDatePlaceholder": "Select date",
+      "issuedDateHelp": "Date when the certification was issued",
+      "isActive": "Active certification"
+    },
+    "table": {
+      "file": "File",
+      "title": "Title",
+      "category": "Category",
+      "issuedDate": "Issue Date",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "actions": {
+      "create": "Create Certification",
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View",
+      "download": "Download",
+      "export": "Export Certifications"
+    },
+    "view": {
+      "title": "Certification",
+      "subtitle": "Certification details",
+      "details": "Details",
+      "preview": "Preview",
+      "openInNewTab": "Open in new tab",
+      "pdfNotSupported": "Your browser does not support PDF display. Please download the file.",
+      "recent": "Recent",
+      "actions": "Actions",
+      "actionsSubtitle": "Manage this certification"
+    },
+    "create": {
+      "subtitle": "Create a new certification",
+      "formTitle": "Certification Information"
+    },
+    "edit": {
+      "formTitle": "Edit Certification"
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "categoryRequired": "Category is required",
+      "fileRequired": "File is required"
+    },
+    "messages": {
+      "created": "Certification created successfully",
+      "updated": "Certification updated successfully",
+      "deleted": "Certification deleted successfully",
+      "activated": "Certification activated successfully",
+      "deactivated": "Certification deactivated successfully",
+      "createError": "Failed to create certification",
+      "updateError": "Failed to update certification",
+      "deleteError": "Failed to delete certification",
+      "notFound": "Certification not found",
+      "invalidFileType": "Invalid file type. Accepted formats: PDF, JPG, PNG",
+      "fileTooLarge": "File is too large. Maximum size: 10MB",
+      "uploadFailed": "Failed to upload file",
+      "noDataToExport": "No data to export",
+      "confirmDelete": {
+        "title": "Are you sure?",
+        "text": "Delete this certification?"
+      },
+      "confirmBulkDelete": {
+        "title": "Are you sure?",
+        "text": "Delete {count} certification(s)?"
+      },
+      "deleted": {
+        "title": "Deleted!",
+        "text": "The certification has been deleted."
+      },
+      "bulkDeleted": {
+        "title": "Deleted!",
+        "text": "{count} certification(s) deleted."
+      }
+    }
+  }
+}

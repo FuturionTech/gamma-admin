@@ -1,0 +1,1 @@
+export { GET_HONORIFICS } from './honorifics';

@@ -1,0 +1,152 @@
+/* Keen Template Menu Highlighting CSS */
+
+/* Menu item states */
+.menu-item {
+  transition: all 0.3s ease;
+}
+
+/* Active menu item highlighting */
+.menu-item.here > .menu-link {
+  background-color: #f5f8fa;
+  color: #2C9AFF;
+}
+
+.menu-item.here > .menu-link .menu-title {
+  color: #2C9AFF;
+  font-weight: 600;
+}
+
+.menu-item.here > .menu-link .menu-icon {
+  color: #2C9AFF;
+}
+
+/* Active link states */
+.menu-link.active {
+  background-color: #f5f8fa;
+  color: #2C9AFF;
+}
+
+.menu-link.active .menu-title {
+  color: #2C9AFF;
+  font-weight: 600;
+}
+
+.menu-link.active .menu-icon {
+  color: #2C9AFF;
+}
+
+/* Submenu accordion states */
+.menu-item.menu-accordion.here.show > .menu-sub {
+  display: block;
+}
+
+.menu-item.menu-accordion.here > .menu-link {
+  background-color: #f5f8fa;
+  color: #2C9AFF;
+}
+
+.menu-item.menu-accordion.here > .menu-link .menu-title {
+  color: #2C9AFF;
+  font-weight: 600;
+}
+
+.menu-item.menu-accordion.here > .menu-link .menu-icon {
+  color: #2C9AFF;
+}
+
+/* Hover states */
+.menu-item:hover > .menu-link:not(.active) {
+  background-color: #f8f9fa;
+}
+
+/* Ensure the show class works for accordion expansion */
+.menu-item.menu-accordion.show > .menu-sub {
+  display: block;
+}
+
+.menu-item.menu-accordion:not(.show) > .menu-sub {
+  display: none;
+}
+
+/* Menu link base styles */
+.menu-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.475rem;
+  margin: 0.125rem 0;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Menu icon spacing */
+.menu-icon {
+  margin-right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+}
+
+/* Menu title */
+.menu-title {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Menu arrow for accordions */
+.menu-arrow {
+  margin-left: auto;
+  transition: transform 0.3s ease;
+}
+
+.menu-item.menu-accordion.show > .menu-link .menu-arrow {
+  transform: rotate(90deg);
+}
+
+/* Submenu styling */
+.menu-sub {
+  padding-left: 2.5rem;
+  margin-top: 0.25rem;
+}
+
+.menu-sub .menu-item {
+  margin: 0.125rem 0;
+}
+
+.menu-sub .menu-link {
+  padding: 0.5rem 1rem;
+  font-size: 0.825rem;
+}
+
+/* Bullet styles for submenu items without icons */
+.menu-bullet {
+  margin-right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+}
+
+.bullet.bullet-dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  background-color: #99A1B7;
+  border-radius: 50%;
+}
+
+/* Active submenu bullet */
+.menu-item.here .bullet.bullet-dot {
+  background-color: #2C9AFF;
+}
+
+/* Menu section titles */
+.menu-heading {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #99A1B7;
+  margin-bottom: 0.5rem;
+}

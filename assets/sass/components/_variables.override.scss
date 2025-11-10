@@ -1,0 +1,37 @@
+//
+// To make future updates easier consider overriding the global variables from _variables.bootstrap.scss and _variables.custom.scss for current demo in this file.
+// Note that this file is included first and variables defined in _variables.bootstrap.scss and _variables.custom.scss
+// are not accessible in this file but you can override any global variable as shown below:
+//
+
+
+// Primary colors
+$primary:						#b62cff !default;
+$primary-active:				#7f31fb !default;
+$primary-light: 				#b6a9ff !default;
+$primary-clarity: 				rgba(#b62cff, 0.2) !default;
+$primary-inverse: 				#000000 !default;
+
+
+// Keenthemes hover states
+$component-hover-color: 		var(--#{$prefix}primary) !default;
+$component-hover-bg: 			$gray-100 !default;
+
+// Keenthemes active states
+$component-active-color:        $primary-inverse !default;
+$component-active-bg:           var(--#{$prefix}primary) !default;
+
+// Keenthemes checked states
+$component-checked-color:        $primary-inverse !default;
+$component-checked-bg:          var(--#{$prefix}primary) !default;
+
+
+// Body bg
+$body-bg-dark:						$coal-100;
+
+// Card
+$card-box-shadow:                   0px 3px 4px 0px rgba(0, 0, 0, 0.03);
+$card-box-shadow-dark:  			none;
+$card-border-enabled: 				true;
+$card-border-color:					$gray-200;
+$card-border-color-dark:			$dark-light-dark;

@@ -1,0 +1,23 @@
+//
+// Header
+//
+
+// Desktop mode
+@include media-breakpoint-up(lg) {
+	.app-header {
+		.app-container {
+			margin-top: divide($app-main-content-offset, 2);
+
+			[data-kt-app-header-sticky="on"] & {
+				margin-top: 0;	
+			}
+		}
+	}
+}
+
+// Tablet & mobile modes
+@include media-breakpoint-down(lg) {
+	.app-header {
+		box-shadow: var(--#{$prefix}app-header-base-box-shadow-mobile);
+	}
+}

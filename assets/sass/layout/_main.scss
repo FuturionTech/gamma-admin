@@ -1,0 +1,25 @@
+//
+// Root
+//
+
+// Extra large desktop mode
+@include media-breakpoint-up(xxl) {
+    .app-main {
+        padding-top: $app-main-padding-y-xxl;
+        padding-left: $app-main-padding-x-xxl;
+        padding-right: $app-main-padding-x-xxl;
+    }   
+
+    .app-header {
+        padding-left: $app-main-padding-x-xxl;
+        padding-right: $app-main-padding-x-xxl;
+    }  
+}
+
+// Desktop mode
+@include media-breakpoint-up(lg) {
+    // Base
+    .app-main {
+        margin-top: $app-main-content-offset;
+    }
+}
