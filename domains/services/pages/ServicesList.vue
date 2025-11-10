@@ -5,96 +5,96 @@
         <div id="kt_app_content_container" class="app-container container-fluid">
           <!-- Statistics Cards -->
           <div class="row g-5 g-xl-8 mb-5 mb-xl-8" v-if="!servicesStore.isLoading">
-      <div class="col-md-6 col-xl-3">
-        <div class="card card-flush h-xl-100">
-          <div class="card-body">
-            <span class="svg-icon svg-icon-2tx svg-icon-primary">
-              <i class="ki-duotone ki-category fs-2tx text-primary">
-                <span class="path1"></span>
-                <span class="path2"></span>
-                <span class="path3"></span>
-                <span class="path4"></span>
-              </i>
-            </span>
-            <div class="fw-bold fs-2 mt-5">
-              {{ servicesStore.statistics.total }}
+            <div class="col-md-6 col-xl-3">
+              <div class="card card-flush h-xl-100">
+                <div class="card-body">
+                  <span class="svg-icon svg-icon-2tx svg-icon-primary">
+                    <i class="ki-duotone ki-category fs-2tx text-primary">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                      <span class="path3"></span>
+                      <span class="path4"></span>
+                    </i>
+                  </span>
+                  <div class="fw-bold fs-2 mt-5">
+                    {{ servicesStore.statistics.total }}
+                  </div>
+                  <div class="fw-semibold text-muted">
+                    Total Services
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="fw-semibold text-muted">
-              Total Services
+
+            <div class="col-md-6 col-xl-3">
+              <div class="card card-flush h-xl-100">
+                <div class="card-body">
+                  <span class="svg-icon svg-icon-2tx svg-icon-success">
+                    <i class="ki-duotone ki-check-circle fs-2tx text-success">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                    </i>
+                  </span>
+                  <div class="fw-bold fs-2 mt-5">
+                    {{ servicesStore.statistics.active }}
+                  </div>
+                  <div class="fw-semibold text-muted">
+                    Active Services
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+              <div class="card card-flush h-xl-100">
+                <div class="card-body">
+                  <span class="svg-icon svg-icon-2tx svg-icon-danger">
+                    <i class="ki-duotone ki-cross-circle fs-2tx text-danger">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                    </i>
+                  </span>
+                  <div class="fw-bold fs-2 mt-5">
+                    {{ servicesStore.statistics.inactive }}
+                  </div>
+                  <div class="fw-semibold text-muted">
+                    Inactive Services
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+              <div class="card card-flush h-xl-100">
+                <div class="card-body">
+                  <span class="svg-icon svg-icon-2tx svg-icon-info">
+                    <i class="ki-duotone ki-element-11 fs-2tx text-info">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                      <span class="path3"></span>
+                      <span class="path4"></span>
+                    </i>
+                  </span>
+                  <div class="fw-bold fs-2 mt-5">
+                    {{ Object.keys(servicesStore.statistics.byCategory).length }}
+                  </div>
+                  <div class="fw-semibold text-muted">
+                    By Category
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div class="col-md-6 col-xl-3">
-        <div class="card card-flush h-xl-100">
-          <div class="card-body">
-            <span class="svg-icon svg-icon-2tx svg-icon-success">
-              <i class="ki-duotone ki-check-circle fs-2tx text-success">
-                <span class="path1"></span>
-                <span class="path2"></span>
-              </i>
-            </span>
-            <div class="fw-bold fs-2 mt-5">
-              {{ servicesStore.statistics.active }}
-            </div>
-            <div class="fw-semibold text-muted">
-              Active Services
+          <!-- Statistics Skeleton -->
+          <div class="row g-5 g-xl-8 mb-5 mb-xl-8" v-else>
+            <div class="col-md-6 col-xl-3" v-for="i in 4" :key="i">
+              <CardSkeleton :showIcon="true" :lines="0" :showActions="false" />
             </div>
           </div>
-        </div>
-      </div>
 
-      <div class="col-md-6 col-xl-3">
-        <div class="card card-flush h-xl-100">
-          <div class="card-body">
-            <span class="svg-icon svg-icon-2tx svg-icon-danger">
-              <i class="ki-duotone ki-cross-circle fs-2tx text-danger">
-                <span class="path1"></span>
-                <span class="path2"></span>
-              </i>
-            </span>
-            <div class="fw-bold fs-2 mt-5">
-              {{ servicesStore.statistics.inactive }}
-            </div>
-            <div class="fw-semibold text-muted">
-              Inactive Services
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-xl-3">
-        <div class="card card-flush h-xl-100">
-          <div class="card-body">
-            <span class="svg-icon svg-icon-2tx svg-icon-info">
-              <i class="ki-duotone ki-element-11 fs-2tx text-info">
-                <span class="path1"></span>
-                <span class="path2"></span>
-                <span class="path3"></span>
-                <span class="path4"></span>
-              </i>
-            </span>
-            <div class="fw-bold fs-2 mt-5">
-              {{ Object.keys(servicesStore.statistics.byCategory).length }}
-            </div>
-            <div class="fw-semibold text-muted">
-              By Category
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Statistics Skeleton -->
-    <div class="row g-5 g-xl-8 mb-5 mb-xl-8" v-else>
-      <div class="col-md-6 col-xl-3" v-for="i in 4" :key="i">
-        <CardSkeleton :showIcon="true" :lines="0" :showActions="false" />
-      </div>
-    </div>
-
-    <!-- Main Card -->
-    <div class="card">
+          <!-- Main Card -->
+          <div class="card">
       <div class="card-header border-0 pt-6">
         <div class="card-title">
           <!-- Search -->
