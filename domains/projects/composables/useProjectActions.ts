@@ -49,8 +49,8 @@ export const useProjectActions = () => {
       await projectsStore.updateProject(project.id, { status: newStatus })
 
       const successMessage = newStatus === 'PUBLISHED'
-        ? Project published successfully
-        : Project set to draft successfully
+        ? 'Project published successfully'
+        : 'Project set to draft successfully'
 
       showSuccess(successMessage)
       return true
