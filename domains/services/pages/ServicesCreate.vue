@@ -1,8 +1,12 @@
 <template>
-  <!-- Page Header -->
-  <PageHeader title="Create Service" />
+  <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+    <div class="d-flex flex-column flex-column-fluid">
+      <div id="kt_app_content" class="app-content flex-column-fluid">
+        <div id="kt_app_content_container" class="app-container container-fluid">
+          <!-- Page Header -->
+          <PageHeader title="Create Service" />
 
-  <div class="card">
+          <div class="card">
     <!-- Tabs Navigation -->
     <div class="card-header border-0">
       <div class="card-title">
@@ -110,6 +114,10 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
