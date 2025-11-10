@@ -3,9 +3,6 @@
     <div class="d-flex flex-column flex-column-fluid">
       <div id="kt_app_content" class="app-content flex-column-fluid">
         <div id="kt_app_content_container" class="app-container container-fluid">
-          <!-- Page Header -->
-          <PageHeader title="New Post" subtitle="Create a new blog post" />
-
           <!-- Form Card -->
           <div class="card">
             <div class="card-body">
