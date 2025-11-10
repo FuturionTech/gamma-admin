@@ -295,6 +295,8 @@
             <span>{{ partnersStore.error }}</span>
           </div>
         </div>
+      </div>
+    </div>
         </div>
       </div>
     </div>
