@@ -3,9 +3,6 @@
     <div class="d-flex flex-column flex-column-fluid">
       <div id="kt_app_content" class="app-content flex-column-fluid">
         <div id="kt_app_content_container" class="app-container container-fluid">
-          <!-- Page Header -->
-          <PageHeader title="Create Project" />
-
           <div class="card">
       <!-- Tabs Navigation -->
       <div class="card-header border-0">
