@@ -3,12 +3,6 @@
     <div class="d-flex flex-column flex-column-fluid">
       <div id="kt_app_content" class="app-content flex-column-fluid">
         <div id="kt_app_content_container" class="app-container container-fluid">
-          <!-- Page Header -->
-          <PageHeader
-            title="Create Team Member"
-            subtitle="Add a new team member"
-          />
-
           <form @submit.prevent="handleSubmit">
             <div class="row g-5">
               <!-- Main Form Card -->
