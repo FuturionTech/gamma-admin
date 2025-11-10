@@ -4,7 +4,7 @@
 
   <!-- Statistics Cards -->
   <div class="row g-5 g-xl-8 mb-5 mb-xl-8" v-if="!partnersStore.isLoading">
-      <div class="col-xl-4">
+      <div class="col-md-6 col-xl-4">
         <div class="card card-flush h-xl-100">
           <div class="card-body">
             <span class="svg-icon svg-icon-2tx svg-icon-primary">
@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <div class="col-xl-4">
+      <div class="col-md-6 col-xl-4">
         <div class="card card-flush h-xl-100">
           <div class="card-body">
             <span class="svg-icon svg-icon-2tx svg-icon-success">
@@ -42,7 +42,7 @@
         </div>
       </div>
 
-      <div class="col-xl-4">
+      <div class="col-md-6 col-xl-4">
         <div class="card card-flush h-xl-100">
           <div class="card-body">
             <span class="svg-icon svg-icon-2tx svg-icon-danger">
@@ -64,7 +64,7 @@
 
     <!-- Statistics Skeleton -->
     <div class="row g-5 g-xl-8 mb-5 mb-xl-8" v-else>
-      <div class="col-xl-4" v-for="i in 3" :key="i">
+      <div class="col-md-6 col-xl-4" v-for="i in 3" :key="i">
         <CardSkeleton :showIcon="true" :lines="0" :showActions="false" />
       </div>
     </div>
