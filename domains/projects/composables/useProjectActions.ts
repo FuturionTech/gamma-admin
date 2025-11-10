@@ -12,7 +12,7 @@ export const useProjectActions = () => {
    */
   const confirmAndDeleteProject = async (project: Project): Promise<boolean> => {
     const confirmMessage = `Are you sure you want to delete the project "${project.title}"?`
-    const warningMessage = This action is irreversible and will permanently delete this project.
+    const warningMessage = `This action is irreversible and will permanently delete this project.`
 
     const confirmed = confirm(`${confirmMessage}\n\n${warningMessage}`)
 
@@ -22,7 +22,7 @@ export const useProjectActions = () => {
 
     try {
       await projectsStore.deleteProject(project.id)
-      showSuccess(Project deleted successfully)
+      showSuccess('Project deleted successfully')
       return true
     } catch (error: any) {
       showError(error.message || 'Failed to delete project')
