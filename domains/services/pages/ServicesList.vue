@@ -1,9 +1,13 @@
 <template>
-  <!-- Page Header -->
-  <PageHeader title="Services" subtitle="Manage your services" />
+  <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+    <div class="d-flex flex-column flex-column-fluid">
+      <div id="kt_app_content" class="app-content flex-column-fluid">
+        <div id="kt_app_content_container" class="app-container container-fluid">
+          <!-- Page Header -->
+          <PageHeader title="Services" subtitle="Manage your services" />
 
-  <!-- Statistics Cards -->
-  <div class="row g-5 g-xl-8 mb-5 mb-xl-8" v-if="!servicesStore.isLoading">
+          <!-- Statistics Cards -->
+          <div class="row g-5 g-xl-8 mb-5 mb-xl-8" v-if="!servicesStore.isLoading">
       <div class="col-md-6 col-xl-3">
         <div class="card card-flush h-xl-100">
           <div class="card-body">
@@ -385,6 +389,10 @@
         </div>
       </div>
     </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
