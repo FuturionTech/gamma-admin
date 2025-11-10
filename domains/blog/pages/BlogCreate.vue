@@ -188,7 +188,7 @@
 
           <!-- Form Actions -->
           <div class="d-flex justify-content-end gap-3">
-            <NuxtLink to="/blog" class="btn btn-light">
+            <NuxtLink to="/blog/list" class="btn btn-light">
               Cancel
             </NuxtLink>
             <button
@@ -330,7 +330,7 @@ const handleSubmit = async () => {
     )
 
     // Redirect to edit page or list
-    router.push('/blog')
+    router.push('/blog/list')
   } catch (error: any) {
     showError(error.message || 'Failed to create post')
   } finally {
@@ -341,7 +341,7 @@ const handleSubmit = async () => {
 onMounted(() => {
   breadcrumbStore.setBreadcrumb([
     { title: 'Home', path: '/' },
-    { title: 'Blog', path: '/blog' },
+    { title: 'Blog', path: '/blog/list' },
     { title: 'New Post', path: '/blog/create' }
   ])
 })

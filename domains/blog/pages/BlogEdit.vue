@@ -258,7 +258,7 @@
 
           <!-- Form Actions -->
           <div class="d-flex justify-content-between">
-            <NuxtLink to="/blog" class="btn btn-light">
+            <NuxtLink to="/blog/list" class="btn btn-light">
               <i class="ki-duotone ki-arrow-left fs-2">
                 <span class="path1"></span>
                 <span class="path2"></span>
@@ -266,7 +266,7 @@
               Back
             </NuxtLink>
             <div class="d-flex gap-3">
-              <NuxtLink :to="`/blog/${post.id}`" class="btn btn-light-primary">
+              <NuxtLink :to="`/blog/edit/${post.id}`" class="btn btn-light-primary">
                 <i class="ki-duotone ki-eye fs-2">
                   <span class="path1"></span>
                   <span class="path2"></span>
@@ -415,7 +415,7 @@ const handleDelete = async () => {
 
   const success = await confirmAndDeletePost(post.value)
   if (success) {
-    router.push('/blog')
+    router.push('/blog/list')
   }
 }
 
@@ -425,9 +425,8 @@ onMounted(async () => {
   if (post.value) {
     breadcrumbStore.setBreadcrumb([
       { title: 'Home', path: '/' },
-      { title: 'Blog', path: '/blog' },
-      { title: post.value.title, path: `/blog/${post.value.id}` },
-      { title: 'Edit', path: `/blog/${post.value.id}/edit` }
+      { title: 'Blog', path: '/blog/list' },
+      { title: post.value.title, path: `/blog/edit/${post.value.id}` }
     ])
   }
 })

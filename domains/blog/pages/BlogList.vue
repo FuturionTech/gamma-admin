@@ -490,7 +490,7 @@ const handleExport = () => {
 onMounted(async () => {
   breadcrumbStore.setBreadcrumb([
     { title: 'Home', path: '/' },
-    { title: 'Blog', path: '/blog' }
+    { title: 'Blog', path: '/blog/list' }
   ])
 
   await blogStore.initialize()
