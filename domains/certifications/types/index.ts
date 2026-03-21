@@ -1,5 +1,3 @@
-import type { Application } from '~/domains/shared/types/application'
-
 export interface CertificationCategory {
   id: string
   name: string
@@ -9,7 +7,7 @@ export interface CertificationCategory {
 
 export interface Certification {
   id: string
-  application_id: string
+
   title: string
   file_url: string
   certification_category_id: string
@@ -17,12 +15,12 @@ export interface Certification {
   is_active: boolean
   created_at: string
   updated_at: string
-  application?: Application
+
   category?: CertificationCategory
 }
 
 export interface CreateCertificationInput {
-  application_id: string
+
   title: string
   file_url: string
   certification_category_id: string
@@ -42,7 +40,7 @@ export interface CertificationFilterInput {
   search?: string | null
   is_active?: boolean | null
   certification_category_id?: string | null
-  application_id?: string
+
 }
 
 export interface CertificationStatistics {

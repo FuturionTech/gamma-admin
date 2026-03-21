@@ -1,8 +1,6 @@
-import type { Application } from '~/domains/shared/types/application'
-
 export interface Testimonial {
   id: string
-  application_id: string
+
   name: string
   content: string
   image_url?: string | null
@@ -13,11 +11,11 @@ export interface Testimonial {
   is_active: boolean
   created_at: string
   updated_at: string
-  application?: Application
+
 }
 
 export interface CreateTestimonialInput {
-  application_id: string
+
   name: string
   content: string
   image_url?: string | null
@@ -43,7 +41,7 @@ export interface TestimonialFilterInput {
   search?: string | null
   is_active?: boolean | null
   rating?: number | null
-  application_id?: string
+
 }
 
 export interface TestimonialStatistics {

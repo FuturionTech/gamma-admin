@@ -4,7 +4,6 @@ export const CREATE_FAQ = gql`
   mutation CreateFAQ($input: CreateFAQInput!) {
     createFAQ(input: $input) {
       id
-      application_id
       question
       answer
       category
@@ -20,7 +19,6 @@ export const UPDATE_FAQ = gql`
   mutation UpdateFAQ($id: ID!, $input: UpdateFAQInput!) {
     updateFAQ(id: $id, input: $input) {
       id
-      application_id
       question
       answer
       category

@@ -32,7 +32,6 @@ export const useSolutionsStore = defineStore('solutions', {
     filters: {
       search: null,
       is_active: null,
-      application_id: '1'
     },
     statistics: {
       total: 0,
@@ -112,8 +111,7 @@ export const useSolutionsStore = defineStore('solutions', {
     resetFilters() {
       this.filters = {
         search: null,
-        is_active: null,
-        application_id: this.filters.application_id
+        is_active: null
       }
     },
 
@@ -132,9 +130,7 @@ export const useSolutionsStore = defineStore('solutions', {
       this.setError(null)
 
       try {
-        const variables: any = {
-          application_id: this.filters.application_id
-        }
+        const variables: Record<string, unknown> = {}
 
         if (this.filters.is_active !== null && this.filters.is_active !== undefined) {
           variables.is_active = this.filters.is_active

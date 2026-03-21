@@ -93,8 +93,8 @@ export const GET_COUPON_STATISTICS = gql`
 
 // Real Analytics Summary for Applications
 export const GET_REAL_ANALYTICS_SUMMARY = gql`
-  query GetRealAnalyticsSummary($application_id: ID!) {
-    analyticsSummary(application_id: $application_id) {
+  query GetRealAnalyticsSummary {
+    analyticsSummary {
       visitors_this_week
       visitors_this_month
       page_views_this_week
@@ -509,8 +509,8 @@ export const GET_USER_ENGAGEMENT_METRICS = gql`
 
 // Legacy queries for compatibility
 export const GET_ANALYTICS_SUMMARY = gql`
-  query GetAnalyticsSummary($application_id: ID!) {
-    analyticsSummary(application_id: $application_id) {
+  query GetAnalyticsSummary {
+    analyticsSummary {
       visitors_this_week
       visitors_this_month
       page_views_this_week  

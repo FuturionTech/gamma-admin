@@ -52,15 +52,8 @@
             </div>
 
             <div class="card-body">
-              <!-- Loading State -->
-              <div v-if="isSubmitting" class="text-center py-20">
-                <div class="spinner-border text-primary" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
-
               <!-- Form -->
-              <form v-else @submit.prevent="handleSubmit">
+              <form @submit.prevent="handleSubmit">
                 <!-- Basic Info Tab -->
                 <div v-show="activeTab === 'basic'">
                   <SolutionFormBasicInfo
@@ -121,6 +114,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useSolutionsStore } from '../stores/useSolutionsStore'
+import { useSolutionFormatters } from '../composables/useSolutionFormatters'
 import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
 import type { SolutionFormData } from '../types'
 import SolutionFormBasicInfo from '../components/SolutionFormBasicInfo.vue'
@@ -138,7 +132,6 @@ const router = useRouter()
 const { showSuccess, showError } = useNotification()
 
 const formData = reactive<SolutionFormData>({
-  application_id: '1',
   title: '',
   subtitle: null,
   description: null,
@@ -158,11 +151,20 @@ const isFormValid = computed(() => {
   return formData.title.trim().length > 0
 })
 
+const { isValidHexColor } = useSolutionFormatters()
+
 const validateForm = (): boolean => {
   errors.value = {}
 
   if (!formData.title || formData.title.trim().length === 0) {
     errors.value.title = 'Title is required'
+    activeTab.value = 'basic'
+    return false
+  }
+
+  if (formData.icon_color && !isValidHexColor(formData.icon_color)) {
+    errors.value.icon_color = 'Please enter a valid hex color (e.g., #3B82F6)'
+    activeTab.value = 'visuals'
     return false
   }
 

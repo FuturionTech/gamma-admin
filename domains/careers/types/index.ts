@@ -1,5 +1,3 @@
-import type { Application } from '~/domains/shared/types/application'
-
 // Enums
 export enum JobType {
   FULL_TIME = 'FULL_TIME',
@@ -14,7 +12,7 @@ export enum JobStatus {
 
 export interface JobPosition {
   id: string
-  application_id: string
+
   title: string
   department?: string | null
   location?: string | null
@@ -33,11 +31,11 @@ export interface JobPosition {
   status: JobStatus
   created_at: string
   updated_at: string
-  application?: Application
+
 }
 
 export interface CreateJobPositionInput {
-  application_id: string
+
   title: string
   department?: string | null
   location?: string | null
@@ -81,7 +79,7 @@ export interface JobPositionFilterInput {
   job_type?: JobType | null
   department?: string | null
   is_remote?: boolean | null
-  application_id?: string
+
 }
 
 export interface JobPositionStatistics {

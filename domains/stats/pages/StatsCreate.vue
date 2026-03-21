@@ -4,15 +4,8 @@
 
   <div class="card">
       <div class="card-body">
-        <!-- Loading State -->
-        <div v-if="isSubmitting" class="text-center py-20">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-
         <!-- Form -->
-        <form v-else @submit.prevent="handleSubmit">
+        <form @submit.prevent="handleSubmit">
           <div class="row">
             <!-- Left Column -->
             <div class="col-lg-8">
@@ -23,11 +16,18 @@
                   type="text"
                   v-model="form.label"
                   class="form-control"
-                  :class="{ 'is-invalid': errors.label }"
+                  :class="{
+                    'is-invalid': touched.label && errors.label,
+                    'is-valid': touched.label && form.label && !errors.label
+                  }"
                   placeholder="e.g., Satisfied Clients"
                   maxlength="255"
+                  @blur="validateField('label')"
+                  @input="clearError('label')"
                 />
-                <div v-if="errors.label" class="invalid-feedback">{{ errors.label }}</div>
+                <div v-if="touched.label && errors.label" class="invalid-feedback d-block">
+                  {{ errors.label }}
+                </div>
                 <div class="form-text">The label will be displayed below the statistic value</div>
               </div>
 
@@ -39,10 +39,17 @@
                     type="text"
                     v-model="form.value"
                     class="form-control"
-                    :class="{ 'is-invalid': errors.value }"
+                    :class="{
+                      'is-invalid': touched.value && errors.value,
+                      'is-valid': touched.value && form.value && !errors.value
+                    }"
                     placeholder="e.g., 500, 2.5, 98"
+                    @blur="validateField('value')"
+                    @input="clearError('value')"
                   />
-                  <div v-if="errors.value" class="invalid-feedback">{{ errors.value }}</div>
+                  <div v-if="touched.value && errors.value" class="invalid-feedback d-block">
+                    {{ errors.value }}
+                  </div>
                   <div class="form-text">The numeric value or text for the statistic</div>
                 </div>
 
@@ -94,11 +101,18 @@
                   type="number"
                   v-model.number="form.order"
                   class="form-control"
-                  :class="{ 'is-invalid': errors.order }"
+                  :class="{
+                    'is-invalid': touched.order && errors.order,
+                    'is-valid': touched.order && form.order && !errors.order
+                  }"
                   placeholder="1"
                   min="1"
+                  @blur="validateField('order')"
+                  @input="clearError('order')"
                 />
-                <div v-if="errors.order" class="invalid-feedback">{{ errors.order }}</div>
+                <div v-if="touched.order && errors.order" class="invalid-feedback d-block">
+                  {{ errors.order }}
+                </div>
                 <div class="form-text">Display order on the website (lower number = shown first)</div>
               </div>
 
@@ -183,6 +197,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useStatsStore } from '../stores/useStatsStore'
 import { useStatFormatters } from '../composables/useStatFormatters'
+import { useFormValidation } from '~/domains/shared/composables/useFormValidation'
 import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
 import type { StatFormData } from '../types'
 import { STAT_UNIT_OPTIONS, STAT_ICON_OPTIONS } from '../types'
@@ -194,8 +209,7 @@ const { showSuccess, showError } = useNotification()
 const { getStatusBadgeClass, getStatusText, getIconClasses } = useStatFormatters()
 
 // Form state
-const form = reactive<StatFormData>({
-  application_id: '1', // TODO: Get from app config
+const form = ref<StatFormData>({
   label: '',
   value: '',
   unit: '',
@@ -204,8 +218,17 @@ const form = reactive<StatFormData>({
   is_active: true
 })
 
-const errors = ref<Record<string, string>>({})
 const isSubmitting = ref(false)
+
+// Validation
+const { errors, touched, validateField, validateAll, clearError, hasErrors } = useFormValidation(
+  form,
+  {
+    label: { required: true, maxLength: 255 },
+    value: { required: true, maxLength: 50 },
+    order: { min: 1 }
+  }
+)
 
 // Options
 const unitOptions = STAT_UNIT_OPTIONS
@@ -213,42 +236,21 @@ const iconOptions = STAT_ICON_OPTIONS
 
 // Computed
 const previewValue = computed(() => {
-  if (!form.value) return '---'
-  return `${form.value}${form.unit || ''}`
+  if (!form.value.value) return '---'
+  return `${form.value.value}${form.value.unit || ''}`
 })
 
 const isFormValid = computed(() => {
   return (
-    form.label.trim() !== '' &&
-    form.value.trim() !== '' &&
-    Object.keys(errors.value).length === 0
+    form.value.label.trim() !== '' &&
+    form.value.value.trim() !== '' &&
+    !hasErrors.value
   )
 })
 
-// Validation
-const validateForm = (): boolean => {
-  errors.value = {}
-
-  if (!form.label.trim()) {
-    errors.value.label = 'Label is required'
-  } else if (form.label.length > 255) {
-    errors.value.label = 'Label cannot exceed 255 characters'
-  }
-
-  if (!form.value.trim()) {
-    errors.value.value = 'Value is required'
-  }
-
-  if (form.order !== null && form.order !== undefined && form.order < 0) {
-    errors.value.order = 'Order must be a positive number'
-  }
-
-  return Object.keys(errors.value).length === 0
-}
-
 // Handlers
 const handleSubmit = async () => {
-  if (!validateForm()) {
+  if (!validateAll()) {
     showError('Please fix the validation errors')
     return
   }
@@ -258,13 +260,12 @@ const handleSubmit = async () => {
   try {
     // Prepare input
     const input = {
-      application_id: form.application_id,
-      label: form.label,
-      value: form.value,
-      unit: form.unit || null,
-      icon: form.icon || null,
-      order: form.order ?? null,
-      is_active: form.is_active ?? true
+      label: form.value.label,
+      value: form.value.value,
+      unit: form.value.unit || null,
+      icon: form.value.icon || null,
+      order: form.value.order ?? null,
+      is_active: form.value.is_active ?? true
     }
 
     // Create stat

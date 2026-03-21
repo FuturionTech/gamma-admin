@@ -207,7 +207,6 @@ const {
 
 // Form data
 const formData = reactive<CertificationFormData>({
-  application_id: '1', // Default application ID
   title: '',
   file_url: '',
   certification_category_id: '',
@@ -319,7 +318,6 @@ const handleSubmit = async () => {
 
     // Create certification
     const input = {
-      application_id: formData.application_id,
       title: formData.title,
       file_url: formData.file_url,
       certification_category_id: formData.certification_category_id,

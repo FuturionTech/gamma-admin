@@ -1,5 +1,3 @@
-import type { Application } from '~/domains/shared/types/application'
-
 export interface SolutionFeature {
   id: string
   solution_id: string
@@ -24,7 +22,7 @@ export interface SolutionBenefit {
 
 export interface Solution {
   id: string
-  application_id: string
+
   title: string
   subtitle?: string | null
   description?: string | null
@@ -36,13 +34,13 @@ export interface Solution {
   is_active: boolean
   created_at: string
   updated_at: string
-  application?: Application
+
   features?: SolutionFeature[]
   benefits?: SolutionBenefit[]
 }
 
 export interface CreateSolutionInput {
-  application_id: string
+
   title: string
   subtitle?: string | null
   description?: string | null
@@ -69,7 +67,7 @@ export interface UpdateSolutionInput {
 export interface SolutionFilterInput {
   search?: string | null
   is_active?: boolean | null
-  application_id?: string
+
 }
 
 export interface SolutionStatistics {

@@ -1,5 +1,3 @@
-import type { Application } from '~/domains/shared/types/application'
-
 export enum ContactRequestStatus {
   NEW = 'NEW',
   IN_PROGRESS = 'IN_PROGRESS',
@@ -8,7 +6,7 @@ export enum ContactRequestStatus {
 
 export interface ContactRequest {
   id: string
-  application_id: string
+
   first_name: string
   last_name: string
   email: string
@@ -18,11 +16,11 @@ export interface ContactRequest {
   status: ContactRequestStatus
   created_at: string
   updated_at: string
-  application?: Application
+
 }
 
 export interface CreateContactRequestInput {
-  application_id: string
+
   first_name: string
   last_name: string
   email: string
@@ -38,7 +36,7 @@ export interface UpdateContactRequestInput {
 export interface ContactRequestFilterInput {
   search?: string | null
   status?: ContactRequestStatus | null
-  application_id?: string
+
   date_from?: string | null
   date_to?: string | null
 }

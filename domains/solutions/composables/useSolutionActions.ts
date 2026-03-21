@@ -150,7 +150,6 @@ export const useSolutionActions = () => {
   const duplicateSolution = async (solution: Solution): Promise<boolean> => {
     try {
       const newSolution = {
-        application_id: solution.application_id,
         title: `${solution.title} (Copy)`,
         subtitle: solution.subtitle,
         description: solution.description,

@@ -201,10 +201,6 @@
                 <div class="fw-semibold text-gray-900">{{ post.id }}</div>
               </div>
 
-              <div class="mb-4">
-                <div class="text-gray-600 mb-2">Application ID</div>
-                <div class="fw-semibold text-gray-900">{{ post.application_id }}</div>
-              </div>
             </div>
           </div>
         </div>

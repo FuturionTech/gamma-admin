@@ -33,7 +33,6 @@ export const useCertificationsStore = defineStore('certifications', {
       search: null,
       is_active: null,
       certification_category_id: null,
-      application_id: '1' // Default application ID - should be set from config
     },
     statistics: {
       total: 0,
@@ -148,8 +147,7 @@ export const useCertificationsStore = defineStore('certifications', {
       this.filters = {
         search: null,
         is_active: null,
-        certification_category_id: null,
-        application_id: this.filters.application_id
+        certification_category_id: null
       }
     },
 
@@ -180,9 +178,7 @@ export const useCertificationsStore = defineStore('certifications', {
       this.setError(null)
 
       try {
-        const variables: any = {
-          application_id: this.filters.application_id
-        }
+        const variables: Record<string, unknown> = {}
 
         // Only add optional filters if they have values
         if (this.filters.is_active !== null && this.filters.is_active !== undefined) {

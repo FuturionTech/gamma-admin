@@ -33,7 +33,6 @@ export const useTestimonialsStore = defineStore('testimonials', {
       search: null,
       is_active: null,
       rating: null,
-      application_id: '1' // Default application ID - should be set from config
     },
     statistics: {
       total: 0,
@@ -129,8 +128,7 @@ export const useTestimonialsStore = defineStore('testimonials', {
       this.filters = {
         search: null,
         is_active: null,
-        rating: null,
-        application_id: this.filters.application_id
+        rating: null
       }
     },
 
@@ -165,8 +163,7 @@ export const useTestimonialsStore = defineStore('testimonials', {
       this.setError(null)
 
       try {
-        const variables: any = {
-          application_id: this.filters.application_id,
+        const variables: Record<string, unknown> = {
           first: 100
         }
 

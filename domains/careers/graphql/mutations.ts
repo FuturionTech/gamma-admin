@@ -4,7 +4,6 @@ export const CREATE_JOB_POSITION = gql`
   mutation CreateJobPosition($input: CreateJobPositionInput!) {
     createJobPosition(input: $input) {
       id
-      application_id
       title
       department
       location
@@ -31,7 +30,6 @@ export const UPDATE_JOB_POSITION = gql`
   mutation UpdateJobPosition($id: ID!, $input: UpdateJobPositionInput!) {
     updateJobPosition(id: $id, input: $input) {
       id
-      application_id
       title
       department
       location

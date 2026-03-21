@@ -167,7 +167,6 @@ export const useStatActions = () => {
   const duplicateStat = async (stat: Stat): Promise<boolean> => {
     try {
       const newStat = {
-        application_id: stat.application_id,
         label: `${stat.label} (Copy)`,
         value: stat.value,
         unit: stat.unit,

@@ -4,7 +4,6 @@ export const CREATE_TESTIMONIAL = gql`
   mutation CreateTestimonial($input: CreateTestimonialInput!) {
     createTestimonial(input: $input) {
       id
-      application_id
       name
       content
       image_url
@@ -23,7 +22,6 @@ export const UPDATE_TESTIMONIAL = gql`
   mutation UpdateTestimonial($id: ID!, $input: UpdateTestimonialInput!) {
     updateTestimonial(id: $id, input: $input) {
       id
-      application_id
       name
       content
       image_url

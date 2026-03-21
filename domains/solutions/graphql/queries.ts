@@ -2,17 +2,14 @@ import { gql } from '@apollo/client/core'
 
 export const GET_SOLUTIONS = gql`
   query GetSolutions(
-    $application_id: ID!
     $is_active: Boolean
     $limit: Int
   ) {
     solutions(
-      application_id: $application_id
       is_active: $is_active
       limit: $limit
     ) {
       id
-      application_id
       title
       subtitle
       description
@@ -46,7 +43,6 @@ export const GET_SOLUTION = gql`
   query GetSolution($slug: String!) {
     solution(slug: $slug) {
       id
-      application_id
       title
       subtitle
       description
@@ -58,10 +54,6 @@ export const GET_SOLUTION = gql`
       is_active
       created_at
       updated_at
-      application {
-        id
-        name
-      }
       features {
         id
         solution_id
@@ -93,7 +85,6 @@ export const GET_SOLUTION_BY_ID = gql`
   query GetSolutionById($slug: String!) {
     solution(slug: $slug) {
       id
-      application_id
       title
       subtitle
       description
@@ -105,10 +96,6 @@ export const GET_SOLUTION_BY_ID = gql`
       is_active
       created_at
       updated_at
-      application {
-        id
-        name
-      }
       features {
         id
         solution_id

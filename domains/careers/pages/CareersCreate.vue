@@ -331,7 +331,6 @@ const { showSuccess, showError } = useNotification();
 
 // Form data
 const form = ref<CreateJobPositionInput>({
-  application_id: "1",
   title: "",
   department: null,
   location: null,

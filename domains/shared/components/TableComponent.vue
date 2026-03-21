@@ -196,7 +196,6 @@ interface BulkDeleteResponse {
 const props = defineProps<{
   headers: Header[];
   fetchData: (params: Record<string, any>) => Promise<{ items: any[]; paginator: Paginator }>;
-  applicationId?: string | null; 
   actions?: boolean;
   tableId: string;
   searchPlaceholder?: string;
@@ -238,10 +237,6 @@ const fetchDataInternal = async (page: number = 1) => {
       sortField: 'created_at',
       sortOrder: 'DESC',
     };
-
-    if (props.applicationId) {
-      params.application_id = props.applicationId;
-    }
 
     const data = await props.fetchData(params);
     items.value = data.items;

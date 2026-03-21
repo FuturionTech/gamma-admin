@@ -32,7 +32,6 @@ export const useStatsStore = defineStore('stats', {
     filters: {
       search: null,
       is_active: null,
-      application_id: '1' // Default application ID - should be set from config
     },
     statistics: {
       total: 0,
@@ -113,8 +112,7 @@ export const useStatsStore = defineStore('stats', {
     resetFilters() {
       this.filters = {
         search: null,
-        is_active: null,
-        application_id: this.filters.application_id
+        is_active: null
       }
     },
 
@@ -132,9 +130,7 @@ export const useStatsStore = defineStore('stats', {
       this.setError(null)
 
       try {
-        const variables: any = {
-          application_id: this.filters.application_id
-        }
+        const variables: Record<string, unknown> = {}
 
         // Only add optional filters if they have values
         if (this.filters.is_active !== null && this.filters.is_active !== undefined) {
@@ -170,13 +166,9 @@ export const useStatsStore = defineStore('stats', {
       try {
         // Fetch all stats and find the one with matching id
         // Since there's no single stat query in the backend
-        const variables: any = {
-          application_id: this.filters.application_id
-        }
-
         const { data, error } = await useAsyncQuery<StatsResponse>(
           GET_STATS,
-          variables
+          {}
         )
 
         if (error.value) {

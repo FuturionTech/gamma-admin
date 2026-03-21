@@ -4,10 +4,8 @@
 
     <!-- Loading State -->
     <div v-if="isLoading" class="card">
-      <div class="card-body text-center py-20">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
+      <div class="card-body">
+        <FormSkeleton :fields="6" :showActions="true" />
       </div>
     </div>
 
@@ -161,6 +159,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useSolutionsStore } from '../stores/useSolutionsStore'
+import { useSolutionFormatters } from '../composables/useSolutionFormatters'
 import type { SolutionFormData } from '../types'
 import SolutionFormBasicInfo from '../components/SolutionFormBasicInfo.vue'
 import SolutionFormVisuals from '../components/SolutionFormVisuals.vue'
@@ -194,7 +193,6 @@ const loadSolution = async () => {
     const solution = await solutionsStore.fetchSolutionById(solutionId.value)
     if (solution) {
       formData.value = {
-        application_id: solution.application_id,
         title: solution.title,
         subtitle: solution.subtitle,
         description: solution.description,
@@ -214,11 +212,20 @@ const loadSolution = async () => {
   }
 }
 
+const { isValidHexColor } = useSolutionFormatters()
+
 const validateForm = (): boolean => {
   errors.value = {}
 
   if (!formData.value?.title || formData.value.title.trim().length === 0) {
     errors.value.title = 'Title is required'
+    activeTab.value = 'basic'
+    return false
+  }
+
+  if (formData.value.icon_color && !isValidHexColor(formData.value.icon_color)) {
+    errors.value.icon_color = 'Please enter a valid hex color (e.g., #3B82F6)'
+    activeTab.value = 'visuals'
     return false
   }
 

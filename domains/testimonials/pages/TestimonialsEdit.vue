@@ -155,7 +155,6 @@ const testimonialId = computed(() => route.params.id as string)
 
 // Form state
 const form = reactive<TestimonialFormData>({
-  application_id: '1',
   name: '',
   content: '',
   image_url: null,
@@ -221,7 +220,6 @@ const loadTestimonial = async () => {
 
     if (testimonial) {
       // Populate form
-      form.application_id = testimonial.application_id
       form.name = testimonial.name
       form.content = testimonial.content
       form.image_url = testimonial.image_url

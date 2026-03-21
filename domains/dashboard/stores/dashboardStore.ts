@@ -65,7 +65,6 @@ export const useDashboardStore = defineStore('dashboard', {
       dateRange: 'last_30_days',
       organizationId: undefined,
       tenantId: undefined,
-      applicationId: undefined,
     },
     customDateRange: null,
     loading: {

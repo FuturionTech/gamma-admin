@@ -37,7 +37,6 @@ export const useCareersStore = defineStore('careers', {
       job_type: null,
       department: null,
       is_remote: null,
-      application_id: '1' // Default application ID - should be set from config
     },
     statistics: {
       total: 0,
@@ -165,8 +164,7 @@ export const useCareersStore = defineStore('careers', {
         status: null,
         job_type: null,
         department: null,
-        is_remote: null,
-        application_id: this.filters.application_id
+        is_remote: null
       }
     },
 
@@ -198,9 +196,7 @@ export const useCareersStore = defineStore('careers', {
       this.setError(null)
 
       try {
-        const variables: any = {
-          application_id: this.filters.application_id
-        }
+        const variables: Record<string, unknown> = {}
 
         // Only add optional filters if they have values
         if (this.filters.status !== null && this.filters.status !== undefined) {

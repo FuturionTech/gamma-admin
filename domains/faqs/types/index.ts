@@ -1,8 +1,6 @@
-import type { Application } from '~/domains/shared/types/application'
-
 export interface FAQ {
   id: string
-  application_id: string
+
   question: string
   answer: string
   category?: string | null
@@ -10,11 +8,11 @@ export interface FAQ {
   is_active: boolean
   created_at: string
   updated_at: string
-  application?: Application
+
 }
 
 export interface CreateFAQInput {
-  application_id: string
+
   question: string
   answer: string
   category?: string | null
@@ -34,7 +32,7 @@ export interface FAQFilterInput {
   search?: string | null
   is_active?: boolean | null
   category?: string | null
-  application_id?: string
+
 }
 
 export interface FAQStatistics {

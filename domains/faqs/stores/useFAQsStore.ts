@@ -33,7 +33,6 @@ export const useFAQsStore = defineStore('faqs', {
       search: null,
       is_active: null,
       category: null,
-      application_id: '1' // Default application ID - should be set from config
     },
     statistics: {
       total: 0,
@@ -152,8 +151,7 @@ export const useFAQsStore = defineStore('faqs', {
       this.filters = {
         search: null,
         is_active: null,
-        category: null,
-        application_id: this.filters.application_id
+        category: null
       }
     },
 
@@ -179,9 +177,7 @@ export const useFAQsStore = defineStore('faqs', {
       this.setError(null)
 
       try {
-        const variables: any = {
-          application_id: this.filters.application_id
-        }
+        const variables: Record<string, unknown> = {}
 
         // Only add optional filters if they have values
         if (this.filters.is_active !== null && this.filters.is_active !== undefined) {
@@ -222,7 +218,7 @@ export const useFAQsStore = defineStore('faqs', {
         // Backend doesn't have a single FAQ query, so we fetch all and filter
         const { data, error } = await useAsyncQuery<FAQsResponse>(
           GET_FAQ,
-          { application_id: this.filters.application_id }
+          {}
         )
 
         if (error.value) {

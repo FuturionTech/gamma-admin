@@ -4,7 +4,6 @@ export const CREATE_CERTIFICATION = gql`
   mutation CreateCertification($input: CreateCertificationInput!) {
     createCertification(input: $input) {
       id
-      application_id
       title
       file_url
       certification_category_id
@@ -24,7 +23,6 @@ export const UPDATE_CERTIFICATION = gql`
   mutation UpdateCertification($id: ID!, $input: UpdateCertificationInput!) {
     updateCertification(id: $id, input: $input) {
       id
-      application_id
       title
       file_url
       certification_category_id

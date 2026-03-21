@@ -134,7 +134,6 @@ const { showSuccess, showError } = useNotification()
 
 // Form state
 const form = reactive<TestimonialFormData>({
-  application_id: '1', // TODO: Get from app config
   name: '',
   content: '',
   image_url: null,
@@ -220,7 +219,6 @@ const handleSubmit = async () => {
   try {
     // Prepare input
     const input = {
-      application_id: form.application_id,
       name: form.name,
       content: form.content,
       image_url: imagePreview.value || form.image_url || null,

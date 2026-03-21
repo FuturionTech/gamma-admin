@@ -10,7 +10,6 @@ export interface ApplicationTheme {
 
 export interface ApplicationInformation {
     id: string;
-    application_id: string;
     name: string;
     frontoffice_url?: string;
     backoffice_url?: string;

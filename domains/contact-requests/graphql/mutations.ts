@@ -4,7 +4,6 @@ export const UPDATE_CONTACT_REQUEST = gql`
   mutation UpdateContactRequest($id: ID!, $input: UpdateContactRequestInput!) {
     updateContactRequest(id: $id, input: $input) {
       id
-      application_id
       first_name
       last_name
       email

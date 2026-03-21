@@ -188,7 +188,6 @@ export interface DashboardFilters {
   dateRange: DateRangeOption;
   organizationId?: string;
   tenantId?: string;
-  applicationId?: string;
 }
 
 export type DateRangeOption = 
@@ -413,7 +412,6 @@ export interface MonthlyDeploymentMetric {
 }
 
 export interface TopApplicationMetric {
-  applicationId: string;
   applicationName: string;
   organizationName: string;
   deploymentCount: number;

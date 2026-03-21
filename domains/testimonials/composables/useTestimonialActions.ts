@@ -170,7 +170,6 @@ export const useTestimonialActions = () => {
   const duplicateTestimonial = async (testimonial: Testimonial): Promise<boolean> => {
     try {
       const newTestimonial = {
-        application_id: testimonial.application_id,
         name: testimonial.name,
         content: testimonial.content,
         image_url: testimonial.image_url,

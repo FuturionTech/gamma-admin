@@ -32,7 +32,6 @@ export const useContactRequestsStore = defineStore('contactRequests', {
     filters: {
       search: null,
       status: null,
-      application_id: '1', // Default application ID - should be set from config
       date_from: null,
       date_to: null
     },
@@ -158,7 +157,6 @@ export const useContactRequestsStore = defineStore('contactRequests', {
       this.filters = {
         search: null,
         status: null,
-        application_id: this.filters.application_id,
         date_from: null,
         date_to: null
       }
@@ -184,9 +182,7 @@ export const useContactRequestsStore = defineStore('contactRequests', {
       this.setError(null)
 
       try {
-        const variables: any = {
-          application_id: this.filters.application_id
-        }
+        const variables: Record<string, unknown> = {}
 
         // Only add status filter if it has a value
         if (this.filters.status) {

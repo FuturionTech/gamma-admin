@@ -4,7 +4,6 @@ export const CREATE_STAT = gql`
   mutation CreateStat($input: CreateStatInput!) {
     createStat(input: $input) {
       id
-      application_id
       label
       value
       unit
@@ -21,7 +20,6 @@ export const UPDATE_STAT = gql`
   mutation UpdateStat($id: ID!, $input: UpdateStatInput!) {
     updateStat(id: $id, input: $input) {
       id
-      application_id
       label
       value
       unit

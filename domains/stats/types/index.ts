@@ -1,8 +1,6 @@
-import type { Application } from '~/domains/shared/types/application'
-
 export interface Stat {
   id: string
-  application_id: string
+
   label: string
   value: string
   unit?: string | null
@@ -11,11 +9,11 @@ export interface Stat {
   is_active: boolean
   created_at: string
   updated_at: string
-  application?: Application
+
 }
 
 export interface CreateStatInput {
-  application_id: string
+
   label: string
   value: string
   unit?: string | null
@@ -36,7 +34,7 @@ export interface UpdateStatInput {
 export interface StatFilterInput {
   search?: string | null
   is_active?: boolean | null
-  application_id?: string
+
 }
 
 export interface StatStatistics {

@@ -4,7 +4,6 @@ export const CREATE_SOLUTION = gql`
   mutation CreateSolution($input: CreateSolutionInput!) {
     createSolution(input: $input) {
       id
-      application_id
       title
       subtitle
       description
@@ -24,7 +23,6 @@ export const UPDATE_SOLUTION = gql`
   mutation UpdateSolution($id: ID!, $input: UpdateSolutionInput!) {
     updateSolution(id: $id, input: $input) {
       id
-      application_id
       title
       subtitle
       description
