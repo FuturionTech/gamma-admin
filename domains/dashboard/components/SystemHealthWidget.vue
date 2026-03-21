@@ -248,17 +248,14 @@ const refreshHealth = async () => {
 
 const sendAnnouncement = () => {
   // TODO: Implement announcement modal
-  console.log('Ouverture du modal d\'annonce...');
 };
 
 const toggleMaintenance = () => {
   // TODO: Implement maintenance mode toggle
-  console.log('Basculement du mode maintenance...');
 };
 
 const exportReport = () => {
   // TODO: Implement report export
-  console.log('Export du rapport de la plateforme...');
 };
 </script>
 

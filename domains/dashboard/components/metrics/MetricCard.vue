@@ -1,5 +1,9 @@
 <template>
-  <div class="card border-top border-3" :class="`border-${color}`">
+  <!-- Loading State -->
+  <MetricCardSkeleton v-if="loading" />
+
+  <!-- Actual Card -->
+  <div v-else class="card border-top border-3" :class="`border-${color}`">
     <div class="card-body">
       <div class="d-flex align-items-center mb-3">
         <i :class="`${icon} fs-2x text-${color}`"></i>
@@ -28,6 +32,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import MetricCardSkeleton from './MetricCardSkeleton.vue';
 
 interface Props {
   icon: string;
@@ -38,6 +43,7 @@ interface Props {
   trendLabel?: string;
   trendColor?: string;
   showTrendIcon?: boolean;
+  loading?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -46,6 +52,7 @@ const props = withDefaults(defineProps<Props>(), {
   trendLabel: '',
   trendColor: 'success',
   showTrendIcon: true,
+  loading: false,
 });
 
 const formatValue = computed(() => {

@@ -19,11 +19,15 @@
                         v-model="formData.name"
                         type="text"
                         class="form-control"
-                        :class="{ 'is-invalid': errors.name }"
+                        :class="{
+                          'is-invalid': touched.name && errors.name,
+                          'is-valid': touched.name && formData.name && !errors.name
+                        }"
                         placeholder="Enter full name"
-                        required
+                        @blur="validateField('name')"
+                        @input="clearError('name')"
                       />
-                      <div v-if="errors.name" class="invalid-feedback">
+                      <div v-if="touched.name && errors.name" class="invalid-feedback d-block">
                         {{ errors.name }}
                       </div>
                     </div>
@@ -46,10 +50,15 @@
                         v-model="formData.email"
                         type="email"
                         class="form-control"
-                        :class="{ 'is-invalid': errors.email }"
+                        :class="{
+                          'is-invalid': touched.email && errors.email,
+                          'is-valid': touched.email && formData.email && !errors.email
+                        }"
                         placeholder="email@example.com"
+                        @blur="validateField('email')"
+                        @input="clearError('email')"
                       />
-                      <div v-if="errors.email" class="invalid-feedback">
+                      <div v-if="touched.email && errors.email" class="invalid-feedback d-block">
                         {{ errors.email }}
                       </div>
                     </div>
@@ -202,6 +211,7 @@ const { showSuccess, showError } = useNotification()
 
 const isSubmitting = ref(false)
 const errors = reactive<Record<string, string>>({})
+const touched = reactive<Record<string, boolean>>({})
 
 const formData = reactive<TeamFormData>({
   name: '',
@@ -220,26 +230,45 @@ const handlePhotoSelected = (file: File | null) => {
   formData.profilePictureFile = file
 }
 
-const validateForm = (): boolean => {
-  // Reset errors
-  Object.keys(errors).forEach(key => delete errors[key])
-
-  let isValid = true
+const validateField = (field: string): boolean => {
+  touched[field] = true
 
   // Name is required
-  if (!formData.name || formData.name.trim() === '') {
-    errors.name = 'Name is required'
-    isValid = false
+  if (field === 'name') {
+    if (!formData.name || formData.name.trim() === '') {
+      errors.name = 'Full name is required'
+      return false
+    }
+    errors.name = ''
+    return true
   }
 
   // Email validation
-  if (formData.email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(formData.email)) {
-      errors.email = 'Invalid email format'
-      isValid = false
+  if (field === 'email') {
+    if (formData.email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(formData.email)) {
+        errors.email = 'Please enter a valid email address'
+        return false
+      }
     }
+    errors.email = ''
+    return true
   }
+
+  return true
+}
+
+const clearError = (field: string) => {
+  errors[field] = ''
+}
+
+const validateForm = (): boolean => {
+  let isValid = true
+
+  // Validate all fields
+  if (!validateField('name')) isValid = false
+  if (!validateField('email')) isValid = false
 
   return isValid
 }
@@ -272,7 +301,6 @@ const handleSubmit = async () => {
     showSuccess('Team member created successfully')
     router.push('/team/list')
   } catch (error: any) {
-    console.error('Error creating team member:', error)
     showError(error.message || 'Failed to create team member')
   } finally {
     isSubmitting.value = false

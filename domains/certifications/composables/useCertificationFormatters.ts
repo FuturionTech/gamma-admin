@@ -15,7 +15,6 @@ export const useCertificationFormatters = () => {
     try {
       return dayjs(dateString).format(format)
     } catch (error) {
-      console.error('Error formatting date:', error)
       return dateString
     }
   }
@@ -28,7 +27,6 @@ export const useCertificationFormatters = () => {
     try {
       return dayjs(dateString).fromNow()
     } catch (error) {
-      console.error('Error formatting relative date:', error)
       return dateString
     }
   }

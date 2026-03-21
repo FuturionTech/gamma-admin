@@ -83,7 +83,6 @@ export const useCertificationCategoriesStore = defineStore('certificationCategor
           this.setCategories(data.value.certificationCategories)
         }
       } catch (err: any) {
-        console.error('Error fetching categories:', err)
         this.setError(err.message || 'Failed to load categories')
         this.setCategories([])
       } finally {
@@ -110,7 +109,6 @@ export const useCertificationCategoriesStore = defineStore('certificationCategor
           return data.value.certificationCategory
         }
       } catch (err: any) {
-        console.error('Error fetching category:', err)
         this.setError(err.message || 'Failed to load category')
         throw err
       } finally {
@@ -142,7 +140,6 @@ export const useCertificationCategoriesStore = defineStore('certificationCategor
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error creating category:', err)
         this.setError(err.message || 'Failed to create category')
         throw err
       } finally {
@@ -182,7 +179,6 @@ export const useCertificationCategoriesStore = defineStore('certificationCategor
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating category:', err)
         this.setError(err.message || 'Failed to update category')
         throw err
       } finally {
@@ -219,7 +215,6 @@ export const useCertificationCategoriesStore = defineStore('certificationCategor
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting category:', err)
         this.setError(err.message || 'Failed to delete category')
         throw err
       } finally {

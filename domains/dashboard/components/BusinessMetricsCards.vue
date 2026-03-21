@@ -192,12 +192,9 @@ const newUsersThisWeek = computed(() => {
 
 // Debug logging
 onMounted(() => {
-  console.log('🎯 [BusinessMetricsCards] Component mounted');
-  console.log('📊 [BusinessMetricsCards] Analytics summary:', analyticsSummary.value);
 });
 
 watch(analyticsSummary, (newAnalytics) => {
-  console.log('📈 [BusinessMetricsCards] Analytics updated:', newAnalytics);
 });
 </script>
 

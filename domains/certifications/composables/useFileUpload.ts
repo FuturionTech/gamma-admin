@@ -78,7 +78,6 @@ export const useFileUpload = () => {
       return data.url || data.file_url || data.path
 
     } catch (error: any) {
-      console.error('File upload error:', error)
       uploadError.value = error.message || 'Failed to upload file'
       throw error
     } finally {

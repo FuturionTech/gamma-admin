@@ -21,7 +21,7 @@
         <!-- Name and Role -->
         <div class="mb-3">
           <NuxtLink
-            :to="`/team/${team.id}/edit`"
+            :to="`/team/${team.id}`"
             class="text-gray-800 text-hover-primary fs-4 fw-bold mb-0"
           >
             {{ team.name }}

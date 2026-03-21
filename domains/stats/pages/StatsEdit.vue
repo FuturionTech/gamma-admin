@@ -4,12 +4,8 @@
 
   <div class="card">
       <div class="card-body">
-        <!-- Loading State -->
-        <div v-if="isLoading || isSubmitting" class="text-center py-20">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
+        <!-- Loading Skeleton -->
+        <FormSkeleton v-if="isLoading" :fields="5" />
 
         <!-- Error State -->
         <div v-else-if="loadError" class="text-center py-20">
@@ -39,11 +35,18 @@
                   type="text"
                   v-model="form.label"
                   class="form-control"
-                  :class="{ 'is-invalid': errors.label }"
+                  :class="{
+                    'is-invalid': touched.label && errors.label,
+                    'is-valid': touched.label && form.label && !errors.label
+                  }"
                   placeholder="e.g., Satisfied Clients"
                   maxlength="255"
+                  @blur="validateField('label')"
+                  @input="clearError('label')"
                 />
-                <div v-if="errors.label" class="invalid-feedback">{{ errors.label }}</div>
+                <div v-if="touched.label && errors.label" class="invalid-feedback d-block">
+                  {{ errors.label }}
+                </div>
                 <div class="form-text">The label will be displayed below the statistic value</div>
               </div>
 
@@ -55,10 +58,17 @@
                     type="text"
                     v-model="form.value"
                     class="form-control"
-                    :class="{ 'is-invalid': errors.value }"
+                    :class="{
+                      'is-invalid': touched.value && errors.value,
+                      'is-valid': touched.value && form.value && !errors.value
+                    }"
                     placeholder="e.g., 500, 2.5, 98"
+                    @blur="validateField('value')"
+                    @input="clearError('value')"
                   />
-                  <div v-if="errors.value" class="invalid-feedback">{{ errors.value }}</div>
+                  <div v-if="touched.value && errors.value" class="invalid-feedback d-block">
+                    {{ errors.value }}
+                  </div>
                   <div class="form-text">The numeric value or text for the statistic</div>
                 </div>
 
@@ -110,11 +120,18 @@
                   type="number"
                   v-model.number="form.order"
                   class="form-control"
-                  :class="{ 'is-invalid': errors.order }"
+                  :class="{
+                    'is-invalid': touched.order && errors.order,
+                    'is-valid': touched.order && form.order && !errors.order
+                  }"
                   placeholder="1"
                   min="1"
+                  @blur="validateField('order')"
+                  @input="clearError('order')"
                 />
-                <div v-if="errors.order" class="invalid-feedback">{{ errors.order }}</div>
+                <div v-if="touched.order && errors.order" class="invalid-feedback d-block">
+                  {{ errors.order }}
+                </div>
                 <div class="form-text">Display order on the website (lower number = shown first)</div>
               </div>
 
@@ -217,6 +234,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useStatsStore } from '../stores/useStatsStore'
 import { useStatFormatters } from '../composables/useStatFormatters'
+import { useFormValidation } from '~/domains/shared/composables/useFormValidation'
 import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
 import type { UpdateStatInput, Stat } from '../types'
 import { STAT_UNIT_OPTIONS, STAT_ICON_OPTIONS } from '../types'
@@ -232,7 +250,7 @@ const { formatDate, getStatusBadgeClass, getStatusText, getIconClasses } = useSt
 const statId = route.params.id as string
 
 // Form state
-const form = reactive<UpdateStatInput & { label: string; value: string }>({
+const form = ref<UpdateStatInput & { label: string; value: string }>({
   label: '',
   value: '',
   unit: '',
@@ -241,11 +259,20 @@ const form = reactive<UpdateStatInput & { label: string; value: string }>({
   is_active: true
 })
 
-const errors = ref<Record<string, string>>({})
 const isLoading = ref(true)
 const isSubmitting = ref(false)
 const loadError = ref<string | null>(null)
 const currentStat = ref<Stat | null>(null)
+
+// Validation
+const { errors, touched, validateField, validateAll, clearError, hasErrors } = useFormValidation(
+  form,
+  {
+    label: { required: true, maxLength: 255 },
+    value: { required: true, maxLength: 50 },
+    order: { min: 1 }
+  }
+)
 
 // Options
 const unitOptions = STAT_UNIT_OPTIONS
@@ -253,38 +280,17 @@ const iconOptions = STAT_ICON_OPTIONS
 
 // Computed
 const previewValue = computed(() => {
-  if (!form.value) return '---'
-  return `${form.value}${form.unit || ''}`
+  if (!form.value.value) return '---'
+  return `${form.value.value}${form.value.unit || ''}`
 })
 
 const isFormValid = computed(() => {
   return (
-    form.label.trim() !== '' &&
-    form.value.trim() !== '' &&
-    Object.keys(errors.value).length === 0
+    form.value.label.trim() !== '' &&
+    form.value.value.trim() !== '' &&
+    !hasErrors.value
   )
 })
-
-// Validation
-const validateForm = (): boolean => {
-  errors.value = {}
-
-  if (!form.label.trim()) {
-    errors.value.label = 'Label is required'
-  } else if (form.label.length > 255) {
-    errors.value.label = 'Label cannot exceed 255 characters'
-  }
-
-  if (!form.value.trim()) {
-    errors.value.value = 'Value is required'
-  }
-
-  if (form.order !== null && form.order !== undefined && form.order < 0) {
-    errors.value.order = 'Order must be a positive number'
-  }
-
-  return Object.keys(errors.value).length === 0
-}
 
 // Load stat data
 const loadStat = async () => {
@@ -298,17 +304,16 @@ const loadStat = async () => {
       currentStat.value = stat
 
       // Populate form
-      form.label = stat.label
-      form.value = stat.value
-      form.unit = stat.unit || ''
-      form.icon = stat.icon || 'fa-chart-line'
-      form.order = stat.order
-      form.is_active = stat.is_active
+      form.value.label = stat.label
+      form.value.value = stat.value
+      form.value.unit = stat.unit || ''
+      form.value.icon = stat.icon || 'fa-chart-line'
+      form.value.order = stat.order
+      form.value.is_active = stat.is_active
     } else {
       loadError.value = 'Statistic not found'
     }
   } catch (error: any) {
-    console.error('Error loading stat:', error)
     loadError.value = error.message || 'Failed to load statistic'
   } finally {
     isLoading.value = false
@@ -317,7 +322,7 @@ const loadStat = async () => {
 
 // Handlers
 const handleSubmit = async () => {
-  if (!validateForm()) {
+  if (!validateAll()) {
     showError('Please fix the validation errors')
     return
   }
@@ -328,23 +333,23 @@ const handleSubmit = async () => {
     // Prepare input - only send changed fields
     const input: UpdateStatInput = {}
 
-    if (form.label !== currentStat.value?.label) {
-      input.label = form.label
+    if (form.value.label !== currentStat.value?.label) {
+      input.label = form.value.label
     }
-    if (form.value !== currentStat.value?.value) {
-      input.value = form.value
+    if (form.value.value !== currentStat.value?.value) {
+      input.value = form.value.value
     }
-    if (form.unit !== currentStat.value?.unit) {
-      input.unit = form.unit || null
+    if (form.value.unit !== currentStat.value?.unit) {
+      input.unit = form.value.unit || null
     }
-    if (form.icon !== currentStat.value?.icon) {
-      input.icon = form.icon || null
+    if (form.value.icon !== currentStat.value?.icon) {
+      input.icon = form.value.icon || null
     }
-    if (form.order !== currentStat.value?.order) {
-      input.order = form.order
+    if (form.value.order !== currentStat.value?.order) {
+      input.order = form.value.order
     }
-    if (form.is_active !== currentStat.value?.is_active) {
-      input.is_active = form.is_active
+    if (form.value.is_active !== currentStat.value?.is_active) {
+      input.is_active = form.value.is_active
     }
 
     // Update stat
@@ -355,7 +360,6 @@ const handleSubmit = async () => {
     // Redirect to list
     await router.push('/stats')
   } catch (error: any) {
-    console.error('Error updating stat:', error)
     showError(error.message || 'Failed to save statistic')
   } finally {
     isSubmitting.value = false

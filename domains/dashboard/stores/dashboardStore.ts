@@ -239,7 +239,6 @@ export const useDashboardStore = defineStore('dashboard', {
       this.setError('statistics', null);
 
       try {
-        console.log('📊 [Dashboard Store] Fetching platform statistics...');
         
         const variables = {
           dateRange: this.filters.dateRange,
@@ -247,22 +246,17 @@ export const useDashboardStore = defineStore('dashboard', {
           endDate: this.customDateRange?.endDate
         };
 
-        console.log('📊 [Dashboard Store] Query variables:', variables);
 
         // Since platformStatistics query doesn't exist, directly use calculateBasicStatistics
-        console.log('📊 [Dashboard Store] Using individual API endpoints to calculate statistics...');
         await this.calculateBasicStatistics();
 
       } catch (err: any) {
-        console.error('❌ [Dashboard Store] Platform statistics fetch failed:', err);
         this.setError('statistics', err.message || 'Failed to load platform statistics');
         
         // Fallback to basic data calculation from available API endpoints
         try {
-          console.log('🔄 [Dashboard Store] Trying fallback statistics calculation...');
           await this.calculateBasicStatistics();
         } catch (fallbackErr) {
-          console.error('❌ [Dashboard Store] Fallback statistics calculation failed:', fallbackErr);
         }
       } finally {
         this.setLoading('statistics', false);
@@ -271,7 +265,6 @@ export const useDashboardStore = defineStore('dashboard', {
 
     async calculateBasicStatistics() {
       try {
-        console.log('📊 Récupération des statistiques depuis les APIs disponibles...');
         
         // Use parallel queries to fetch all available statistics
         const queries = [
@@ -361,10 +354,8 @@ export const useDashboardStore = defineStore('dashboard', {
         };
 
         this.setPlatformStatistics(basicStatistics);
-        console.log('✅ Statistiques calculées à partir des données réelles de l\'API');
         
       } catch (err: any) {
-        console.error('❌ Erreur lors du calcul des statistiques:', err);
         // Provide minimal fallback data
         const fallbackStats: PlatformStatistics = {
           totalOrganizations: 0,
@@ -417,7 +408,6 @@ export const useDashboardStore = defineStore('dashboard', {
         const { data, error } = await useLazyAsyncQuery(query, variables);
         
         if (error.value) {
-          console.warn('Organization stats GraphQL error:', error.value);
           return { total: 0, statistics: null };
         }
         
@@ -428,7 +418,6 @@ export const useDashboardStore = defineStore('dashboard', {
           statistics: null
         };
       } catch (err) {
-        console.warn('❌ Organization stats not available:', err);
         return { total: 0, statistics: null };
       }
     },
@@ -467,7 +456,6 @@ export const useDashboardStore = defineStore('dashboard', {
         const { data, error } = await useLazyAsyncQuery(query, variables);
         
         if (error.value) {
-          console.warn('Application stats GraphQL error:', error.value);
           return { total: 0 };
         }
         
@@ -477,7 +465,6 @@ export const useDashboardStore = defineStore('dashboard', {
           total
         };
       } catch (err) {
-        console.warn('❌ Application stats not available:', err);
         return { total: 0 };
       }
     },
@@ -497,7 +484,6 @@ export const useDashboardStore = defineStore('dashboard', {
         const { data, error } = await useLazyAsyncQuery(query);
         
         if (error.value) {
-          console.warn('Tenant stats GraphQL error:', error.value);
           return { total: 0, statistics: null };
         }
         
@@ -508,7 +494,6 @@ export const useDashboardStore = defineStore('dashboard', {
           statistics: null
         };
       } catch (err) {
-        console.warn('❌ Tenant stats not available:', err);
         return { total: 0, statistics: null };
       }
     },
@@ -524,7 +509,6 @@ export const useDashboardStore = defineStore('dashboard', {
         const { data, error } = await useLazyAsyncQuery(query);
         
         if (error.value) {
-          console.warn('Deployment stats GraphQL error:', error.value);
           return { deploymentService: 'online', statistics: null };
         }
         
@@ -533,7 +517,6 @@ export const useDashboardStore = defineStore('dashboard', {
           statistics: data.value?.deploymentStatistics || null
         };
       } catch (err) {
-        console.warn('Deployment stats not available:', err);
         return { deploymentService: 'online', statistics: null };
       }
     },
@@ -543,7 +526,6 @@ export const useDashboardStore = defineStore('dashboard', {
       this.setError('analytics', null);
 
       try {
-        console.log('📈 Fetching analytics summary...');
         
         // Mock analytics data
         const mockAnalytics: AnalyticsSummary = {
@@ -601,10 +583,8 @@ export const useDashboardStore = defineStore('dashboard', {
         };
 
         this.setAnalyticsSummary(mockAnalytics);
-        console.log('✅ Analytics summary loaded (mock data)');
 
       } catch (err: any) {
-        console.error('❌ Failed to fetch analytics summary:', err);
         this.setError('analytics', err.message || 'Failed to load analytics data');
       } finally {
         this.setLoading('analytics', false);
@@ -616,7 +596,6 @@ export const useDashboardStore = defineStore('dashboard', {
       this.setError('subscriptions', null);
 
       try {
-        console.log('💳 Fetching subscription analytics...');
         
         // Mock subscription data
         const mockSubscriptions: SubscriptionAnalytics = {
@@ -635,10 +614,8 @@ export const useDashboardStore = defineStore('dashboard', {
         };
 
         this.setSubscriptionAnalytics(mockSubscriptions);
-        console.log('✅ Subscription analytics loaded (mock data)');
 
       } catch (err: any) {
-        console.error('❌ Failed to fetch subscription analytics:', err);
         this.setError('subscriptions', err.message || 'Failed to load subscription data');
       } finally {
         this.setLoading('subscriptions', false);
@@ -650,7 +627,6 @@ export const useDashboardStore = defineStore('dashboard', {
       this.setError('activity', null);
 
       try {
-        console.log('🔄 Fetching recent activity...');
         
         // Mock activity data
         const mockActivity: RecentActivity[] = [
@@ -706,10 +682,8 @@ export const useDashboardStore = defineStore('dashboard', {
         ];
 
         this.setRecentActivity(mockActivity);
-        console.log('✅ Recent activity loaded (mock data)');
 
       } catch (err: any) {
-        console.error('❌ Failed to fetch recent activity:', err);
         this.setError('activity', err.message || 'Failed to load activity data');
       } finally {
         this.setLoading('activity', false);
@@ -718,7 +692,6 @@ export const useDashboardStore = defineStore('dashboard', {
 
     // Combined fetch for dashboard initialization
     async fetchAllDashboardData() {
-      console.log('🚀 Initializing dashboard data...');
       
       // Fetch all data sections in parallel for better performance
       const promises = [
@@ -730,9 +703,7 @@ export const useDashboardStore = defineStore('dashboard', {
 
       try {
         await Promise.allSettled(promises);
-        console.log('✅ Dashboard initialization complete');
       } catch (err) {
-        console.error('❌ Dashboard initialization failed:', err);
       }
     },
 
@@ -742,7 +713,6 @@ export const useDashboardStore = defineStore('dashboard', {
       this.setError('analytics', null);
 
       try {
-        console.log('📞 Fetching contact analytics...');
         
         const { data, error } = await useLazyAsyncQuery(GET_CONTACT_ANALYTICS, {
           first: 10000
@@ -755,10 +725,8 @@ export const useDashboardStore = defineStore('dashboard', {
         const contacts = data.value?.contacts || [];
         
         // Process contact data into analytics (for now just log it)
-        console.log('✅ Contact analytics processed:', contacts.length, 'contacts');
         
       } catch (err: any) {
-        console.error('❌ Failed to fetch contact analytics:', err);
         this.setError('analytics', err.message || 'Failed to load contact analytics');
       } finally {
         this.setLoading('analytics', false);
@@ -767,7 +735,6 @@ export const useDashboardStore = defineStore('dashboard', {
 
     async fetchRevenueAnalytics() {
       try {
-        console.log('💰 Fetching revenue analytics...');
         
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -787,13 +754,11 @@ export const useDashboardStore = defineStore('dashboard', {
         const paymentResult = paymentData.status === 'fulfilled' ? paymentData.value.data.value : null;
         const couponResult = couponData.status === 'fulfilled' ? couponData.value.data.value : null;
         
-        console.log('✅ Revenue analytics processed:', {
           payments: paymentResult?.paymentTransactionHistory?.total_amount || 0,
           coupons: couponResult?.couponStatistics?.total_discount_given || 0
         });
         
       } catch (err: any) {
-        console.error('❌ Failed to fetch revenue analytics:', err);
       }
     },
 
@@ -802,7 +767,6 @@ export const useDashboardStore = defineStore('dashboard', {
       this.setError('statistics', null);
 
       try {
-        console.log('📊 Fetching enhanced platform statistics...');
         
         // Parallel fetch of all enhanced data sources
         const queries = [
@@ -826,17 +790,14 @@ export const useDashboardStore = defineStore('dashboard', {
         const enhancedStats = await this.processEnhancedStatistics(results);
         
         this.setPlatformStatistics(enhancedStats);
-        console.log('✅ Enhanced platform statistics loaded with real data');
         
       } catch (err: any) {
-        console.error('❌ Failed to fetch enhanced statistics:', err);
         this.setError('statistics', err.message || 'Failed to load enhanced statistics');
         
         // Fallback to basic calculation
         try {
           await this.calculateBasicStatistics();
         } catch (fallbackErr) {
-          console.error('❌ Fallback statistics calculation failed:', fallbackErr);
         }
       } finally {
         this.setLoading('statistics', false);
@@ -1086,7 +1047,6 @@ export const useDashboardStore = defineStore('dashboard', {
 
     // Auto-refresh functionality
     async refreshData(sections: (keyof DashboardState['loading'])[] = ['statistics', 'analytics', 'subscriptions', 'activity']) {
-      console.log('🔄 Refreshing dashboard data:', sections);
       
       const refreshPromises: Promise<void>[] = [];
 
@@ -1105,15 +1065,12 @@ export const useDashboardStore = defineStore('dashboard', {
 
       try {
         await Promise.allSettled(refreshPromises);
-        console.log('✅ Dashboard refresh complete');
       } catch (err) {
-        console.error('❌ Dashboard refresh failed:', err);
       }
     },
 
     // Enhanced fetch all data method
     async fetchAllEnhancedDashboardData() {
-      console.log('🚀 Initializing enhanced dashboard data...');
       
       // Fetch all enhanced data sections in parallel
       const promises = [
@@ -1125,9 +1082,7 @@ export const useDashboardStore = defineStore('dashboard', {
 
       try {
         await Promise.allSettled(promises);
-        console.log('✅ Enhanced dashboard initialization complete');
       } catch (err) {
-        console.error('❌ Enhanced dashboard initialization failed:', err);
       }
     }
   },

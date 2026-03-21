@@ -45,7 +45,6 @@ onMounted(async () => {
       router.push('/login');
     }, 1500);
   } catch (err: any) {
-    console.error('Logout error:', err);
     error.value = 'Une erreur est survenue lors de la déconnexion. Veuillez réessayer.';
     
     // Redirect to login page even if there's an error

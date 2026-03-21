@@ -401,7 +401,6 @@ const handleSubmit = async () => {
 
     router.push('/certifications')
   } catch (error: any) {
-    console.error('Error updating certification:', error)
     await Swal.fire({
       title: 'Error',
       text: error.message || 'Failed to update certification',
@@ -445,7 +444,6 @@ onMounted(async () => {
       { title: 'Edit', path: `/certifications/${certificationId}/edit` }
     ])
   } catch (error) {
-    console.error('Error loading certification:', error)
   } finally {
     isLoading.value = false
   }

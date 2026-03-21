@@ -130,13 +130,11 @@ const handleFileSelect = async (event: Event) => {
 
     // Check file type
     if (!file.type.startsWith('image/')) {
-      console.warn(`File ${file.name} is not an image`)
       continue
     }
 
     // Check file size
     if (file.size > maxSizeInBytes) {
-      console.warn(`File ${file.name} exceeds 5MB`)
       continue
     }
 

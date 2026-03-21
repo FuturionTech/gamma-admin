@@ -50,7 +50,6 @@ export const useHonorificStore = defineStore('honorific', {
         }
       } catch (err: any) {
         this.setError('Failed to load honorifics. Please try again.');
-        console.error('Error fetching honorifics:', err);
         
         // Provide fallback with default options
         const { DEFAULT_HONORIFIC_OPTIONS } = await import('../types/honorific');

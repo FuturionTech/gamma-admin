@@ -7,6 +7,7 @@
     :trend-value="`${metrics?.openPositions || 0} open positions`"
     :trend-label="`${metrics?.recentCount || 0} this month`"
     trend-color="success"
+    :loading="loading"
   >
     <div class="d-flex justify-content-between text-gray-600 fs-7">
       <span>Active: {{ metrics?.active || 0 }}</span>
@@ -20,6 +21,7 @@ import type { CareersMetrics } from '../../types/content';
 
 interface Props {
   metrics?: CareersMetrics;
+  loading?: boolean;
 }
 
 defineProps<Props>();

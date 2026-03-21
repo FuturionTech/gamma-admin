@@ -33,9 +33,14 @@
       </div>
 
       <!-- Title & Subtitle -->
-      <h3 class="fs-4 fw-bold text-gray-900 mb-2">
-        {{ solution.title }}
-      </h3>
+      <NuxtLink
+        :to="`/solutions/${solution.id}`"
+        class="text-gray-900 text-hover-primary text-decoration-none"
+      >
+        <h3 class="fs-4 fw-bold mb-2">
+          {{ solution.title }}
+        </h3>
+      </NuxtLink>
       <div class="text-primary fw-semibold fs-6 mb-3" v-if="solution.subtitle">
         {{ solution.subtitle }}
       </div>
@@ -82,6 +87,18 @@
 
       <!-- Actions -->
       <div class="d-flex gap-2 mt-5 pt-5 border-top border-gray-300">
+        <NuxtLink
+          :to="`/solutions/${solution.id}`"
+          class="btn btn-sm btn-light-info flex-grow-1"
+        >
+          <i class="ki-duotone ki-eye fs-3">
+            <span class="path1"></span>
+            <span class="path2"></span>
+            <span class="path3"></span>
+          </i>
+          View
+        </NuxtLink>
+
         <NuxtLink
           :to="`/solutions/${solution.id}/edit`"
           class="btn btn-sm btn-light-primary flex-grow-1"

@@ -7,6 +7,7 @@
     :trend-value="`${metrics?.recentCount || 0} this month`"
     :trend-label="`${metrics?.byIndustry?.length || 0} industries`"
     trend-color="info"
+    :loading="loading"
   >
     <div class="d-flex justify-content-between text-gray-600 fs-7">
       <span>Active: {{ metrics?.active || 0 }}</span>
@@ -21,6 +22,7 @@ import type { ClientsMetrics } from '../../types/content';
 
 interface Props {
   metrics?: ClientsMetrics;
+  loading?: boolean;
 }
 
 const props = defineProps<Props>();

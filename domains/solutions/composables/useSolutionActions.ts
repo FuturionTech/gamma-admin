@@ -142,7 +142,6 @@ export const useSolutionActions = () => {
 
       showSuccess('Solutions exported successfully')
     } catch (error: any) {
-      console.error('Error exporting CSV:', error)
       showError('Failed to export solutions')
     }
   }

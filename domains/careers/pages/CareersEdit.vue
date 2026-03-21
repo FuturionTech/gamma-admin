@@ -343,7 +343,6 @@ const handleSubmit = async () => {
     showSuccess('Job position updated successfully')
     router.push(`/careers/positions/${id}`)
   } catch (error: any) {
-    console.error('Error updating job position:', error)
     showError(error.message || 'Failed to update job position')
   } finally {
     isSubmitting.value = false

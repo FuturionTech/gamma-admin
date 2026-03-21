@@ -158,7 +158,6 @@ export const useBlogActions = () => {
 
       showSuccess('Export réussi')
     } catch (error: any) {
-      console.error('Error exporting CSV:', error)
       showError('Échec de l\'exportation des articles')
     }
   }

@@ -26,12 +26,17 @@
           <input
             type="text"
             class="form-control"
+            :class="{
+              'is-invalid': errors.icon_color,
+              'is-valid': !errors.icon_color && formData.icon_color && isValidHexColor(formData.icon_color)
+            }"
             v-model="formData.icon_color"
             placeholder="#3B82F6"
             pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
           />
         </div>
-        <div class="form-text">Hexadecimal color for the icon</div>
+        <div v-if="errors.icon_color" class="invalid-feedback d-block">{{ errors.icon_color }}</div>
+        <div v-else class="form-text">Hexadecimal color for the icon</div>
       </div>
 
       <!-- Hero Image URL -->
@@ -62,11 +67,14 @@
 
 <script setup lang="ts">
 import type { SolutionFormData } from '../types'
+import { useSolutionFormatters } from '../composables/useSolutionFormatters'
 
 defineProps<{
   formData: SolutionFormData
   errors: Record<string, string>
 }>()
+
+const { isValidHexColor } = useSolutionFormatters()
 
 const onImageError = (event: Event) => {
   const img = event.target as HTMLImageElement

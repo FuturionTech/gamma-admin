@@ -251,7 +251,6 @@ export const useBlogStore = defineStore('blog', {
           this.setPosts(data.value.blogPosts)
         }
       } catch (err: any) {
-        console.error('Error fetching blog posts:', err)
         this.setError(err.message || 'Failed to load blog posts')
         this.setPosts([])
       } finally {
@@ -286,7 +285,6 @@ export const useBlogStore = defineStore('blog', {
 
         throw new Error('Blog post not found')
       } catch (err: any) {
-        console.error('Error fetching blog post:', err)
         this.setError(err.message || 'Failed to load blog post')
         throw err
       } finally {
@@ -323,7 +321,6 @@ export const useBlogStore = defineStore('blog', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error creating blog post:', err)
         this.setError(err.message || 'Failed to create blog post')
         throw err
       } finally {
@@ -372,7 +369,6 @@ export const useBlogStore = defineStore('blog', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating blog post:', err)
         this.setError(err.message || 'Failed to update blog post')
         throw err
       } finally {
@@ -410,7 +406,6 @@ export const useBlogStore = defineStore('blog', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting blog post:', err)
         this.setError(err.message || 'Failed to delete blog post')
         throw err
       } finally {

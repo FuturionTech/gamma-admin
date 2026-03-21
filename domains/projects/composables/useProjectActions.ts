@@ -157,7 +157,6 @@ export const useProjectActions = () => {
 
       showSuccess('Projects exported successfully')
     } catch (error: any) {
-      console.error('Error exporting CSV:', error)
       showError('Failed to export projects')
     }
   }
@@ -211,7 +210,6 @@ export const useProjectActions = () => {
       // Temporary: create object URL for preview
       return URL.createObjectURL(file)
     } catch (error: any) {
-      console.error('Error uploading image:', error)
       showError('Failed to upload image')
       return null
     }
@@ -239,7 +237,6 @@ export const useProjectActions = () => {
 
       return await Promise.all(uploadPromises)
     } catch (error: any) {
-      console.error('Error uploading gallery images:', error)
       showError('Failed to upload images')
       return []
     }

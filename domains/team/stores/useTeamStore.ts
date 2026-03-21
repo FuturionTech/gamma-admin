@@ -183,7 +183,6 @@ export const useTeamStore = defineStore('team', {
           this.setTeams(data.value.teams)
         }
       } catch (err: any) {
-        console.error('Error fetching teams:', err)
         this.setError(err.message || 'Failed to load teams')
         // Set empty array on error
         this.setTeams([])
@@ -211,7 +210,6 @@ export const useTeamStore = defineStore('team', {
           return data.value.team
         }
       } catch (err: any) {
-        console.error('Error fetching team:', err)
         this.setError(err.message || 'Failed to load team')
         throw err
       } finally {
@@ -233,7 +231,6 @@ export const useTeamStore = defineStore('team', {
           this.setSocialMediaPlatforms(data.value.socialMediaPlatforms)
         }
       } catch (err: any) {
-        console.error('Error fetching social media platforms:', err)
         // Don't set global error for this, just log it
       }
     },
@@ -263,7 +260,6 @@ export const useTeamStore = defineStore('team', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error creating team:', err)
         this.setError(err.message || 'Failed to create team member')
         throw err
       } finally {
@@ -306,7 +302,6 @@ export const useTeamStore = defineStore('team', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating team:', err)
         this.setError(err.message || 'Failed to update team member')
         throw err
       } finally {
@@ -346,7 +341,6 @@ export const useTeamStore = defineStore('team', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting team:', err)
         this.setError(err.message || 'Failed to delete team member')
         throw err
       } finally {

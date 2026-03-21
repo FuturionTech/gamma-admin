@@ -55,7 +55,6 @@ export const useNotification = () => {
       }
     } else {
       // Fallback to console if Bootstrap is not available
-      console.log(`[${notification.type?.toUpperCase()}] ${notification.title || ''} - ${notification.message}`)
     }
 
     currentNotification.value = notification

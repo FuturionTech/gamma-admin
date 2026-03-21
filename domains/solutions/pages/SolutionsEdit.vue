@@ -205,7 +205,6 @@ const loadSolution = async () => {
       }
     }
   } catch (error: any) {
-    console.error('Error loading solution:', error)
     showError(error.message || 'Failed to load solution')
   } finally {
     isLoading.value = false
@@ -245,7 +244,6 @@ const handleSubmit = async () => {
     showSuccess('Solution updated successfully')
     router.push('/solutions')
   } catch (error: any) {
-    console.error('Error updating solution:', error)
     showError(error.message || 'Failed to update solution')
   } finally {
     isSubmitting.value = false

@@ -8,9 +8,19 @@
     </div>
     <div class="card-body pt-6">
       <!-- Loading State -->
-      <div v-if="loading" class="text-center py-10">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
+      <div v-if="loading" class="d-flex flex-column gap-5">
+        <div v-for="i in 5" :key="i" class="d-flex flex-stack">
+          <div class="d-flex align-items-center me-5 flex-grow-1">
+            <div class="shimmer shimmer-circle me-4" style="width: 40px; height: 40px;"></div>
+            <div class="flex-grow-1">
+              <div class="shimmer shimmer-text mb-2" style="height: 16px; width: 60%;"></div>
+              <div class="shimmer shimmer-text" style="height: 14px; width: 40%;"></div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="shimmer shimmer-text me-3" style="height: 20px; width: 40px;"></div>
+            <div class="shimmer shimmer-bar" style="height: 6px; width: 100px;"></div>
+          </div>
         </div>
       </div>
 
@@ -75,3 +85,40 @@ const totalContent = computed(() => {
   return props.distribution?.reduce((sum, item) => sum + item.value, 0) || 0;
 });
 </script>
+
+<style scoped>
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer-loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+.shimmer-circle {
+  border-radius: 50%;
+}
+
+.shimmer-text {
+  height: 16px;
+  border-radius: 4px;
+}
+
+.shimmer-bar {
+  border-radius: 3px;
+}
+
+@keyframes shimmer-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer {
+    animation: none;
+  }
+}
+</style>

@@ -202,7 +202,6 @@ export const useCertificationsStore = defineStore('certifications', {
           this.setCertifications(data.value.certifications)
         }
       } catch (err: any) {
-        console.error('Error fetching certifications:', err)
         this.setError(err.message || 'Failed to load certifications')
         this.setCertifications([])
       } finally {
@@ -229,7 +228,6 @@ export const useCertificationsStore = defineStore('certifications', {
           return data.value.certification
         }
       } catch (err: any) {
-        console.error('Error fetching certification:', err)
         this.setError(err.message || 'Failed to load certification')
         throw err
       } finally {
@@ -261,7 +259,6 @@ export const useCertificationsStore = defineStore('certifications', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error creating certification:', err)
         this.setError(err.message || 'Failed to create certification')
         throw err
       } finally {
@@ -302,7 +299,6 @@ export const useCertificationsStore = defineStore('certifications', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating certification:', err)
         this.setError(err.message || 'Failed to update certification')
         throw err
       } finally {
@@ -340,7 +336,6 @@ export const useCertificationsStore = defineStore('certifications', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting certification:', err)
         this.setError(err.message || 'Failed to delete certification')
         throw err
       } finally {

@@ -180,24 +180,26 @@
 
               <!-- Logo -->
               <div class="card-body text-center pt-5 pb-5">
-                <div class="d-flex justify-content-center align-items-center mb-5" style="height: 120px;">
-                  <img
-                    v-if="partner.logo_url"
-                    :src="partner.logo_url"
-                    :alt="partner.name"
-                    class="mw-100 mh-100"
-                    style="max-height: 120px; object-fit: contain;"
-                  />
-                  <i v-else class="ki-duotone ki-handshake fs-5x text-gray-400">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                  </i>
-                </div>
+                <NuxtLink :to="`/partners/${partner.id}`" class="text-decoration-none">
+                  <div class="d-flex justify-content-center align-items-center mb-5" style="height: 120px;">
+                    <img
+                      v-if="partner.logo_url"
+                      :src="partner.logo_url"
+                      :alt="partner.name"
+                      class="mw-100 mh-100"
+                      style="max-height: 120px; object-fit: contain;"
+                    />
+                    <i v-else class="ki-duotone ki-handshake fs-5x text-gray-400">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                    </i>
+                  </div>
 
-                <!-- Partner Name -->
-                <div class="fs-5 fw-bold text-gray-900 mb-2">
-                  {{ partner.name }}
-                </div>
+                  <!-- Partner Name -->
+                  <div class="fs-5 fw-bold text-gray-900 mb-2 text-hover-primary">
+                    {{ partner.name }}
+                  </div>
+                </NuxtLink>
 
                 <!-- Website -->
                 <div v-if="partner.website_url" class="text-muted fs-7 mb-3">

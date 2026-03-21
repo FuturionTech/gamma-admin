@@ -309,7 +309,6 @@ onMounted(async () => {
       { title: cert?.title || 'Certification', path: `/certifications/${certificationId}` }
     ])
   } catch (error) {
-    console.error('Error loading certification:', error)
   } finally {
     isLoading.value = false
   }

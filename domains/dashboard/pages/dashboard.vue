@@ -517,7 +517,6 @@ const formatCurrency = (amount: number, compact: boolean = false): string => {
 };
 
 const onCurrencyChange = () => {
-  console.log('Currency changed to:', selectedCurrency.value);
   // Force reactive updates by triggering re-computation
   nextTick(() => {
     // This will cause all computed currency values to recalculate
@@ -608,12 +607,10 @@ onMounted(async () => {
     }, 5 * 60 * 1000);
     
   } catch (error) {
-    console.error('Enhanced dashboard initialization error:', error);
     // Fallback to basic data if enhanced fails
     try {
       await dashboardStore.fetchAllDashboardData();
     } catch (fallbackError) {
-      console.error('Fallback dashboard initialization failed:', fallbackError);
     }
   }
 });

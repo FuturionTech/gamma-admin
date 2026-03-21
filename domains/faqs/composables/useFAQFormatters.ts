@@ -1,3 +1,10 @@
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/fr'
+import 'dayjs/locale/en'
+
+dayjs.extend(relativeTime)
+
 export const useFAQFormatters = () => {
   const truncate = (text: string, maxLength: number = 100): string => {
     if (!text) return ''
@@ -27,28 +34,26 @@ export const useFAQFormatters = () => {
     return categoryClasses[category] || 'badge-light-secondary'
   }
 
-  const formatDate = (dateString: string): string => {
+  const formatDate = (dateString: string, format: string = 'DD MMM YYYY'): string => {
     if (!dateString) return ''
+    try {
+      return dayjs(dateString).locale('en').format(format)
+    } catch (error) {
+      return dateString
+    }
+  }
 
-    const date = new Date(dateString)
-    return date.toLocaleDateString('fr-FR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
+  const formatRelativeDate = (dateString: string): string => {
+    if (!dateString) return ''
+    try {
+      return dayjs(dateString).locale('en').fromNow()
+    } catch (error) {
+      return dateString
+    }
   }
 
   const formatDateTime = (dateString: string): string => {
-    if (!dateString) return ''
-
-    const date = new Date(dateString)
-    return date.toLocaleString('fr-FR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
+    return formatDate(dateString, 'DD MMM YYYY HH:mm')
   }
 
   const stripHtmlTags = (html: string): string => {
@@ -67,6 +72,7 @@ export const useFAQFormatters = () => {
     getStatusText,
     getCategoryBadgeClass,
     formatDate,
+    formatRelativeDate,
     formatDateTime,
     stripHtmlTags,
     getAnswerPreview

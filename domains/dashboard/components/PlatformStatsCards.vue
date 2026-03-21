@@ -206,24 +206,18 @@ const { platformStatistics: statistics, loading } = storeToRefs(dashboardStore);
 
 // Ensure statistics are loaded
 onMounted(async () => {
-  console.log('🔧 [PlatformStatsCards] Component mounted, statistics:', statistics.value);
-  console.log('🔧 [PlatformStatsCards] Loading state:', loading.value);
   
   if (!statistics.value) {
-    console.log('🔄 [PlatformStatsCards] Fetching platform statistics...');
     await dashboardStore.fetchPlatformStatistics();
   } else {
-    console.log('✅ [PlatformStatsCards] Statistics already loaded');
   }
 });
 
 // Watch for statistics changes
 watch(statistics, (newStats, oldStats) => {
-  console.log('📊 [PlatformStatsCards] Statistics updated:', { old: oldStats, new: newStats });
 }, { deep: true });
 
 watch(loading, (newLoading) => {
-  console.log('🔄 [PlatformStatsCards] Loading state changed:', newLoading);
 });
 
 // Utility functions for formatting

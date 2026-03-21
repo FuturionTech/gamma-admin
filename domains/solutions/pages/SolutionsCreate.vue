@@ -184,7 +184,6 @@ const handleSubmit = async () => {
     showSuccess('Solution created successfully')
     router.push('/solutions')
   } catch (error: any) {
-    console.error('Error creating solution:', error)
     showError(error.message || 'Failed to create solution')
   } finally {
     isSubmitting.value = false

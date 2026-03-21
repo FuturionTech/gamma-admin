@@ -145,7 +145,6 @@ export const usePartnersStore = defineStore('partners', {
           this.setPartners(data.value.partners)
         }
       } catch (err: any) {
-        console.error('Error fetching partners:', err)
         this.setError(err.message || 'Failed to load partners')
         // Set empty array on error
         this.setPartners([])
@@ -173,7 +172,6 @@ export const usePartnersStore = defineStore('partners', {
           return data.value.partner
         }
       } catch (err: any) {
-        console.error('Error fetching partner:', err)
         this.setError(err.message || 'Failed to load partner')
         throw err
       } finally {
@@ -206,7 +204,6 @@ export const usePartnersStore = defineStore('partners', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error creating partner:', err)
         this.setError(err.message || 'Failed to create partner')
         throw err
       } finally {
@@ -249,7 +246,6 @@ export const usePartnersStore = defineStore('partners', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating partner:', err)
         this.setError(err.message || 'Failed to update partner')
         throw err
       } finally {
@@ -289,7 +285,6 @@ export const usePartnersStore = defineStore('partners', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting partner:', err)
         this.setError(err.message || 'Failed to delete partner')
         throw err
       } finally {

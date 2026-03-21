@@ -156,7 +156,6 @@ export const useStatActions = () => {
 
       showSuccess('Statistics exported successfully')
     } catch (error: any) {
-      console.error('Error exporting CSV:', error)
       showError('Failed to export statistics')
     }
   }

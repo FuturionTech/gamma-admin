@@ -260,7 +260,6 @@ const handleSubmit = async () => {
     loading.value = false;
     await navigateTo('/');
   } catch (error) {
-    console.error('OTP verification error:', error);
     loading.value = false;
     errorMessage.value = 'Verification error; OTP invalid or expired';
     // Clear OTP fields on error
@@ -293,7 +292,6 @@ const resendOTP = async () => {
       errorMessage.value = response.error || 'Unable to resend code. Please try again.';
     }
   } catch (error) {
-    console.error('Error resending OTP:', error);
     errorMessage.value = 'An error occurred. Please try again.';
   } finally {
     loading.value = false;

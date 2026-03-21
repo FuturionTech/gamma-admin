@@ -237,7 +237,6 @@ const handleSubmit = async () => {
     // Redirect to list
     await router.push('/testimonials')
   } catch (error: any) {
-    console.error('Error creating testimonial:', error)
     showError(error.message || 'Failed to save testimonial')
   } finally {
     isSubmitting.value = false

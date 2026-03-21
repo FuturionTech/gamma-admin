@@ -318,7 +318,6 @@ onMounted(async () => {
       ])
     }
   } catch (error) {
-    console.error('Error loading service:', error)
   }
 })
 </script>

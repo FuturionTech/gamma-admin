@@ -150,7 +150,6 @@ export const useStatsStore = defineStore('stats', {
           this.setStats(data.value.stats)
         }
       } catch (err: any) {
-        console.error('Error fetching stats:', err)
         this.setError(err.message || 'Failed to load stats')
         // Set empty array on error
         this.setStats([])
@@ -185,7 +184,6 @@ export const useStatsStore = defineStore('stats', {
           }
         }
       } catch (err: any) {
-        console.error('Error fetching stat:', err)
         this.setError(err.message || 'Failed to load stat')
         throw err
       } finally {
@@ -226,7 +224,6 @@ export const useStatsStore = defineStore('stats', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error creating stat:', err)
         this.setError(err.message || 'Failed to create stat')
         throw err
       } finally {
@@ -269,7 +266,6 @@ export const useStatsStore = defineStore('stats', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating stat:', err)
         this.setError(err.message || 'Failed to update stat')
         throw err
       } finally {
@@ -309,7 +305,6 @@ export const useStatsStore = defineStore('stats', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting stat:', err)
         this.setError(err.message || 'Failed to delete stat')
         throw err
       } finally {

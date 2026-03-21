@@ -617,7 +617,6 @@ const handleSubmit = async () => {
     // Redirect to list
     await router.push('/projects/list')
   } catch (error: any) {
-    console.error('Error creating project:', error)
     showError(error.message || 'Failed to save')
   } finally {
     isSubmitting.value = false

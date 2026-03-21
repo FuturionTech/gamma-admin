@@ -17,7 +17,6 @@ export const usePartnerFormatters = () => {
     try {
       return dayjs(dateString).locale(locale.value).format(format)
     } catch (error) {
-      console.error('Error formatting date:', error)
       return dateString
     }
   }
@@ -30,7 +29,6 @@ export const usePartnerFormatters = () => {
     try {
       return dayjs(dateString).locale(locale.value).fromNow()
     } catch (error) {
-      console.error('Error formatting relative date:', error)
       return dateString
     }
   }

@@ -242,7 +242,6 @@ const loadTestimonial = async () => {
       ])
     }
   } catch (error: any) {
-    console.error('Error loading testimonial:', error)
     loadError.value = error.message || 'Failed to load testimonial'
   } finally {
     isLoading.value = false
@@ -298,7 +297,6 @@ const handleSubmit = async () => {
     // Redirect to list
     await router.push('/testimonials')
   } catch (error: any) {
-    console.error('Error updating testimonial:', error)
     showError(error.message || 'Failed to save testimonial')
   } finally {
     isSubmitting.value = false

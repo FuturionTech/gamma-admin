@@ -149,7 +149,6 @@ export const useSolutionsStore = defineStore('solutions', {
           this.setSolutions(data.value.solutions)
         }
       } catch (err: any) {
-        console.error('Error fetching solutions:', err)
         this.setError(err.message || 'Failed to load solutions')
         this.setSolutions([])
       } finally {
@@ -176,7 +175,6 @@ export const useSolutionsStore = defineStore('solutions', {
           return data.value.solution
         }
       } catch (err: any) {
-        console.error('Error fetching solution:', err)
         this.setError(err.message || 'Failed to load solution')
         throw err
       } finally {
@@ -230,7 +228,6 @@ export const useSolutionsStore = defineStore('solutions', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error creating solution:', err)
         this.setError(err.message || 'Failed to create solution')
         throw err
       } finally {
@@ -271,7 +268,6 @@ export const useSolutionsStore = defineStore('solutions', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating solution:', err)
         this.setError(err.message || 'Failed to update solution')
         throw err
       } finally {
@@ -309,7 +305,6 @@ export const useSolutionsStore = defineStore('solutions', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting solution:', err)
         this.setError(err.message || 'Failed to delete solution')
         throw err
       } finally {

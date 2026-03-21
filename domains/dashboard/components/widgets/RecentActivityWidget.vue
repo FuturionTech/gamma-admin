@@ -8,9 +8,22 @@
     </div>
     <div class="card-body pt-6">
       <!-- Loading State -->
-      <div v-if="loading" class="text-center py-10">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
+      <div v-if="loading" class="timeline timeline-border-dashed">
+        <div v-for="i in 4" :key="i" class="timeline-item">
+          <div class="timeline-line w-40px"></div>
+          <div class="timeline-icon symbol symbol-circle symbol-40px">
+            <div class="shimmer shimmer-circle" style="width: 40px; height: 40px;"></div>
+          </div>
+          <div class="timeline-content mb-10 mt-n1">
+            <div class="pe-3 mb-5">
+              <div class="shimmer shimmer-text mb-2" style="height: 18px; width: 60%;"></div>
+              <div class="shimmer shimmer-text" style="height: 14px; width: 40%;"></div>
+            </div>
+            <div class="d-flex align-items-center">
+              <div class="shimmer shimmer-badge me-2" style="height: 24px; width: 60px;"></div>
+              <div class="shimmer shimmer-text" style="height: 14px; width: 80px;"></div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -138,3 +151,40 @@ const formatTimeAgo = (timestamp: string): string => {
   }
 };
 </script>
+
+<style scoped>
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer-loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+.shimmer-circle {
+  border-radius: 50%;
+}
+
+.shimmer-text {
+  height: 16px;
+  border-radius: 4px;
+}
+
+.shimmer-badge {
+  border-radius: 12px;
+}
+
+@keyframes shimmer-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer {
+    animation: none;
+  }
+}
+</style>

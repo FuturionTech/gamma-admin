@@ -284,7 +284,6 @@ const loadTestimonial = async () => {
       ])
     }
   } catch (error: any) {
-    console.error('Error loading testimonial:', error)
     loadError.value = error.message || 'Failed to load testimonial'
   } finally {
     isLoading.value = false

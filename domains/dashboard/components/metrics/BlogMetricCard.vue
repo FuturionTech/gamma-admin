@@ -7,6 +7,7 @@
     :trend-value="`${formatNumber(metrics?.totalViews || 0)} views`"
     :trend-label="`${metrics?.published || 0} published`"
     trend-color="success"
+    :loading="loading"
   >
     <div class="d-flex justify-content-between text-gray-600 fs-7">
       <span>Published: {{ metrics?.published || 0 }}</span>
@@ -20,6 +21,7 @@ import type { BlogMetrics } from '../../types/content';
 
 interface Props {
   metrics?: BlogMetrics;
+  loading?: boolean;
 }
 
 defineProps<Props>();

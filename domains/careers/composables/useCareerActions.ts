@@ -162,7 +162,6 @@ export const useCareerActions = () => {
 
       showSuccess('Job positions exported successfully')
     } catch (error: any) {
-      console.error('Error exporting CSV:', error)
       showError('Failed to export job positions')
     }
   }

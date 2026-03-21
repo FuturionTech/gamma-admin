@@ -312,8 +312,8 @@ onMounted(async () => {
         { title: faq.value.question, path: `/faqs/${faqId.value}` }
       ])
     }
-  } catch (error) {
-    console.error('Error loading FAQ:', error)
+  } catch {
+    // Error handled by store
   }
 })
 </script>

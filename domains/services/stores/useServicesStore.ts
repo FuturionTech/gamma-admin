@@ -175,7 +175,6 @@ export const useServicesStore = defineStore('services', {
           this.setServices(data.value.services)
         }
       } catch (err: any) {
-        console.error('Error fetching services:', err)
         this.setError(err.message || 'Failed to load services')
         // Set empty array on error
         this.setServices([])
@@ -203,7 +202,6 @@ export const useServicesStore = defineStore('services', {
           return data.value.service
         }
       } catch (err: any) {
-        console.error('Error fetching service:', err)
         this.setError(err.message || 'Failed to load service')
         throw err
       } finally {
@@ -236,7 +234,6 @@ export const useServicesStore = defineStore('services', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error creating service:', err)
         this.setError(err.message || 'Failed to create service')
         throw err
       } finally {
@@ -279,7 +276,6 @@ export const useServicesStore = defineStore('services', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating service:', err)
         this.setError(err.message || 'Failed to update service')
         throw err
       } finally {
@@ -319,7 +315,6 @@ export const useServicesStore = defineStore('services', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting service:', err)
         this.setError(err.message || 'Failed to delete service')
         throw err
       } finally {

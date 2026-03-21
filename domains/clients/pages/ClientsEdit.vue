@@ -63,11 +63,15 @@
                       type="text"
                       v-model="form.name"
                       class="form-control"
-                      :class="{ 'is-invalid': errors.name }"
+                      :class="{
+                        'is-invalid': touched.name && errors.name,
+                        'is-valid': touched.name && form.name && !errors.name
+                      }"
                       placeholder="Enter client name"
-                      @input="errors.name = ''"
+                      @blur="validateField('name')"
+                      @input="clearError('name')"
                     />
-                    <div v-if="errors.name" class="invalid-feedback">
+                    <div v-if="touched.name && errors.name" class="invalid-feedback d-block">
                       {{ errors.name }}
                     </div>
                   </div>
@@ -78,7 +82,12 @@
                     <select
                       v-model="form.industry"
                       class="form-select"
-                      :class="{ 'is-invalid': errors.industry }"
+                      :class="{
+                        'is-invalid': touched.industry && errors.industry,
+                        'is-valid': touched.industry && form.industry && !errors.industry
+                      }"
+                      @blur="validateField('industry')"
+                      @change="clearError('industry')"
                     >
                       <option :value="null">Select an industry</option>
                       <option
@@ -89,7 +98,7 @@
                         {{ industry }}
                       </option>
                     </select>
-                    <div v-if="errors.industry" class="invalid-feedback">
+                    <div v-if="touched.industry && errors.industry" class="invalid-feedback d-block">
                       {{ errors.industry }}
                     </div>
                   </div>
@@ -101,11 +110,15 @@
                       type="url"
                       v-model="form.website_url"
                       class="form-control"
-                      :class="{ 'is-invalid': errors.website_url }"
+                      :class="{
+                        'is-invalid': touched.website_url && errors.website_url,
+                        'is-valid': touched.website_url && form.website_url && !errors.website_url
+                      }"
                       placeholder="https://example.com"
-                      @input="errors.website_url = ''"
+                      @blur="validateField('website_url')"
+                      @input="clearError('website_url')"
                     />
-                    <div v-if="errors.website_url" class="invalid-feedback">
+                    <div v-if="touched.website_url && errors.website_url" class="invalid-feedback d-block">
                       {{ errors.website_url }}
                     </div>
                     <div class="form-text">Client's website URL (optional)</div>
@@ -118,11 +131,16 @@
                       type="number"
                       v-model.number="form.order"
                       class="form-control"
-                      :class="{ 'is-invalid': errors.order }"
+                      :class="{
+                        'is-invalid': touched.order && errors.order,
+                        'is-valid': touched.order && (form.order !== null && form.order !== undefined) && !errors.order
+                      }"
                       min="0"
                       placeholder="0"
+                      @blur="validateField('order')"
+                      @input="clearError('order')"
                     />
-                    <div v-if="errors.order" class="invalid-feedback">
+                    <div v-if="touched.order && errors.order" class="invalid-feedback d-block">
                       {{ errors.order }}
                     </div>
                     <div class="form-text">Display order (lower = shown first)</div>
@@ -221,7 +239,7 @@
             <button
               type="submit"
               class="btn btn-primary"
-              :disabled="!isFormValid || isSubmitting"
+              :disabled="isSubmitting || hasErrors"
             >
               <span v-if="!isSubmitting">
                 <i class="ki-duotone ki-check fs-2"></i>
@@ -229,7 +247,7 @@
               </span>
               <span v-else>
                 <span class="spinner-border spinner-border-sm me-2"></span>
-                Loading...
+                Saving...
               </span>
             </button>
           </div>
@@ -266,38 +284,75 @@ const form = reactive<UpdateClientInput & { logoFile?: File | null }>({
 })
 
 const errors = ref<Record<string, string>>({})
+const touched = ref<Record<string, boolean>>({})
 const isLoading = ref(true)
 const isSubmitting = ref(false)
 const logoPreview = ref('')
 const loadError = ref('')
 
 // Validation
-const isFormValid = computed(() => {
-  return (
-    form.name && form.name.trim() !== '' &&
-    Object.keys(errors.value).length === 0
-  )
+const validateField = (field: keyof UpdateClientInput): boolean => {
+  touched.value[field] = true
+  const value = form[field]
+
+  switch (field) {
+    case 'name':
+      if (!value || (typeof value === 'string' && !value.trim())) {
+        errors.value.name = 'Client name is required'
+        return false
+      }
+      if (typeof value === 'string' && value.length > 255) {
+        errors.value.name = 'Client name cannot exceed 255 characters'
+        return false
+      }
+      errors.value.name = ''
+      return true
+
+    case 'website_url':
+      if (value && typeof value === 'string' && !isValidUrl(value)) {
+        errors.value.website_url = 'Please enter a valid URL (e.g., https://example.com)'
+        return false
+      }
+      errors.value.website_url = ''
+      return true
+
+    case 'order':
+      if (value !== null && value !== undefined && typeof value === 'number' && value < 0) {
+        errors.value.order = 'Order must be a positive number'
+        return false
+      }
+      errors.value.order = ''
+      return true
+
+    default:
+      return true
+  }
+}
+
+const validateAll = (): boolean => {
+  let isValid = true
+  const fieldsToValidate: Array<keyof UpdateClientInput> = ['name', 'website_url', 'order']
+
+  for (const field of fieldsToValidate) {
+    if (!validateField(field)) {
+      isValid = false
+    }
+  }
+
+  return isValid
+}
+
+const clearError = (field: string) => {
+  errors.value[field] = ''
+}
+
+const hasErrors = computed(() => {
+  return Object.values(errors.value).some(e => e)
 })
 
-const validateForm = (): boolean => {
-  errors.value = {}
-
-  if (!form.name || !form.name.trim()) {
-    errors.value.name = 'Client name is required'
-  } else if (form.name.length > 255) {
-    errors.value.name = 'Client name cannot exceed 255 characters'
-  }
-
-  if (form.website_url && !isValidUrl(form.website_url)) {
-    errors.value.website_url = 'Invalid website URL'
-  }
-
-  if (form.order !== null && form.order !== undefined && form.order < 0) {
-    errors.value.order = 'Order must be a positive number'
-  }
-
-  return Object.keys(errors.value).length === 0
-}
+const isFormValid = computed(() => {
+  return form.name && form.name.trim() !== '' && !hasErrors.value
+})
 
 const isValidUrl = (url: string): boolean => {
   try {
@@ -335,7 +390,7 @@ const handleLogoRemove = () => {
 }
 
 const handleSubmit = async () => {
-  if (!validateForm()) {
+  if (!validateAll()) {
     showError('Please fix the validation errors')
     return
   }
@@ -361,7 +416,6 @@ const handleSubmit = async () => {
     // Redirect to list
     await router.push('/clients')
   } catch (error: any) {
-    console.error('Error updating client:', error)
     showError(error.message || 'Failed to save client')
   } finally {
     isSubmitting.value = false
@@ -393,7 +447,6 @@ const loadClient = async () => {
       logoPreview.value = client.logo_url
     }
   } catch (error: any) {
-    console.error('Error loading client:', error)
     loadError.value = error.message || 'Failed to load client'
   } finally {
     isLoading.value = false

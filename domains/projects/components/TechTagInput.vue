@@ -145,7 +145,6 @@ const addTag = () => {
 
   // Check max tags limit
   if (tags.value.length >= props.maxTags) {
-    console.warn(`Maximum ${props.maxTags} tags allowed`)
     return
   }
 
@@ -169,7 +168,6 @@ const selectSuggestion = (suggestion: string) => {
   if (tags.value.includes(suggestion)) return
 
   if (tags.value.length >= props.maxTags) {
-    console.warn(`Maximum ${props.maxTags} tags allowed`)
     return
   }
 

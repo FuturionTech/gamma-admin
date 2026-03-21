@@ -301,7 +301,6 @@ const handleSubmit = async () => {
     // Redirect to list
     await router.push('/services/list')
   } catch (error: any) {
-    console.error('Error updating service:', error)
     showError(error.message || 'Failed to save service')
   } finally {
     isSubmitting.value = false
@@ -331,7 +330,6 @@ onMounted(async () => {
       ])
     }
   } catch (error) {
-    console.error('Error loading service:', error)
   }
 })
 </script>

@@ -227,7 +227,6 @@ export const useProjectsStore = defineStore('projects', {
           this.setProjects(data.value.projects)
         }
       } catch (err: any) {
-        console.error('Error fetching projects:', err)
         this.setError(err.message || 'Failed to load projects')
         // Set empty array on error
         this.setProjects([])
@@ -255,7 +254,6 @@ export const useProjectsStore = defineStore('projects', {
           return data.value.project
         }
       } catch (err: any) {
-        console.error('Error fetching project:', err)
         this.setError(err.message || 'Failed to load project')
         throw err
       } finally {
@@ -288,7 +286,6 @@ export const useProjectsStore = defineStore('projects', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error creating project:', err)
         this.setError(err.message || 'Failed to create project')
         throw err
       } finally {
@@ -331,7 +328,6 @@ export const useProjectsStore = defineStore('projects', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating project:', err)
         this.setError(err.message || 'Failed to update project')
         throw err
       } finally {
@@ -371,7 +367,6 @@ export const useProjectsStore = defineStore('projects', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting project:', err)
         this.setError(err.message || 'Failed to delete project')
         throw err
       } finally {

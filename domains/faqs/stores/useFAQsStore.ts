@@ -201,7 +201,6 @@ export const useFAQsStore = defineStore('faqs', {
           this.setFAQs(data.value.faqs)
         }
       } catch (err: any) {
-        console.error('Error fetching FAQs:', err)
         this.setError(err.message || 'Failed to load FAQs')
         // Set empty array on error
         this.setFAQs([])
@@ -234,7 +233,6 @@ export const useFAQsStore = defineStore('faqs', {
           return faq
         }
       } catch (err: any) {
-        console.error('Error fetching FAQ:', err)
         this.setError(err.message || 'Failed to load FAQ')
         throw err
       } finally {
@@ -267,7 +265,6 @@ export const useFAQsStore = defineStore('faqs', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error creating FAQ:', err)
         this.setError(err.message || 'Failed to create FAQ')
         throw err
       } finally {
@@ -310,7 +307,6 @@ export const useFAQsStore = defineStore('faqs', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating FAQ:', err)
         this.setError(err.message || 'Failed to update FAQ')
         throw err
       } finally {
@@ -350,7 +346,6 @@ export const useFAQsStore = defineStore('faqs', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting FAQ:', err)
         this.setError(err.message || 'Failed to delete FAQ')
         throw err
       } finally {

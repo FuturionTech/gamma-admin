@@ -38,48 +38,48 @@
             <!-- Metric Cards Row 1 -->
             <div class="row g-5 g-xl-8 mb-5 mb-xl-10">
               <div class="col-xl-3 col-md-6">
-                <ServicesMetricCard :metrics="dashboardData.services" />
+                <ServicesMetricCard :metrics="dashboardData.services" :loading="loading" />
               </div>
               <div class="col-xl-3 col-md-6">
-                <SolutionsMetricCard :metrics="dashboardData.solutions" />
+                <SolutionsMetricCard :metrics="dashboardData.solutions" :loading="loading" />
               </div>
               <div class="col-xl-3 col-md-6">
-                <BlogMetricCard :metrics="dashboardData.blog" />
+                <BlogMetricCard :metrics="dashboardData.blog" :loading="loading" />
               </div>
               <div class="col-xl-3 col-md-6">
-                <ProjectsMetricCard :metrics="dashboardData.projects" />
+                <ProjectsMetricCard :metrics="dashboardData.projects" :loading="loading" />
               </div>
             </div>
 
             <!-- Metric Cards Row 2 -->
             <div class="row g-5 g-xl-8 mb-5 mb-xl-10">
               <div class="col-xl-3 col-md-6">
-                <TeamMetricCard :metrics="dashboardData.team" />
+                <TeamMetricCard :metrics="dashboardData.team" :loading="loading" />
               </div>
               <div class="col-xl-3 col-md-6">
-                <PartnersMetricCard :metrics="dashboardData.partners" />
+                <PartnersMetricCard :metrics="dashboardData.partners" :loading="loading" />
               </div>
               <div class="col-xl-3 col-md-6">
-                <ClientsMetricCard :metrics="dashboardData.clients" />
+                <ClientsMetricCard :metrics="dashboardData.clients" :loading="loading" />
               </div>
               <div class="col-xl-3 col-md-6">
-                <CertificationsMetricCard :metrics="dashboardData.certifications" />
+                <CertificationsMetricCard :metrics="dashboardData.certifications" :loading="loading" />
               </div>
             </div>
 
             <!-- Metric Cards Row 3 -->
             <div class="row g-5 g-xl-8 mb-5 mb-xl-10">
               <div class="col-xl-3 col-md-6">
-                <FAQsMetricCard :metrics="dashboardData.faqs" />
+                <FAQsMetricCard :metrics="dashboardData.faqs" :loading="loading" />
               </div>
               <div class="col-xl-3 col-md-6">
-                <CareersMetricCard :metrics="dashboardData.careers" />
+                <CareersMetricCard :metrics="dashboardData.careers" :loading="loading" />
               </div>
               <div class="col-xl-3 col-md-6">
-                <TestimonialsMetricCard :metrics="dashboardData.testimonials" />
+                <TestimonialsMetricCard :metrics="dashboardData.testimonials" :loading="loading" />
               </div>
               <div class="col-xl-3 col-md-6">
-                <StatsMetricCard :metrics="dashboardData.stats" />
+                <StatsMetricCard :metrics="dashboardData.stats" :loading="loading" />
               </div>
             </div>
 
@@ -196,7 +196,6 @@ onMounted(async () => {
     }, 5 * 60 * 1000);
 
   } catch (err) {
-    console.error('Dashboard initialization error:', err);
   }
 });
 

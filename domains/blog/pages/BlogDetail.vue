@@ -250,8 +250,8 @@ const post = computed(() => blogStore.currentPost)
 const loadPost = async () => {
   try {
     await blogStore.fetchPost(postId.value)
-  } catch (error: any) {
-    console.error('Failed to load post:', error)
+  } catch {
+    // Error handled by store
   }
 }
 

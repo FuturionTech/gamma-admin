@@ -157,7 +157,6 @@ export const useTeamActions = () => {
 
       showSuccess('Team members exported successfully')
     } catch (error: any) {
-      console.error('Error exporting CSV:', error)
       showError('Failed to export team members')
     }
   }
@@ -172,7 +171,6 @@ export const useTeamActions = () => {
       const url = URL.createObjectURL(file)
       return url
     } catch (error: any) {
-      console.error('Error uploading profile picture:', error)
       throw new Error('Failed to upload profile picture')
     }
   }

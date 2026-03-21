@@ -2,12 +2,13 @@
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
     devtools: { enabled: true },
+    devServer: { port: 3007 },
 
     // Suppress dev.json 404 warning in development
     nitro: {
         devProxy: {
             '/_nuxt/builds/meta': {
-                target: 'http://localhost:3000',
+                target: 'http://localhost:3007',
                 changeOrigin: true
             }
         }

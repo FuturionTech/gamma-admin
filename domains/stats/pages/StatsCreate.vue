@@ -276,7 +276,6 @@ const handleSubmit = async () => {
     // Redirect to list
     await router.push('/stats')
   } catch (error: any) {
-    console.error('Error creating stat:', error)
     showError(error.message || 'Failed to save statistic')
   } finally {
     isSubmitting.value = false

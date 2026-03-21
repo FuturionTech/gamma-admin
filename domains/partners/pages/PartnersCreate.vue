@@ -20,10 +20,15 @@
                           type="text"
                           v-model="form.name"
                           class="form-control"
-                          :class="{ 'is-invalid': errors.name }"
+                          :class="{
+                            'is-invalid': touched.name && errors.name,
+                            'is-valid': touched.name && form.name && !errors.name
+                          }"
                           placeholder="Enter partner name"
+                          @blur="validateField('name')"
+                          @input="clearError('name')"
                         />
-                        <div v-if="errors.name" class="invalid-feedback">
+                        <div v-if="touched.name && errors.name" class="invalid-feedback d-block">
                           {{ errors.name }}
                         </div>
                       </div>
@@ -42,12 +47,17 @@
                             type="url"
                             v-model="form.website_url"
                             class="form-control"
-                            :class="{ 'is-invalid': errors.website_url }"
+                            :class="{
+                              'is-invalid': touched.website_url && errors.website_url,
+                              'is-valid': touched.website_url && form.website_url && !errors.website_url
+                            }"
                             placeholder="https://example.com"
+                            @blur="validateField('website_url')"
+                            @input="clearError('website_url')"
                           />
-                          <div v-if="errors.website_url" class="invalid-feedback">
-                            {{ errors.website_url }}
-                          </div>
+                        </div>
+                        <div v-if="touched.website_url && errors.website_url" class="invalid-feedback d-block">
+                          {{ errors.website_url }}
                         </div>
                         <div class="form-text">Partner's official website (optional)</div>
                       </div>
@@ -59,11 +69,16 @@
                           type="number"
                           v-model.number="form.order"
                           class="form-control"
-                          :class="{ 'is-invalid': errors.order }"
+                          :class="{
+                            'is-invalid': touched.order && errors.order,
+                            'is-valid': touched.order && form.order !== null && !errors.order
+                          }"
                           min="0"
                           placeholder="0"
+                          @blur="validateField('order')"
+                          @input="clearError('order')"
                         />
-                        <div v-if="errors.order" class="invalid-feedback">
+                        <div v-if="touched.order && errors.order" class="invalid-feedback d-block">
                           {{ errors.order }}
                         </div>
                         <div class="form-text">Display order (lower numbers appear first)</div>
@@ -134,7 +149,7 @@
                           accept="image/png,image/jpeg,image/jpg,image/svg+xml"
                           @change="handleLogoChange"
                         />
-                        <div v-if="errors.logo_url" class="invalid-feedback">
+                        <div v-if="errors.logo_url" class="invalid-feedback d-block">
                           {{ errors.logo_url }}
                         </div>
 
@@ -215,6 +230,7 @@ const form = reactive<PartnerFormData>({
 })
 
 const errors = ref<Record<string, string>>({})
+const touched = ref<Record<string, boolean>>({})
 const isSubmitting = ref(false)
 const logoPreview = ref('')
 const fileInput = ref<HTMLInputElement | null>(null)
@@ -228,7 +244,55 @@ const isFormValid = computed(() => {
   )
 })
 
+const validateField = (field: string): boolean => {
+  touched.value[field] = true
+
+  switch (field) {
+    case 'name':
+      if (!form.name.trim()) {
+        errors.value.name = 'Partner name is required'
+        return false
+      } else if (form.name.length > 255) {
+        errors.value.name = 'Partner name cannot exceed 255 characters'
+        return false
+      }
+      delete errors.value.name
+      return true
+
+    case 'website_url':
+      if (form.website_url && !isValidUrl(form.website_url)) {
+        errors.value.website_url = 'Please enter a valid URL (e.g., https://example.com)'
+        return false
+      }
+      delete errors.value.website_url
+      return true
+
+    case 'order':
+      if (form.order !== null && form.order !== undefined && form.order < 0) {
+        errors.value.order = 'Order must be a positive number'
+        return false
+      }
+      delete errors.value.order
+      return true
+
+    default:
+      return true
+  }
+}
+
+const clearError = (field: string) => {
+  delete errors.value[field]
+}
+
 const validateForm = (): boolean => {
+  // Mark all fields as touched
+  touched.value = {
+    name: true,
+    website_url: true,
+    order: true,
+    logo_url: true
+  }
+
   errors.value = {}
 
   if (!form.name.trim()) {
@@ -242,7 +306,7 @@ const validateForm = (): boolean => {
   }
 
   if (form.website_url && !isValidUrl(form.website_url)) {
-    errors.value.website_url = 'Invalid website URL'
+    errors.value.website_url = 'Please enter a valid URL (e.g., https://example.com)'
   }
 
   if (form.order !== null && form.order !== undefined && form.order < 0) {
@@ -319,7 +383,6 @@ const handleSubmit = async () => {
     // Redirect to list
     await router.push('/partners')
   } catch (error: any) {
-    console.error('Error creating partner:', error)
     showError(error.message || 'Failed to save partner')
   } finally {
     isSubmitting.value = false

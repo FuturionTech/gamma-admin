@@ -176,11 +176,7 @@
 
       <div class="card-body py-4">
         <!-- Loading State -->
-        <div v-if="statsStore.isLoading" class="text-center py-20">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
+        <TableSkeleton v-if="statsStore.isLoading" :rows="10" :columns="7" :hasCheckbox="false" :hasActions="true" />
 
         <!-- Empty State -->
         <div v-else-if="!statsStore.hasStats" class="text-center py-20">
@@ -286,6 +282,18 @@
                 </td>
                 <td>
                   <div class="d-flex justify-content-end flex-shrink-0 gap-1">
+                    <NuxtLink
+                      :to="`/stats/${stat.id}`"
+                      class="btn btn-icon btn-bg-light btn-active-color-info btn-sm"
+                      title="View"
+                    >
+                      <i class="ki-duotone ki-eye fs-3">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        <span class="path3"></span>
+                      </i>
+                    </NuxtLink>
+
                     <NuxtLink
                       :to="`/stats/edit/${stat.id}`"
                       class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm"

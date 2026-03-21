@@ -224,7 +224,6 @@ export const useCareersStore = defineStore('careers', {
           this.setJobPositions(data.value.jobPositions)
         }
       } catch (err: any) {
-        console.error('Error fetching job positions:', err)
         this.setError(err.message || 'Failed to load job positions')
         this.setJobPositions([])
       } finally {
@@ -251,7 +250,6 @@ export const useCareersStore = defineStore('careers', {
           return data.value.jobPosition
         }
       } catch (err: any) {
-        console.error('Error fetching job position:', err)
         this.setError(err.message || 'Failed to load job position')
         throw err
       } finally {
@@ -283,7 +281,6 @@ export const useCareersStore = defineStore('careers', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error creating job position:', err)
         this.setError(err.message || 'Failed to create job position')
         throw err
       } finally {
@@ -326,7 +323,6 @@ export const useCareersStore = defineStore('careers', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating job position:', err)
         this.setError(err.message || 'Failed to update job position')
         throw err
       } finally {
@@ -366,7 +362,6 @@ export const useCareersStore = defineStore('careers', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting job position:', err)
         this.setError(err.message || 'Failed to delete job position')
         throw err
       } finally {

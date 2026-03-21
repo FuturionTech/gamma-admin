@@ -174,7 +174,6 @@ export const useClientsStore = defineStore('clients', {
           this.setClients(data.value.clients)
         }
       } catch (err: any) {
-        console.error('Error fetching clients:', err)
         this.setError(err.message || 'Failed to load clients')
         // Set empty array on error
         this.setClients([])
@@ -202,7 +201,6 @@ export const useClientsStore = defineStore('clients', {
           return data.value.client
         }
       } catch (err: any) {
-        console.error('Error fetching client:', err)
         this.setError(err.message || 'Failed to load client')
         throw err
       } finally {
@@ -235,7 +233,6 @@ export const useClientsStore = defineStore('clients', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error creating client:', err)
         this.setError(err.message || 'Failed to create client')
         throw err
       } finally {
@@ -278,7 +275,6 @@ export const useClientsStore = defineStore('clients', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating client:', err)
         this.setError(err.message || 'Failed to update client')
         throw err
       } finally {
@@ -318,7 +314,6 @@ export const useClientsStore = defineStore('clients', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting client:', err)
         this.setError(err.message || 'Failed to delete client')
         throw err
       } finally {

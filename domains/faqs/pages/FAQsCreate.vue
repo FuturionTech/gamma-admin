@@ -287,7 +287,6 @@ const handleSubmit = async () => {
     // Redirect to list
     await router.push('/faqs')
   } catch (error: any) {
-    console.error('Error creating FAQ:', error)
     await Swal.fire({
       title: 'Error',
       text: error.message || 'Failed to save FAQ',

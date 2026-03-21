@@ -69,14 +69,12 @@ export const useDashboardData = () => {
       const { data, error: queryError } = await useLazyAsyncQuery(GET_SERVICES_METRICS);
 
       if (queryError.value) {
-        console.warn('Services metrics error:', queryError.value);
         return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0 };
       }
 
       const services = data.value?.services?.data || [];
       return calculateMetrics(services);
     } catch (err) {
-      console.error('Failed to fetch services metrics:', err);
       return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0 };
     }
   };
@@ -87,7 +85,6 @@ export const useDashboardData = () => {
       const { data, error: queryError } = await useLazyAsyncQuery(GET_SOLUTIONS_METRICS);
 
       if (queryError.value) {
-        console.warn('Solutions metrics error:', queryError.value);
         return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, totalFeatures: 0, totalBenefits: 0 };
       }
 
@@ -103,7 +100,6 @@ export const useDashboardData = () => {
         totalBenefits,
       };
     } catch (err) {
-      console.error('Failed to fetch solutions metrics:', err);
       return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, totalFeatures: 0, totalBenefits: 0 };
     }
   };
@@ -114,7 +110,6 @@ export const useDashboardData = () => {
       const { data, error: queryError } = await useLazyAsyncQuery(GET_BLOG_METRICS);
 
       if (queryError.value) {
-        console.warn('Blog metrics error:', queryError.value);
         return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, published: 0, draft: 0, totalViews: 0, averageViews: 0 };
       }
 
@@ -134,7 +129,6 @@ export const useDashboardData = () => {
         averageViews,
       };
     } catch (err) {
-      console.error('Failed to fetch blog metrics:', err);
       return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, published: 0, draft: 0, totalViews: 0, averageViews: 0 };
     }
   };
@@ -145,7 +139,6 @@ export const useDashboardData = () => {
       const { data, error: queryError } = await useLazyAsyncQuery(GET_PROJECTS_METRICS);
 
       if (queryError.value) {
-        console.warn('Projects metrics error:', queryError.value);
         return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, published: 0, draft: 0 };
       }
 
@@ -161,7 +154,6 @@ export const useDashboardData = () => {
         draft,
       };
     } catch (err) {
-      console.error('Failed to fetch projects metrics:', err);
       return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, published: 0, draft: 0 };
     }
   };
@@ -172,14 +164,12 @@ export const useDashboardData = () => {
       const { data, error: queryError } = await useLazyAsyncQuery(GET_TEAM_METRICS);
 
       if (queryError.value) {
-        console.warn('Team metrics error:', queryError.value);
         return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0 };
       }
 
       const members = data.value?.teamMembers?.data || [];
       return calculateMetrics(members);
     } catch (err) {
-      console.error('Failed to fetch team metrics:', err);
       return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0 };
     }
   };
@@ -190,14 +180,12 @@ export const useDashboardData = () => {
       const { data, error: queryError } = await useLazyAsyncQuery(GET_PARTNERS_METRICS);
 
       if (queryError.value) {
-        console.warn('Partners metrics error:', queryError.value);
         return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0 };
       }
 
       const partners = data.value?.partners?.data || [];
       return calculateMetrics(partners);
     } catch (err) {
-      console.error('Failed to fetch partners metrics:', err);
       return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0 };
     }
   };
@@ -208,7 +196,6 @@ export const useDashboardData = () => {
       const { data, error: queryError } = await useLazyAsyncQuery(GET_CLIENTS_METRICS);
 
       if (queryError.value) {
-        console.warn('Clients metrics error:', queryError.value);
         return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, byIndustry: [] };
       }
 
@@ -233,7 +220,6 @@ export const useDashboardData = () => {
         byIndustry,
       };
     } catch (err) {
-      console.error('Failed to fetch clients metrics:', err);
       return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, byIndustry: [] };
     }
   };
@@ -244,14 +230,12 @@ export const useDashboardData = () => {
       const { data, error: queryError } = await useLazyAsyncQuery(GET_CERTIFICATIONS_METRICS);
 
       if (queryError.value) {
-        console.warn('Certifications metrics error:', queryError.value);
         return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0 };
       }
 
       const certifications = data.value?.certifications?.data || [];
       return calculateMetrics(certifications);
     } catch (err) {
-      console.error('Failed to fetch certifications metrics:', err);
       return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0 };
     }
   };
@@ -262,7 +246,6 @@ export const useDashboardData = () => {
       const { data, error: queryError } = await useLazyAsyncQuery(GET_FAQS_METRICS);
 
       if (queryError.value) {
-        console.warn('FAQs metrics error:', queryError.value);
         return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, byCategory: [] };
       }
 
@@ -287,7 +270,6 @@ export const useDashboardData = () => {
         byCategory,
       };
     } catch (err) {
-      console.error('Failed to fetch FAQs metrics:', err);
       return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, byCategory: [] };
     }
   };
@@ -298,7 +280,6 @@ export const useDashboardData = () => {
       const { data, error: queryError } = await useLazyAsyncQuery(GET_CAREERS_METRICS);
 
       if (queryError.value) {
-        console.warn('Careers metrics error:', queryError.value);
         return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, openPositions: 0 };
       }
 
@@ -312,7 +293,6 @@ export const useDashboardData = () => {
         openPositions,
       };
     } catch (err) {
-      console.error('Failed to fetch careers metrics:', err);
       return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, openPositions: 0 };
     }
   };
@@ -323,7 +303,6 @@ export const useDashboardData = () => {
       const { data, error: queryError } = await useLazyAsyncQuery(GET_TESTIMONIALS_METRICS);
 
       if (queryError.value) {
-        console.warn('Testimonials metrics error:', queryError.value);
         return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, averageRating: 0, ratingDistribution: [] };
       }
 
@@ -352,7 +331,6 @@ export const useDashboardData = () => {
         ratingDistribution,
       };
     } catch (err) {
-      console.error('Failed to fetch testimonials metrics:', err);
       return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, averageRating: 0, ratingDistribution: [] };
     }
   };
@@ -363,7 +341,6 @@ export const useDashboardData = () => {
       const { data, error: queryError } = await useLazyAsyncQuery(GET_STATS_METRICS);
 
       if (queryError.value) {
-        console.warn('Stats metrics error:', queryError.value);
         return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, totalValue: 0 };
       }
 
@@ -377,7 +354,6 @@ export const useDashboardData = () => {
         totalValue,
       };
     } catch (err) {
-      console.error('Failed to fetch stats metrics:', err);
       return { total: 0, active: 0, inactive: 0, recentCount: 0, growthPercentage: 0, totalValue: 0 };
     }
   };
@@ -388,7 +364,6 @@ export const useDashboardData = () => {
       const { data, error: queryError } = await useLazyAsyncQuery(GET_RECENT_CONTENT_ACTIVITY);
 
       if (queryError.value) {
-        console.warn('Recent activity error:', queryError.value);
         return;
       }
 
@@ -455,7 +430,6 @@ export const useDashboardData = () => {
 
       recentActivity.value = activities.slice(0, 10);
     } catch (err) {
-      console.error('Failed to fetch recent activity:', err);
     }
   };
 
@@ -514,7 +488,6 @@ export const useDashboardData = () => {
 
     } catch (err: any) {
       error.value = err.message || 'Failed to load dashboard data';
-      console.error('Dashboard data fetch error:', err);
     } finally {
       loading.value = false;
     }
@@ -525,21 +498,25 @@ export const useDashboardData = () => {
     const data = dashboardData.value;
     if (!data) return [];
 
-    return [
+    const items = [
       { label: 'Services', value: data.services?.total || 0, percentage: 0, color: '#009ef7' },
       { label: 'Solutions', value: data.solutions?.total || 0, percentage: 0, color: '#7239ea' },
       { label: 'Blog', value: data.blog?.total || 0, percentage: 0, color: '#f1416c' },
       { label: 'Projects', value: data.projects?.total || 0, percentage: 0, color: '#50cd89' },
       { label: 'FAQs', value: data.faqs?.total || 0, percentage: 0, color: '#a1a5b7' },
-    ].map(item => {
-      const total = dashboardData.value.services?.total || 0 + dashboardData.value.solutions?.total || 0 +
-                    dashboardData.value.blog?.total || 0 + dashboardData.value.projects?.total || 0 +
-                    dashboardData.value.faqs?.total || 0;
-      return {
-        ...item,
-        percentage: total > 0 ? (item.value / total) * 100 : 0,
-      };
-    });
+    ];
+
+    // Calculate total correctly with proper parentheses
+    const total = (data.services?.total || 0) +
+                  (data.solutions?.total || 0) +
+                  (data.blog?.total || 0) +
+                  (data.projects?.total || 0) +
+                  (data.faqs?.total || 0);
+
+    return items.map(item => ({
+      ...item,
+      percentage: total > 0 ? (item.value / total) * 100 : 0,
+    }));
   });
 
   return {

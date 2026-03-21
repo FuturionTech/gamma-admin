@@ -256,7 +256,6 @@ const handleSubmit = async () => {
       errorMessage.value = response.error || 'An error occurred while requesting the code.';
     }
   } catch (error: any) {
-    console.error('Login error:', error);
     errorMessage.value = 'An error occurred. Please try again.';
   } finally {
     loading.value = false;

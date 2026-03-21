@@ -16,7 +16,6 @@ export function useApolloFilesUploadClient(): ApolloClient<NormalizedCacheObject
     // Use the GraphQL endpoint from runtime config
     const graphqlEndpoint = config.public?.gqlHost || 'http://api.gamma.test/graphql';
     
-    console.log('🔧 Apollo Client Configuration:', {
         endpoint: graphqlEndpoint,
         hasPublicConfig: !!config.public
     });
@@ -34,7 +33,6 @@ export function useApolloFilesUploadClient(): ApolloClient<NormalizedCacheObject
         cache: new InMemoryCache(),
     });
 
-    console.log('✅ Apollo Client initialized with endpoint:', graphqlEndpoint);
 
     return apolloClient;
 }

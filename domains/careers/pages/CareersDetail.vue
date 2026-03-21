@@ -376,7 +376,6 @@ onMounted(async () => {
       ])
     }
   } catch (error) {
-    console.error('Error loading job position:', error)
   } finally {
     isLoading.value = false
   }

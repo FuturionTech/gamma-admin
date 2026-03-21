@@ -290,12 +290,10 @@ const formatTimestamp = (timestamp: string): string => {
 // Action handlers
 const viewDetails = (activity: RecentActivity) => {
   // TODO: Implement activity details modal or navigation
-  console.log('Affichage des détails pour:', activity);
 };
 
 const exportData = () => {
   // TODO: Implement data export
-  console.log('Export des données d\'activité...');
 };
 </script>
 

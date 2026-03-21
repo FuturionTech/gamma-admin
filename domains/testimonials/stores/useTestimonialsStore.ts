@@ -185,7 +185,6 @@ export const useTestimonialsStore = defineStore('testimonials', {
           this.setTestimonials(data.value.testimonials)
         }
       } catch (err: any) {
-        console.error('Error fetching testimonials:', err)
         this.setError(err.message || 'Failed to load testimonials')
         // Set empty array on error
         this.setTestimonials([])
@@ -213,7 +212,6 @@ export const useTestimonialsStore = defineStore('testimonials', {
           return data.value.testimonial
         }
       } catch (err: any) {
-        console.error('Error fetching testimonial:', err)
         this.setError(err.message || 'Failed to load testimonial')
         throw err
       } finally {
@@ -246,7 +244,6 @@ export const useTestimonialsStore = defineStore('testimonials', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error creating testimonial:', err)
         this.setError(err.message || 'Failed to create testimonial')
         throw err
       } finally {
@@ -289,7 +286,6 @@ export const useTestimonialsStore = defineStore('testimonials', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating testimonial:', err)
         this.setError(err.message || 'Failed to update testimonial')
         throw err
       } finally {
@@ -329,7 +325,6 @@ export const useTestimonialsStore = defineStore('testimonials', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting testimonial:', err)
         this.setError(err.message || 'Failed to delete testimonial')
         throw err
       } finally {

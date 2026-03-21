@@ -45,6 +45,14 @@ export default defineNuxtModule({
           }
         },
         {
+          name: 'solutions-detail',
+          path: '/solutions/:id',
+          file: resolver.resolve('./pages/SolutionsDetail.vue'),
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
           name: 'solutions-edit',
           path: '/solutions/:id/edit',
           file: resolver.resolve('./pages/SolutionsEdit.vue'),

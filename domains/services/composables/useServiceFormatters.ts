@@ -15,7 +15,6 @@ export const useServiceFormatters = () => {
     try {
       return dayjs(dateString).locale('en').format(format)
     } catch (error) {
-      console.error('Error formatting date:', error)
       return dateString
     }
   }
@@ -28,7 +27,6 @@ export const useServiceFormatters = () => {
     try {
       return dayjs(dateString).locale('en').fromNow()
     } catch (error) {
-      console.error('Error formatting relative date:', error)
       return dateString
     }
   }

@@ -409,7 +409,6 @@ const handleSubmit = async () => {
     showSuccess("Job position created successfully");
     router.push(`/careers/positions/${jobPosition.id}`);
   } catch (error: any) {
-    console.error("Error creating job position:", error);
     showError(error.message || "Failed to create job position");
   } finally {
     isSubmitting.value = false;

@@ -479,7 +479,6 @@ const handleSubmit = async () => {
     showSuccess('Project updated successfully')
     await router.push('/projects/list')
   } catch (err: any) {
-    console.error('Error updating project:', err)
     showError(err.message || 'Failed to save')
   } finally {
     isSubmitting.value = false

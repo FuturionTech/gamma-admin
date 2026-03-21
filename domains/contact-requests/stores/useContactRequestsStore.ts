@@ -202,7 +202,6 @@ export const useContactRequestsStore = defineStore('contactRequests', {
           this.setContactRequests(data.value.contactRequests)
         }
       } catch (err: any) {
-        console.error('Error fetching contact requests:', err)
         this.setError(err.message || 'Failed to load contact requests')
         // Set empty array on error
         this.setContactRequests([])
@@ -232,7 +231,6 @@ export const useContactRequestsStore = defineStore('contactRequests', {
 
         throw new Error('Contact request not found')
       } catch (err: any) {
-        console.error('Error fetching contact request:', err)
         this.setError(err.message || 'Failed to load contact request')
         throw err
       } finally {
@@ -275,7 +273,6 @@ export const useContactRequestsStore = defineStore('contactRequests', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error updating contact request:', err)
         this.setError(err.message || 'Failed to update contact request')
         throw err
       } finally {
@@ -315,7 +312,6 @@ export const useContactRequestsStore = defineStore('contactRequests', {
 
         throw new Error('No data returned from server')
       } catch (err: any) {
-        console.error('Error deleting contact request:', err)
         this.setError(err.message || 'Failed to delete contact request')
         throw err
       } finally {

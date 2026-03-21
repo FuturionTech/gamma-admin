@@ -337,7 +337,6 @@ const handleSubmit = async () => {
 
     router.push('/certifications')
   } catch (error: any) {
-    console.error('Error creating certification:', error)
     await Swal.fire({
       title: 'Error',
       text: error.message || 'Failed to create certification',

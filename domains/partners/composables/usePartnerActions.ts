@@ -153,7 +153,6 @@ export const usePartnerActions = () => {
 
       showSuccess('Partners exported successfully')
     } catch (error: any) {
-      console.error('Error exporting CSV:', error)
       showError('Failed to export partners')
     }
   }

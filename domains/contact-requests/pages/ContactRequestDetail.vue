@@ -361,7 +361,6 @@ onMounted(async () => {
       ])
     }
   } catch (error) {
-    console.error('Failed to load contact request:', error)
   }
 })
 </script>

@@ -7,12 +7,15 @@
         <input
           type="text"
           class="form-control"
-          :class="{ 'is-invalid': errors.title }"
+          :class="{
+            'is-invalid': errors.title,
+            'is-valid': !errors.title && formData.title && formData.title.trim().length > 0
+          }"
           v-model="formData.title"
           placeholder="Enter solution title"
           @input="onTitleChange"
         />
-        <div class="invalid-feedback" v-if="errors.title">{{ errors.title }}</div>
+        <div v-if="errors.title" class="invalid-feedback d-block">{{ errors.title }}</div>
       </div>
 
       <!-- Subtitle -->
