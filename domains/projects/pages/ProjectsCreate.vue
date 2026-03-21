@@ -468,7 +468,7 @@ const breadcrumbStore = useBreadcrumbStore()
 const router = useRouter()
 const { showSuccess, showError } = useNotification()
 const { generateSlug } = useProjectFormatters()
-const { uploadFeaturedImage, uploadGalleryImages } = useProjectActions()
+const { fileToBase64 } = useProjectActions()
 
 // Form state
 const form = reactive<ProjectFormData>({
@@ -592,21 +592,28 @@ const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    // Prepare input
-    const input = {
+    // Prepare input — send base64 via 'featured_image' field for server-side upload
+    const imageBase64 = featuredImagePreview.value?.startsWith('data:image') ? featuredImagePreview.value : null
+
+    const input: Record<string, unknown> = {
       title: form.title,
       slug: form.slug || generateSlug(form.title),
       description: form.description || null,
       challenge: form.challenge,
       solution: form.solution,
       results: form.results,
-      featured_image_url: featuredImagePreview.value || form.featured_image_url || null,
       gallery_images: form.gallery_images || [],
       client_name: form.client_name || null,
       industry: form.industry || null,
       technologies: form.technologies || [],
       status: form.status,
       completion_date: form.completion_date || null
+    }
+
+    if (imageBase64) {
+      input.featured_image = imageBase64
+    } else if (form.featured_image_url) {
+      input.featured_image_url = form.featured_image_url
     }
 
     // Create project

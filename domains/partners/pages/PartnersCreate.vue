@@ -366,13 +366,20 @@ const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    // Prepare input
-    const input = {
+    // Prepare input — send base64 via 'logo' field for server-side upload
+    const logoBase64 = logoPreview.value?.startsWith('data:image') ? logoPreview.value : null
+
+    const input: Record<string, unknown> = {
       name: form.name,
-      logo_url: logoPreview.value || null,
       website_url: form.website_url || null,
       order: form.order ?? 0,
       is_active: form.is_active ?? true
+    }
+
+    if (logoBase64) {
+      input.logo = logoBase64
+    } else if (logoPreview.value) {
+      input.logo_url = logoPreview.value
     }
 
     // Create partner

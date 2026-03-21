@@ -259,7 +259,7 @@ const handleImageChange = (file: File) => {
   }
   reader.readAsDataURL(file)
 
-  // TODO: Upload file to server and set form.image_url to URL
+  // Base64 preview stored in imagePreview, sent via 'image' field on submit
 }
 
 const handleImageRemove = () => {
@@ -277,16 +277,23 @@ const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    // Prepare input
-    const input = {
+    // Prepare input — send base64 via 'image' field for server-side upload
+    const imageBase64 = imagePreview.value?.startsWith('data:image') ? imagePreview.value : null
+
+    const input: Record<string, unknown> = {
       name: form.name,
       content: form.content,
-      image_url: imagePreview.value || form.image_url || null,
       position: form.position || null,
       company: form.company || null,
       rating: form.rating ?? 5,
       order: form.order ?? 0,
       is_active: form.is_active ?? true
+    }
+
+    if (imageBase64) {
+      input.image = imageBase64
+    } else if (form.image_url) {
+      input.image_url = form.image_url
     }
 
     // Update testimonial

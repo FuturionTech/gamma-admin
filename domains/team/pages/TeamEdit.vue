@@ -322,11 +322,10 @@ const loadTeam = async () => {
   }
 }
 
+const profilePictureFile = ref<File | null>(null)
+
 const handlePhotoSelected = (file: File | null) => {
-  // Store the file for upload
-  if (formData) {
-    formData.profilePictureFile = file
-  }
+  profilePictureFile.value = file
 }
 
 const validateField = (field: string): boolean => {
@@ -383,17 +382,26 @@ const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    // TODO: Handle file upload if profilePictureFile exists
+    // Send base64 image data via the profile_picture field for server-side upload
+    const profilePictureBase64 = formData.profile_picture_url?.startsWith('data:image')
+      ? formData.profile_picture_url
+      : null
 
-    const input = {
+    const input: Record<string, unknown> = {
       name: formData.name,
       role: formData.role,
       email: formData.email,
       contact: formData.contact,
       biography: formData.biography,
-      profile_picture_url: formData.profile_picture_url,
       order: formData.order,
       is_active: formData.is_active
+    }
+
+    // Use the dedicated upload field for base64 data, or the URL field for existing URLs
+    if (profilePictureBase64) {
+      input.profile_picture = profilePictureBase64
+    } else if (formData.profile_picture_url) {
+      input.profile_picture_url = formData.profile_picture_url
     }
 
     await teamStore.updateTeam(teamId, input)

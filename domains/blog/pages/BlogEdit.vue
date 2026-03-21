@@ -134,24 +134,42 @@
             <!-- Featured Image -->
             <div class="mb-5">
               <label class="form-label">Featured Image</label>
-              <input
-                type="text"
-                v-model="formData.featured_image_url"
-                class="form-control form-control-solid"
-                placeholder="Image URL"
-              />
-              <div class="form-text">
-                URL for the featured image of the post
-              </div>
 
               <!-- Image Preview -->
-              <div v-if="formData.featured_image_url" class="mt-3">
+              <div v-if="featuredImagePreview" class="mb-3">
                 <img
-                  :src="formData.featured_image_url"
+                  :src="featuredImagePreview"
                   alt="Preview"
                   class="img-thumbnail"
                   style="max-width: 300px;"
                 />
+                <div class="mt-2">
+                  <button type="button" class="btn btn-sm btn-light-danger" @click="handleFeaturedImageRemove">
+                    <i class="ki-duotone ki-trash fs-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
+                    Remove
+                  </button>
+                </div>
+              </div>
+
+              <!-- Upload or URL -->
+              <div v-else>
+                <label class="btn btn-light-primary me-3">
+                  <i class="ki-duotone ki-file-up fs-2"><span class="path1"></span><span class="path2"></span></i>
+                  Upload Image
+                  <input type="file" accept="image/*" class="d-none" @change="handleFeaturedImageChange" />
+                </label>
+
+                <div class="text-center fw-bold text-muted my-3">or</div>
+
+                <input
+                  type="text"
+                  v-model="formData.featured_image_url"
+                  class="form-control form-control-solid"
+                  placeholder="Image URL"
+                />
+                <div class="form-text">
+                  Upload an image or enter a URL
+                </div>
               </div>
             </div>
           </div>
@@ -314,6 +332,7 @@ const { formatViewCount, calculateReadingTime, formatDateTime, getAuthorName } =
 const postId = computed(() => route.params.id as string)
 const post = computed(() => blogStore.currentPost)
 const isSubmitting = ref(false)
+const featuredImagePreview = ref('')
 
 const formData = reactive<UpdateBlogPostInput & { tags: string[] }>({
   title: null,
@@ -350,6 +369,23 @@ const publishedAtLocal = computed({
   }
 })
 
+const handleFeaturedImageChange = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  if (!file) return
+
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    featuredImagePreview.value = e.target?.result as string
+  }
+  reader.readAsDataURL(file)
+}
+
+const handleFeaturedImageRemove = () => {
+  featuredImagePreview.value = ''
+  formData.featured_image_url = null
+}
+
 const loadPost = async () => {
   try {
     const loadedPost = await blogStore.fetchPost(postId.value)
@@ -365,6 +401,11 @@ const loadPost = async () => {
       formData.tags = loadedPost.tags || []
       formData.status = loadedPost.status
       formData.published_at = loadedPost.published_at
+
+      // Set featured image preview from existing URL
+      if (loadedPost.featured_image_url) {
+        featuredImagePreview.value = loadedPost.featured_image_url
+      }
     }
   } catch (error: any) {
     showError(error.message || 'Unable to load post')
@@ -401,7 +442,16 @@ const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    await blogStore.updatePost(postId.value, formData)
+    // If there's a base64 image, send via featured_image field
+    const imageBase64 = featuredImagePreview.value?.startsWith('data:image') ? featuredImagePreview.value : null
+    const submitData: Record<string, unknown> = { ...formData }
+
+    if (imageBase64) {
+      submitData.featured_image = imageBase64
+      delete submitData.featured_image_url
+    }
+
+    await blogStore.updatePost(postId.value, submitData)
     showSuccess('Post updated successfully')
   } catch (error: any) {
     showError(error.message || 'Failed to update post')

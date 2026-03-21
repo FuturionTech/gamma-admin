@@ -192,54 +192,15 @@ export const useProjectActions = () => {
   }
 
   /**
-   * Upload featured image
+   * Convert a file to base64 data URL for upload via GraphQL featured_image field
    */
-  const uploadFeaturedImage = async (file: File): Promise<string | null> => {
-    try {
-      // TODO: Implement actual file upload to server
-      // For now, we'll create a local preview URL
-      // In production, this should upload to your storage service (S3, Cloudinary, etc.)
-
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('folder', 'projects/featured')
-
-      // Example: const response = await $fetch('/api/upload', { method: 'POST', body: formData })
-      // return response.url
-
-      // Temporary: create object URL for preview
-      return URL.createObjectURL(file)
-    } catch (error: any) {
-      showError('Failed to upload image')
-      return null
-    }
-  }
-
-  /**
-   * Upload gallery images
-   */
-  const uploadGalleryImages = async (files: File[]): Promise<string[]> => {
-    try {
-      const uploadPromises = files.map(async (file) => {
-        // TODO: Implement actual file upload to server
-        // For now, we'll create local preview URLs
-
-        const formData = new FormData()
-        formData.append('file', file)
-        formData.append('folder', 'projects/gallery')
-
-        // Example: const response = await $fetch('/api/upload', { method: 'POST', body: formData })
-        // return response.url
-
-        // Temporary: create object URL for preview
-        return URL.createObjectURL(file)
-      })
-
-      return await Promise.all(uploadPromises)
-    } catch (error: any) {
-      showError('Failed to upload images')
-      return []
-    }
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = () => reject(new Error('Failed to read file'))
+      reader.readAsDataURL(file)
+    })
   }
 
   return {
@@ -248,7 +209,6 @@ export const useProjectActions = () => {
     bulkDeleteProjects,
     exportProjectsToCSV,
     duplicateProject,
-    uploadFeaturedImage,
-    uploadGalleryImages
+    fileToBase64
   }
 }

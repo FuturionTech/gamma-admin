@@ -194,8 +194,7 @@ const handleIconChange = (file: File) => {
   }
   reader.readAsDataURL(file)
 
-  // TODO: Upload file to server and set form.icon to URL
-  // For now, we'll just use the preview
+  // Base64 preview is stored in iconPreview and sent as icon value on submit
 }
 
 const handleIconRemove = () => {

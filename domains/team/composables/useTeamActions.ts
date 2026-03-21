@@ -162,17 +162,15 @@ export const useTeamActions = () => {
   }
 
   /**
-   * Upload profile picture
+   * Convert a file to base64 data URL for upload via GraphQL profile_picture field
    */
-  const uploadProfilePicture = async (file: File): Promise<string> => {
-    try {
-      // TODO: Implement actual file upload logic
-      // For now, create a temporary URL
-      const url = URL.createObjectURL(file)
-      return url
-    } catch (error: any) {
-      throw new Error('Failed to upload profile picture')
-    }
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = () => reject(new Error('Failed to read file'))
+      reader.readAsDataURL(file)
+    })
   }
 
   return {
@@ -180,6 +178,6 @@ export const useTeamActions = () => {
     toggleTeamStatus,
     bulkDeleteTeams,
     exportTeamsToCSV,
-    uploadProfilePicture
+    fileToBase64
   }
 }

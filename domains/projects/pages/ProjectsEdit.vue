@@ -475,7 +475,31 @@ const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    await projectsStore.updateProject(projectId.value, form)
+    // Build input — send base64 via 'featured_image' field for server-side upload
+    const imageBase64 = featuredImagePreview.value?.startsWith('data:image') ? featuredImagePreview.value : null
+
+    const submitInput: Record<string, unknown> = {
+      title: form.title,
+      slug: form.slug,
+      description: form.description || null,
+      challenge: form.challenge,
+      solution: form.solution,
+      results: form.results,
+      gallery_images: form.gallery_images || [],
+      client_name: form.client_name || null,
+      industry: form.industry || null,
+      technologies: form.technologies || [],
+      status: form.status,
+      completion_date: form.completion_date || null
+    }
+
+    if (imageBase64) {
+      submitInput.featured_image = imageBase64
+    } else if (form.featured_image_url) {
+      submitInput.featured_image_url = form.featured_image_url
+    }
+
+    await projectsStore.updateProject(projectId.value, submitInput)
     showSuccess('Project updated successfully')
     await router.push('/projects/list')
   } catch (err: any) {
