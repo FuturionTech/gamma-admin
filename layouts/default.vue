@@ -63,23 +63,13 @@ import Scrolltop from "~/components/Scrolltop.vue";
 import Header from "~/components/Header.vue";
 
 
-onMounted(() => {
-  setTimeout(() => {
-    // @ts-ignore
-    KTMenu.init();
-
-    // @ts-ignore
-    KTScroll.init();
-
-    // @ts-ignore
-    KTSticky.init();
-
-    // @ts-ignore
-    KTToggle.init();
-
-    // @ts-ignore
-    KTScrolltop.init();
-  }, 1000);
+onMounted(async () => {
+  await nextTick();
+  KTMenu.init();
+  KTScroll.init();
+  KTSticky.init();
+  KTToggle.init();
+  KTScrolltop.init();
 });
 </script>
 
