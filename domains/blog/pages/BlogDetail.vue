@@ -161,7 +161,7 @@
       <!-- Content -->
       <div class="card mb-5">
         <div class="card-body">
-          <div class="blog-content fs-5 text-gray-800 lh-lg" v-html="post.content"></div>
+          <div class="blog-content fs-5 text-gray-800 lh-lg" v-html="sanitizeHtml(post.content)"></div>
         </div>
       </div>
 
@@ -229,7 +229,9 @@ import { useBlogStore } from '../stores/useBlogStore'
 import { useBlogActions } from '../composables/useBlogActions'
 import { useBlogFormatters } from '../composables/useBlogFormatters'
 import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
+import { useSanitize } from '~/composables/useSanitize'
 
+const { sanitizeHtml } = useSanitize()
 const blogStore = useBlogStore()
 const breadcrumbStore = useBreadcrumbStore()
 const route = useRoute()
