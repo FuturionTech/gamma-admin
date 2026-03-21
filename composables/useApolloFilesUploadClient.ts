@@ -15,10 +15,6 @@ export function useApolloFilesUploadClient(): ApolloClient<NormalizedCacheObject
 
     // Use the GraphQL endpoint from runtime config
     const graphqlEndpoint = config.public?.gqlHost || 'http://api.gamma.test/graphql';
-    
-        endpoint: graphqlEndpoint,
-        hasPublicConfig: !!config.public
-    });
 
     const httpLink = createUploadLink({
         uri: graphqlEndpoint,

@@ -753,12 +753,13 @@ export const useDashboardStore = defineStore('dashboard', {
         // Process revenue data (simplified for now)
         const paymentResult = paymentData.status === 'fulfilled' ? paymentData.value.data.value : null;
         const couponResult = couponData.status === 'fulfilled' ? couponData.value.data.value : null;
-        
+
+        this.revenueAnalytics = {
           payments: paymentResult?.paymentTransactionHistory?.total_amount || 0,
           coupons: couponResult?.couponStatistics?.total_discount_given || 0
-        });
-        
-      } catch (err: any) {
+        };
+      } catch {
+        // Error handled silently — dashboard is resilient to API failures
       }
     },
 
