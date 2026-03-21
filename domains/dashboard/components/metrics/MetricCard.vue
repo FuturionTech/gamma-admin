@@ -1,73 +1,48 @@
 <template>
-  <!-- Loading State -->
-  <MetricCardSkeleton v-if="loading" />
-
-  <!-- Actual Card -->
-  <div v-else class="card border-top border-3" :class="`border-${color}`">
-    <div class="card-body">
-      <div class="d-flex align-items-center mb-3">
-        <i :class="`${icon} fs-2x text-${color}`"></i>
-        <div class="ms-3 flex-grow-1">
-          <div class="fs-2hx fw-bold text-gray-900">{{ formatValue }}</div>
-          <div class="text-gray-600 fs-6">{{ label }}</div>
-        </div>
+  <NuxtLink v-if="link" :to="link" class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100 text-decoration-none" :style="cardStyle">
+    <div class="card-header pt-5 pb-0 border-0">
+      <div class="card-title d-flex flex-column">
+        <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">{{ count }}</span>
+        <span class="text-white opacity-75 pt-1 fw-semibold fs-6">{{ title }}</span>
       </div>
-
-      <!-- Secondary metrics -->
-      <div v-if="$slots.default" class="mb-3">
-        <slot />
+    </div>
+    <div v-if="subtitle" class="card-body d-flex align-items-end pt-0 pb-5">
+      <span class="text-white opacity-75 fw-semibold fs-7">{{ subtitle }}</span>
+    </div>
+  </NuxtLink>
+  <div v-else class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" :style="cardStyle">
+    <div class="card-header pt-5 pb-0 border-0">
+      <div class="card-title d-flex flex-column">
+        <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">{{ count }}</span>
+        <span class="text-white opacity-75 pt-1 fw-semibold fs-6">{{ title }}</span>
       </div>
-
-      <!-- Trend indicator -->
-      <div class="d-flex align-items-center">
-        <span :class="`badge badge-light-${trendColor} fs-7`">
-          <i v-if="showTrendIcon" :class="trendIcon" class="fs-6 me-1"></i>
-          {{ trendValue }}
-        </span>
-        <span class="text-muted ms-2 fs-7">{{ trendLabel }}</span>
-      </div>
+    </div>
+    <div v-if="subtitle" class="card-body d-flex align-items-end pt-0 pb-5">
+      <span class="text-white opacity-75 fw-semibold fs-7">{{ subtitle }}</span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import MetricCardSkeleton from './MetricCardSkeleton.vue';
+import { computed } from 'vue'
 
 interface Props {
-  icon: string;
-  label: string;
-  value: number | string;
-  color?: string;
-  trendValue?: string;
-  trendLabel?: string;
-  trendColor?: string;
-  showTrendIcon?: boolean;
-  loading?: boolean;
+  title: string
+  count: number
+  icon?: string
+  color?: string
+  link?: string
+  subtitle?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  color: 'primary',
-  trendValue: '',
-  trendLabel: '',
-  trendColor: 'success',
-  showTrendIcon: true,
-  loading: false,
-});
+  color: '#7239EA',
+  icon: '',
+  link: '',
+  subtitle: '',
+})
 
-const formatValue = computed(() => {
-  if (typeof props.value === 'number') {
-    return props.value.toLocaleString();
-  }
-  return props.value;
-});
-
-const trendIcon = computed(() => {
-  if (props.trendColor === 'success') {
-    return 'ki-duotone ki-arrow-up fs-6';
-  } else if (props.trendColor === 'danger') {
-    return 'ki-duotone ki-arrow-down fs-6';
-  }
-  return 'ki-duotone ki-minus fs-6';
-});
+const cardStyle = computed(() => ({
+  backgroundColor: props.color,
+}))
 </script>

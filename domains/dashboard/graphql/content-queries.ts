@@ -1,319 +1,112 @@
 import { gql } from '@apollo/client/core';
 
 /**
- * Dashboard Content Management Queries
- * These queries aggregate metrics from all content domains for the dashboard overview
+ * Dashboard Content Queries — aligned with actual gamma-api GraphQL schema.
+ *
+ * API conventions:
+ *   - @all directives (services, solutions, blogPosts, projects, clients, faqs, stats,
+ *     contactRequests, jobPositions) return flat arrays, no paginatorInfo.
+ *   - @paginate directives (teams, partners, testimonials, certifications, banners)
+ *     accept `first` + `page` and return { data, paginatorInfo }.
  */
 
-// Services Metrics
-export const GET_SERVICES_METRICS = gql`
-  query GetServicesMetrics {
-    services(first: 10000) {
-      paginatorInfo {
-        total
-      }
-      data {
-        id
-        status
-        created_at
-      }
-    }
-  }
-`;
-
-// Solutions Metrics
-export const GET_SOLUTIONS_METRICS = gql`
-  query GetSolutionsMetrics {
-    solutions(first: 10000) {
-      paginatorInfo {
-        total
-      }
-      data {
-        id
-        status
-        created_at
-        features {
-          id
-        }
-        benefits {
-          id
-        }
-      }
-    }
-  }
-`;
-
-// Blog Posts Metrics
-export const GET_BLOG_METRICS = gql`
-  query GetBlogMetrics {
-    blogPosts(first: 10000) {
-      paginatorInfo {
-        total
-      }
-      data {
-        id
-        status
-        created_at
-        published_at
-        views
-      }
-    }
-  }
-`;
-
-// Projects/Case Studies Metrics
-export const GET_PROJECTS_METRICS = gql`
-  query GetProjectsMetrics {
-    projects(first: 10000) {
-      paginatorInfo {
-        total
-      }
-      data {
-        id
-        status
-        created_at
-        published_at
-      }
-    }
-  }
-`;
-
-// Team Members Metrics
-export const GET_TEAM_METRICS = gql`
-  query GetTeamMetrics {
-    teamMembers(first: 10000) {
-      paginatorInfo {
-        total
-      }
-      data {
-        id
-        status
-        created_at
-      }
-    }
-  }
-`;
-
-// Partners Metrics
-export const GET_PARTNERS_METRICS = gql`
-  query GetPartnersMetrics {
-    partners(first: 10000) {
-      paginatorInfo {
-        total
-      }
-      data {
-        id
-        status
-        created_at
-      }
-    }
-  }
-`;
-
-// Clients Metrics
-export const GET_CLIENTS_METRICS = gql`
-  query GetClientsMetrics {
-    clients(first: 10000) {
-      paginatorInfo {
-        total
-      }
-      data {
-        id
-        status
-        industry
-        created_at
-      }
-    }
-  }
-`;
-
-// Certifications Metrics
-export const GET_CERTIFICATIONS_METRICS = gql`
-  query GetCertificationsMetrics {
-    certifications(first: 10000) {
-      paginatorInfo {
-        total
-      }
-      data {
-        id
-        status
-        created_at
-      }
-    }
-  }
-`;
-
-// FAQs Metrics
-export const GET_FAQS_METRICS = gql`
-  query GetFAQsMetrics {
-    faqs(first: 10000) {
-      paginatorInfo {
-        total
-      }
-      data {
-        id
-        status
-        category
-        created_at
-      }
-    }
-  }
-`;
-
-// Careers Metrics
-export const GET_CAREERS_METRICS = gql`
-  query GetCareersMetrics {
-    careers(first: 10000) {
-      paginatorInfo {
-        total
-      }
-      data {
-        id
-        status
-        created_at
-      }
-    }
-  }
-`;
-
-// Testimonials Metrics
-export const GET_TESTIMONIALS_METRICS = gql`
-  query GetTestimonialsMetrics {
-    testimonials(first: 10000) {
-      paginatorInfo {
-        total
-      }
-      data {
-        id
-        status
-        rating
-        created_at
-      }
-    }
-  }
-`;
-
-// Stats/Achievements Metrics
-export const GET_STATS_METRICS = gql`
-  query GetStatsMetrics {
-    stats(first: 10000) {
-      paginatorInfo {
-        total
-      }
-      data {
-        id
-        status
-        value
-        created_at
-      }
-    }
-  }
-`;
-
-// Combined Dashboard Overview Query
+// ── Single combined overview query ──────────────────────────────────────────
+// Fetches totals for every content domain in one round-trip.
 export const GET_DASHBOARD_OVERVIEW = gql`
   query GetDashboardOverview {
-    services(first: 1, page: 1) {
-      paginatorInfo {
-        total
+    services {
+      id
+      is_active
+    }
+    solutions {
+      id
+      is_active
+    }
+    blogPosts {
+      id
+      status
+      view_count
+    }
+    projects {
+      id
+      status
+    }
+    teams(first: 1000) {
+      data {
+        id
+        is_active
       }
     }
-    solutions(first: 1, page: 1) {
-      paginatorInfo {
-        total
+    partners(first: 1000) {
+      data {
+        id
+        is_active
       }
     }
-    blogPosts(first: 1, page: 1) {
-      paginatorInfo {
-        total
+    clients {
+      id
+      is_active
+    }
+    certifications(first: 1000) {
+      data {
+        id
+        is_active
       }
     }
-    projects(first: 1, page: 1) {
-      paginatorInfo {
-        total
+    faqs {
+      id
+      is_active
+      category
+    }
+    testimonials(first: 1000) {
+      data {
+        id
+        is_active
+        rating
       }
     }
-    teamMembers(first: 1, page: 1) {
-      paginatorInfo {
-        total
-      }
+    stats {
+      id
+      is_active
+      value
     }
-    partners(first: 1, page: 1) {
-      paginatorInfo {
-        total
-      }
+    contactRequests {
+      id
+      status
+      created_at
     }
-    clients(first: 1, page: 1) {
-      paginatorInfo {
-        total
-      }
-    }
-    certifications(first: 1, page: 1) {
-      paginatorInfo {
-        total
-      }
-    }
-    faqs(first: 1, page: 1) {
-      paginatorInfo {
-        total
-      }
-    }
-    careers(first: 1, page: 1) {
-      paginatorInfo {
-        total
-      }
-    }
-    testimonials(first: 1, page: 1) {
-      paginatorInfo {
-        total
-      }
-    }
-    stats(first: 1, page: 1) {
-      paginatorInfo {
-        total
-      }
+    jobPositions {
+      id
+      status
     }
   }
 `;
 
-// Recent Activity across all domains
-export const GET_RECENT_CONTENT_ACTIVITY = gql`
-  query GetRecentContentActivity {
-    blogPosts(first: 5, orderBy: [{ column: CREATED_AT, order: DESC }]) {
-      data {
-        id
-        title_fr
-        title_en
-        created_at
-        status
-      }
+// ── Recent contact requests ─────────────────────────────────────────────────
+export const GET_RECENT_CONTACT_REQUESTS = gql`
+  query GetRecentContactRequests {
+    contactRequests(limit: 5) {
+      id
+      first_name
+      last_name
+      email
+      subject
+      status
+      created_at
     }
-    projects(first: 5, orderBy: [{ column: CREATED_AT, order: DESC }]) {
-      data {
-        id
-        title_fr
-        title_en
-        created_at
-        status
-      }
-    }
-    services(first: 5, orderBy: [{ column: CREATED_AT, order: DESC }]) {
-      data {
-        id
-        title_fr
-        title_en
-        created_at
-        status
-      }
-    }
-    teamMembers(first: 5, orderBy: [{ column: CREATED_AT, order: DESC }]) {
-      data {
-        id
-        first_name
-        last_name
-        created_at
-        status
-      }
+  }
+`;
+
+// ── Recent blog posts ───────────────────────────────────────────────────────
+export const GET_RECENT_BLOG_POSTS = gql`
+  query GetRecentBlogPosts {
+    blogPosts(limit: 5) {
+      id
+      title
+      slug
+      status
+      view_count
+      created_at
     }
   }
 `;
