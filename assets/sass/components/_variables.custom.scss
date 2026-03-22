@@ -4,40 +4,40 @@
 // are not accessible in this file but you can override any global variable as shown below:
 //
 
-// Theme colors
-$primary:        #b62cff;
-$primary-active: #7f31fb;
-$primary-light:  #b6a9ff;
-$primary-light-dark: #212E48;
+// Theme colors - Aligned with Gamma Web Professional Palette
+$primary:        #8b5cf6;
+$primary-active: #7c3aed;
+$primary-light:  #f3e8ff;
+$primary-light-dark: #2e1065;
 $primary-inverse: #FFFFFF;
 
-// Success
-$success:       								    #75CC68;
-$success-active:    								#5FB751;
-$success-light:    									#EEFBEC;
-$success-light-dark:    							#1C3238;
-$success-inverse:  									#FFFFFF;
+// Success - Professional emerald green
+$success:        #059669;
+$success-active: #047857;
+$success-light:  #d1fae5;
+$success-light-dark: #134e4a;
+$success-inverse: #FFFFFF;
 
-// Info
-$info:       									    #7239EA;
-$info-active:    									#5014D0;
-$info-light:    									#F8F5FF;
-$info-light-dark:    								#2F264F;
-$info-inverse:  									#FFFFFF;
+// Info - Modern blue
+$info:           #3b82f6;
+$info-active:    #1d4ed8;
+$info-light:     #dbeafe;
+$info-light-dark: #1e3a5f;
+$info-inverse:   #FFFFFF;
 
-// Danger
-$danger:       									    #F14C41;
-$danger-active:    									#DD4339;
-$danger-light:    									#FFF2F1;
-$danger-light-dark:                                 #3A2434;
-$danger-inverse:  									#FFFFFF;
+// Danger - Professional red
+$danger:         #dc2626;
+$danger-active:  #b91c1c;
+$danger-light:   #fee2e2;
+$danger-light-dark: #450a0a;
+$danger-inverse: #FFFFFF;
 
-// Warning
-$warning:       									#E78B2F;
-$warning-active:    								#CE7317;
-$warning-light:    									#FCF2E8;
-$warning-light-dark:                                #392F28;
-$warning-inverse:  									#FFFFFF;
+// Warning - Professional amber
+$warning:        #d97706;
+$warning-active: #b45309;
+$warning-light:  #fef3c7;
+$warning-light-dark: #451a03;
+$warning-inverse: #FFFFFF;
 
 // Card
 $card-box-shadow: 									none;
