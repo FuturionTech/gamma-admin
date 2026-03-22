@@ -102,6 +102,6 @@ export const CONTACT_REQUEST_STATUS_CONFIG = {
 // Status workflow transitions
 export const STATUS_TRANSITIONS = {
   [ContactRequestStatus.NEW]: [ContactRequestStatus.IN_PROGRESS, ContactRequestStatus.RESOLVED],
-  [ContactRequestStatus.IN_PROGRESS]: [ContactRequestStatus.RESOLVED],
-  [ContactRequestStatus.RESOLVED]: []
+  [ContactRequestStatus.IN_PROGRESS]: [ContactRequestStatus.RESOLVED, ContactRequestStatus.NEW],
+  [ContactRequestStatus.RESOLVED]: [ContactRequestStatus.IN_PROGRESS]
 } as const

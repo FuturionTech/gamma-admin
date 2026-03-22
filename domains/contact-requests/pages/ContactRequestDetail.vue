@@ -102,6 +102,49 @@
               </div>
             </div>
 
+            <!-- Reply Section -->
+            <div class="separator separator-dashed my-8"></div>
+
+            <div class="mb-10">
+              <h4 class="fs-5 fw-bold mb-5">
+                <i class="bi bi-reply me-2"></i>Reply
+              </h4>
+
+              <div class="mb-5">
+                <label class="form-label fw-bold text-muted">Compose Reply</label>
+                <textarea
+                  v-model="replyText"
+                  class="form-control form-control-solid"
+                  rows="6"
+                  placeholder="Type your reply message here..."
+                ></textarea>
+              </div>
+
+              <div class="d-flex gap-3">
+                <button
+                  @click="handleSendReply"
+                  class="btn btn-primary"
+                  :disabled="!replyText.trim()"
+                >
+                  <i class="bi bi-envelope-arrow-up me-2"></i>
+                  Send via Email
+                </button>
+                <button
+                  @click="handleCopyReply"
+                  class="btn btn-light-info"
+                  :disabled="!replyText.trim()"
+                >
+                  <i class="bi bi-clipboard me-2"></i>
+                  Copy Reply
+                </button>
+              </div>
+
+              <div v-if="contactRequest.status === ContactRequestStatus.NEW" class="text-muted fs-7 mt-3">
+                <i class="bi bi-info-circle me-1"></i>
+                Sending a reply will automatically update the status to <strong>In Progress</strong>.
+              </div>
+            </div>
+
             <!-- Metadata -->
             <div class="separator separator-dashed my-8"></div>
 
@@ -278,6 +321,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
 import { useContactRequestsStore } from '../stores/useContactRequestsStore'
 import { useContactRequestFormatters } from '../composables/useContactRequestFormatters'
 import { useContactRequestActions } from '../composables/useContactRequestActions'
@@ -305,6 +349,7 @@ const {
 } = useContactRequestActions()
 
 const selectedStatus = ref<ContactRequestStatus | null>(null)
+const replyText = ref('')
 
 const contactRequest = computed(() => contactRequestsStore.currentContactRequest)
 
@@ -336,6 +381,56 @@ const handleDelete = async () => {
   const success = await confirmAndDeleteContactRequest(contactRequest.value)
   if (success) {
     router.push('/contact-requests')
+  }
+}
+
+const replySubject = computed(() => {
+  const subject = contactRequest.value?.subject || 'Your contact request'
+  return `Re: ${subject}`
+})
+
+const replyMailtoHref = computed(() => {
+  if (!contactRequest.value) return ''
+  const to = encodeURIComponent(contactRequest.value.email)
+  const subject = encodeURIComponent(replySubject.value)
+  const body = encodeURIComponent(replyText.value)
+  return `mailto:${to}?subject=${subject}&body=${body}`
+})
+
+const handleSendReply = async () => {
+  if (!contactRequest.value || !replyText.value.trim()) return
+
+  // Open the mailto link
+  window.open(replyMailtoHref.value, '_blank')
+
+  // Auto-update status to IN_PROGRESS if currently NEW
+  if (contactRequest.value.status === ContactRequestStatus.NEW) {
+    const success = await updateStatus(contactRequest.value.id, ContactRequestStatus.IN_PROGRESS)
+    if (success) {
+      await contactRequestsStore.fetchContactRequest(contactRequest.value.id)
+      selectedStatus.value = contactRequest.value.status
+    }
+  }
+}
+
+const handleCopyReply = async () => {
+  if (!replyText.value.trim()) return
+
+  try {
+    await navigator.clipboard.writeText(replyText.value)
+    await Swal.fire({
+      title: 'Copied!',
+      text: 'Reply text copied to clipboard',
+      icon: 'success',
+      timer: 2000,
+      showConfirmButton: false
+    })
+  } catch {
+    await Swal.fire({
+      title: 'Error',
+      text: 'Failed to copy reply text to clipboard',
+      icon: 'error'
+    })
   }
 }
 

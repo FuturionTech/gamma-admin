@@ -80,6 +80,16 @@
               </div>
             </div>
 
+            <!-- Key Metrics Row 4 -->
+            <div class="row g-5 g-xl-8 mb-5 mb-xl-10">
+              <div class="col-xl-3 col-md-6">
+                <MetricCard title="Industries" :count="counts.industries" icon="ki-duotone ki-bank" color="#50CD89" link="/industries" />
+              </div>
+              <div class="col-xl-3 col-md-6">
+                <MetricCard title="Process Steps" :count="counts.processSteps" icon="ki-duotone ki-chart" color="#009EF7" link="/process-steps" />
+              </div>
+            </div>
+
             <!-- Recent Activity Row -->
             <div class="row g-5 g-xl-8 mb-5 mb-xl-10">
               <!-- Recent Contact Requests -->

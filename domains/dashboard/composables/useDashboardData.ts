@@ -51,6 +51,8 @@ export const useDashboardData = () => {
         const statsList = d.stats ?? []
         const contactsList = d.contactRequests ?? []
         const jobsList = d.jobPositions ?? []
+        const industriesList = d.industries ?? []
+        const processStepsList = d.processSteps ?? []
 
         counts.value = {
           services: servicesList.length,
@@ -66,6 +68,8 @@ export const useDashboardData = () => {
           stats: statsList.length,
           contactRequests: contactsList.length,
           jobPositions: jobsList.length,
+          industries: industriesList.length,
+          processSteps: processStepsList.length,
         }
 
         // Blog breakdown

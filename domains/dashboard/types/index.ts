@@ -14,6 +14,8 @@ export interface ContentCounts {
   stats: number
   contactRequests: number
   jobPositions: number
+  industries: number
+  processSteps: number
 }
 
 export interface BlogBreakdown {

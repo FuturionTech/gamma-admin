@@ -20,6 +20,19 @@
             "fr": "Vue d'ensemble du système",
             "en": "System overview"
           }
+        },
+        {
+          "key": "analytics",
+          "title": {
+            "fr": "Analytiques",
+            "en": "Analytics"
+          },
+          "path": "/analytics",
+          "icon": "fas fa-chart-area fs-2",
+          "description": {
+            "fr": "Statistiques de visite",
+            "en": "Website analytics"
+          }
         }
       ]
     },
@@ -184,6 +197,78 @@
               },
               "path": "/testimonials/create",
               "icon": "fas fa-plus fs-2"
+            }
+          ]
+        },
+        {
+          "key": "industries",
+          "title": {
+            "fr": "Industries",
+            "en": "Industries"
+          },
+          "icon": "fas fa-industry fs-2",
+          "children": [
+            {
+              "key": "industries_list",
+              "title": {
+                "fr": "Toutes les Industries",
+                "en": "All Industries"
+              },
+              "path": "/industries",
+              "icon": "fas fa-list fs-2",
+              "description": {
+                "fr": "Gérer les secteurs d'activité",
+                "en": "Manage industry sectors"
+              }
+            },
+            {
+              "key": "industries_create",
+              "title": {
+                "fr": "Ajouter une Industrie",
+                "en": "Add Industry"
+              },
+              "path": "/industries/create",
+              "icon": "fas fa-plus fs-2",
+              "description": {
+                "fr": "Ajouter un nouveau secteur",
+                "en": "Add a new industry sector"
+              }
+            }
+          ]
+        },
+        {
+          "key": "process_steps",
+          "title": {
+            "fr": "Méthodologie",
+            "en": "Process Steps"
+          },
+          "icon": "fas fa-tasks fs-2",
+          "children": [
+            {
+              "key": "process_steps_list",
+              "title": {
+                "fr": "Toutes les Étapes",
+                "en": "All Steps"
+              },
+              "path": "/process-steps",
+              "icon": "fas fa-list fs-2",
+              "description": {
+                "fr": "Gérer les étapes de la méthodologie",
+                "en": "Manage methodology steps"
+              }
+            },
+            {
+              "key": "process_steps_create",
+              "title": {
+                "fr": "Ajouter une Étape",
+                "en": "Add Step"
+              },
+              "path": "/process-steps/create",
+              "icon": "fas fa-plus fs-2",
+              "description": {
+                "fr": "Ajouter une nouvelle étape",
+                "en": "Add a new process step"
+              }
             }
           ]
         },
@@ -449,7 +534,7 @@
     "version": "3.0.0",
     "description": "Menu d'administration pour Gamma Neutral - Gestion de contenu du site web",
     "total_sections": 6,
-    "total_routes": 15,
+    "total_routes": 18,
     "default_language": "fr",
     "supported_languages": [
       "fr",

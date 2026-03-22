@@ -69,6 +69,9 @@ export default defineNuxtConfig({
     '~/domains/testimonials/index.ts',
     '~/domains/careers/index.ts',
     '~/domains/contact-requests/index.ts',
+    '~/domains/industries/index.ts',
+    '~/domains/process-steps/index.ts',
+    '~/domains/analytics/index.ts',
 
     '@pinia/nuxt',
     '@nuxtjs/apollo',

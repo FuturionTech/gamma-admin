@@ -79,6 +79,17 @@ export const GET_DASHBOARD_OVERVIEW = gql`
       id
       status
     }
+    industries {
+      id
+      is_active
+    }
+    processSteps {
+      id
+      is_active
+      items {
+        id
+      }
+    }
   }
 `;
 
