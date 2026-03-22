@@ -72,6 +72,34 @@
 
         <div class="card-toolbar">
           <div class="d-flex justify-content-end gap-2">
+            <!-- View Toggle -->
+            <div class="btn-group" role="group">
+              <button
+                type="button"
+                class="btn btn-sm"
+                :class="viewMode === 'grid' ? 'btn-primary' : 'btn-light'"
+                @click="viewMode = 'grid'"
+              >
+                <i class="ki-duotone ki-element-11 fs-3">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                  <span class="path3"></span>
+                  <span class="path4"></span>
+                </i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm"
+                :class="viewMode === 'table' ? 'btn-primary' : 'btn-light'"
+                @click="viewMode = 'table'"
+              >
+                <i class="ki-duotone ki-row-horizontal fs-3">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </button>
+            </div>
+
             <!-- Filter by Status -->
             <select
               v-model="statusFilter"
@@ -100,6 +128,7 @@
             <NuxtLink
               to="/solutions/create"
               class="btn btn-primary"
+              v-if="solutionsStore.hasSolutions"
             >
               <i class="ki-duotone ki-plus fs-2"></i>
               Create Solution
@@ -110,7 +139,7 @@
 
       <div class="card-body pt-0">
         <!-- Grid View -->
-        <div class="row g-6 g-xl-9" v-if="!solutionsStore.isLoading && solutionsStore.hasSolutions">
+        <div class="row g-6 g-xl-9" v-if="viewMode === 'grid' && !solutionsStore.isLoading && solutionsStore.hasSolutions">
           <div
             v-for="solution in solutionsStore.filteredSolutions"
             :key="solution.id"
@@ -123,20 +152,111 @@
           </div>
         </div>
 
+        <!-- Table View -->
+        <div class="table-responsive" v-if="viewMode === 'table' && !solutionsStore.isLoading && solutionsStore.hasSolutions">
+          <table class="table align-middle table-row-dashed fs-6 gy-5">
+            <thead>
+              <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                <th class="min-w-50px">Icon</th>
+                <th class="min-w-200px">Title</th>
+                <th class="min-w-125px">Features</th>
+                <th class="min-w-100px">Status</th>
+                <th class="min-w-70px">Order</th>
+                <th class="text-end min-w-100px">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="fw-semibold text-gray-600">
+              <tr v-for="solution in solutionsStore.filteredSolutions" :key="solution.id">
+                <td>
+                  <img
+                    v-if="solution.icon"
+                    :src="resolveIcon(solution.icon)"
+                    class="w-40px"
+                    :alt="solution.title"
+                  />
+                  <i v-else class="ki-duotone ki-grid-2 fs-2x text-gray-400">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                  </i>
+                </td>
+                <td>
+                  <div class="d-flex flex-column">
+                    <NuxtLink :to="`/solutions/${solution.id}`" class="text-gray-800 fw-bold text-hover-primary">{{ solution.title }}</NuxtLink>
+                    <span class="text-muted fs-7" v-if="solution.subtitle">
+                      {{ solution.subtitle }}
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="badge badge-light-success">{{ solution.features?.length || 0 }} Feat.</span>
+                    <span class="badge badge-light-warning">{{ solution.benefits?.length || 0 }} Ben.</span>
+                  </div>
+                </td>
+                <td>
+                  <span
+                    class="badge"
+                    :class="solution.is_active ? 'badge-light-success' : 'badge-light-danger'"
+                  >
+                    {{ solution.is_active ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge badge-light">{{ solution.order }}</span>
+                </td>
+                <td class="text-end">
+                  <NuxtLink
+                    :to="`/solutions/${solution.id}`"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-info me-2"
+                  >
+                    <i class="ki-duotone ki-eye fs-3">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                      <span class="path3"></span>
+                    </i>
+                  </NuxtLink>
+                  <NuxtLink
+                    :to="`/solutions/${solution.id}/edit`"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                  >
+                    <i class="ki-duotone ki-pencil fs-3">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                    </i>
+                  </NuxtLink>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <!-- Loading Skeleton -->
-        <div class="row g-6 g-xl-9" v-else-if="solutionsStore.isLoading">
-          <div
-            v-for="i in 6"
-            :key="i"
-            class="col-md-6 col-xl-4"
-          >
-            <SolutionCardSkeleton />
+        <div v-else-if="solutionsStore.isLoading">
+          <div v-if="viewMode === 'grid'" class="row g-6 g-xl-9">
+            <div class="col-md-6 col-xl-4" v-for="i in 6" :key="i">
+              <SolutionCardSkeleton />
+            </div>
+          </div>
+          <div v-else class="table-responsive">
+            <table class="table align-middle table-row-dashed fs-6 gy-5">
+              <thead>
+                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                  <th class="min-w-50px">Icon</th>
+                  <th class="min-w-200px">Title</th>
+                  <th class="min-w-125px">Features</th>
+                  <th class="min-w-100px">Status</th>
+                  <th class="min-w-70px">Order</th>
+                  <th class="text-end min-w-100px">Actions</th>
+                </tr>
+              </thead>
+              <TableSkeleton :rows="5" :columns="6" :hasCheckbox="false" :hasActions="true" />
+            </table>
           </div>
         </div>
 
         <!-- Empty State -->
         <div v-else class="text-center py-10">
-          <i class="ki-duotone ki-folder fs-5x text-muted mb-5">
+          <i class="ki-duotone ki-lightbulb fs-5x text-muted mb-5">
             <span class="path1"></span>
             <span class="path2"></span>
           </i>
@@ -166,6 +286,7 @@ definePageMeta({
 const solutionsStore = useSolutionsStore()
 const { exportSolutionsToCSV } = useSolutionActions()
 
+const viewMode = ref<'grid' | 'table'>('grid')
 const searchQuery = ref('')
 const statusFilter = ref<boolean | null>(null)
 
@@ -184,6 +305,13 @@ const handleExport = () => {
 const handleSolutionDeleted = () => {
   // Refresh list after deletion
   solutionsStore.fetchSolutions()
+}
+
+const resolveIcon = (icon: string) => {
+  if (['/cloud', '/brain', '/chart'].includes(icon)) {
+    return `${icon}.svg`
+  }
+  return icon
 }
 
 onMounted(async () => {

@@ -115,6 +115,34 @@
 
         <div class="card-toolbar">
           <div class="d-flex justify-content-end gap-2" data-kt-customer-table-toolbar="base">
+            <!-- View Toggle -->
+            <div class="btn-group" role="group">
+              <button
+                type="button"
+                class="btn btn-sm"
+                :class="viewMode === 'grid' ? 'btn-primary' : 'btn-light'"
+                @click="viewMode = 'grid'"
+              >
+                <i class="ki-duotone ki-element-11 fs-3">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                  <span class="path3"></span>
+                  <span class="path4"></span>
+                </i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm"
+                :class="viewMode === 'table' ? 'btn-primary' : 'btn-light'"
+                @click="viewMode = 'table'"
+              >
+                <i class="ki-duotone ki-row-horizontal fs-3">
+                  <span class="path1"></span>
+                  <span class="path2"></span>
+                </i>
+              </button>
+            </div>
+
             <!-- Filter by Status -->
             <select
               v-model="statusFilter"
@@ -160,6 +188,7 @@
             <NuxtLink
               to="/services/create"
               class="btn btn-primary"
+              v-if="servicesStore.hasServices"
             >
               <i class="ki-duotone ki-plus fs-2"></i>
               Create Service
@@ -188,8 +217,21 @@
       </div>
 
       <div class="card-body pt-0">
-        <!-- Table -->
-        <div class="table-responsive" v-if="!servicesStore.isLoading && servicesStore.hasServices">
+        <!-- Grid View -->
+        <div v-if="viewMode === 'grid' && !servicesStore.isLoading && servicesStore.hasServices">
+          <div class="row g-5">
+            <div
+              v-for="service in servicesStore.filteredServices"
+              :key="service.id"
+              class="col-md-6 col-lg-4"
+            >
+              <ServiceCard :service="service" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Table View -->
+        <div class="table-responsive" v-if="viewMode === 'table' && !servicesStore.isLoading && servicesStore.hasServices">
           <table class="table align-middle table-row-dashed fs-6 gy-5">
             <thead>
               <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
@@ -227,7 +269,7 @@
                 <td>
                   <img
                     v-if="service.icon"
-                    :src="service.icon"
+                    :src="resolveIcon(service.icon)"
                     class="w-40px"
                     :alt="service.title"
                   />
@@ -329,8 +371,14 @@
           </table>
         </div>
 
-        <!-- Table Skeleton -->
-        <div class="table-responsive" v-else-if="servicesStore.isLoading">
+        <!-- Loading Skeleton -->
+        <div v-else-if="servicesStore.isLoading">
+          <div v-if="viewMode === 'grid'" class="row g-5">
+            <div class="col-md-6 col-lg-4" v-for="i in 6" :key="i">
+              <CardSkeleton :showIcon="true" :lines="3" :showActions="true" />
+            </div>
+          </div>
+          <div v-else class="table-responsive">
           <table class="table align-middle table-row-dashed fs-6 gy-5">
             <thead>
               <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
@@ -346,6 +394,7 @@
             </thead>
             <TableSkeleton :rows="5" :columns="7" :hasCheckbox="true" :hasActions="true" />
           </table>
+          </div>
         </div>
 
         <!-- Empty State -->
@@ -353,7 +402,7 @@
           v-else-if="!servicesStore.hasServices"
           class="text-center py-20"
         >
-          <i class="ki-duotone ki-folder-down fs-5x text-gray-400 mb-5">
+          <i class="ki-duotone ki-briefcase fs-5x text-gray-400 mb-5">
             <span class="path1"></span>
             <span class="path2"></span>
           </i>
@@ -399,6 +448,7 @@ import { useServiceFormatters } from '../composables/useServiceFormatters'
 import { useServiceActions } from '../composables/useServiceActions'
 import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
 import type { Service } from '../types'
+import ServiceCard from '../components/ServiceCard.vue'
 
 const servicesStore = useServicesStore()
 const breadcrumbStore = useBreadcrumbStore()
@@ -417,7 +467,8 @@ const {
   exportServicesToCSV
 } = useServiceActions()
 
-// Search and filters
+// View mode, Search and filters
+const viewMode = ref<'grid' | 'table'>('table')
 const searchQuery = ref('')
 const statusFilter = ref<boolean | null>(null)
 const categoryFilter = ref<string | null>(null)
@@ -479,6 +530,13 @@ const handleBulkDelete = async () => {
 
 const handleExport = () => {
   exportServicesToCSV()
+}
+
+const resolveIcon = (icon: string) => {
+  if (['/cloud', '/brain', '/chart'].includes(icon)) {
+    return `${icon}.svg`
+  }
+  return icon
 }
 
 // Lifecycle

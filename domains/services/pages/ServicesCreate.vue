@@ -3,116 +3,80 @@
     <div class="d-flex flex-column flex-column-fluid">
       <div id="kt_app_content" class="app-content flex-column-fluid">
         <div id="kt_app_content_container" class="app-container container-fluid">
-          <div class="card">
-    <!-- Tabs Navigation -->
-    <div class="card-header border-0">
-      <div class="card-title">
-        <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bold" role="tablist">
-          <li class="nav-item" role="presentation">
-            <a
-              class="nav-link"
-              :class="{ active: activeTab === 'basic' }"
-              data-bs-toggle="tab"
-              href="#basic-info-tab"
-              role="tab"
-              @click="activeTab = 'basic'"
-            >
-              <i class="ki-duotone ki-note-2 fs-2 me-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-                <span class="path3"></span>
-                <span class="path4"></span>
-              </i>
-              Basic Information
-            </a>
-          </li>
-          <li class="nav-item" role="presentation">
-            <a
-              class="nav-link"
-              :class="{ active: activeTab === 'settings' }"
-              data-bs-toggle="tab"
-              href="#settings-tab"
-              role="tab"
-              @click="activeTab = 'settings'"
-            >
-              <i class="ki-duotone ki-setting-2 fs-2 me-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-              </i>
-              Settings
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
+          <form @submit.prevent="handleSubmit">
+            <div class="row g-5">
+              <!-- Main Form Column -->
+              <div class="col-xl-8">
+                <div class="card mb-5">
+                  <div class="card-header">
+                    <h3 class="card-title">Basic Information</h3>
+                  </div>
+                  <div class="card-body">
+                    <!-- Loading State -->
+                    <div v-if="isSubmitting" class="text-center py-20">
+                      <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                    </div>
+                    <ServiceFormBasicInfo
+                      v-else
+                      v-model="form"
+                      :errors="errors"
+                    />
+                  </div>
+                </div>
+              </div>
 
-    <div class="card-body">
-      <!-- Loading State -->
-      <div v-if="isSubmitting" class="text-center py-20">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
+              <!-- Sidebar Column -->
+              <div class="col-xl-4">
+                <div class="card mb-5">
+                  <div class="card-header">
+                    <h3 class="card-title">Settings & Icon</h3>
+                  </div>
+                  <div class="card-body">
+                    <ServiceFormSettings
+                      v-model="form"
+                      :errors="errors"
+                      :iconPreview="iconPreview"
+                      @iconChanged="handleIconChange"
+                      @iconRemoved="handleIconRemove"
+                    />
+                  </div>
+                </div>
 
-      <!-- Form -->
-      <form v-else @submit.prevent="handleSubmit">
-        <div class="tab-content">
-          <!-- Basic Info Tab -->
-          <div
-            class="tab-pane fade"
-            :class="{ 'show active': activeTab === 'basic' }"
-            id="basic-info-tab"
-            role="tabpanel"
-          >
-            <ServiceFormBasicInfo
-              v-model="form"
-              :errors="errors"
-            />
-          </div>
+                <!-- Actions Card -->
+                <div class="card mt-5">
+                  <div class="card-body d-flex flex-column gap-3">
+                    <button
+                      type="submit"
+                      class="btn btn-primary w-100"
+                      :disabled="!isFormValid || isSubmitting"
+                    >
+                      <span v-if="!isSubmitting">
+                        <i class="ki-duotone ki-check fs-2"></i>
+                        Save Service
+                      </span>
+                      <span v-else>
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        Saving...
+                      </span>
+                    </button>
 
-          <!-- Settings Tab -->
-          <div
-            class="tab-pane fade"
-            :class="{ 'show active': activeTab === 'settings' }"
-            id="settings-tab"
-            role="tabpanel"
-          >
-            <ServiceFormSettings
-              v-model="form"
-              :errors="errors"
-              :iconPreview="iconPreview"
-              @iconChanged="handleIconChange"
-              @iconRemoved="handleIconRemove"
-            />
-          </div>
-        </div>
-
-        <!-- Form Actions -->
-        <div class="d-flex justify-content-end gap-3 mt-10 pt-10 border-top">
-          <NuxtLink
-            to="/services/list"
-            class="btn btn-light"
-          >
-            Cancel
-          </NuxtLink>
-          <button
-            type="submit"
-            class="btn btn-primary"
-            :disabled="!isFormValid || isSubmitting"
-          >
-            <span v-if="!isSubmitting">
-              <i class="ki-duotone ki-check fs-2"></i>
-              Save
-            </span>
-            <span v-else>
-              <span class="spinner-border spinner-border-sm me-2"></span>
-              Loading...
-            </span>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+                    <NuxtLink
+                      to="/services/list"
+                      class="btn btn-light w-100"
+                    >
+                      <i class="ki-duotone ki-cross fs-2">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                      </i>
+                      Cancel
+                    </NuxtLink>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

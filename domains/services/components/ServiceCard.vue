@@ -4,7 +4,7 @@
       <!-- Icon -->
       <div class="d-flex flex-center mb-5" v-if="service.icon">
         <img
-          :src="service.icon"
+          :src="resolveIcon(service.icon)"
           :alt="service.title"
           class="h-60px"
           @error="onImageError"
@@ -112,5 +112,12 @@ const handleDelete = async () => {
 const onImageError = (event: Event) => {
   const img = event.target as HTMLImageElement
   img.style.display = 'none'
+}
+
+const resolveIcon = (icon: string) => {
+  if (['/cloud', '/brain', '/chart'].includes(icon)) {
+    return `${icon}.svg`
+  }
+  return icon
 }
 </script>

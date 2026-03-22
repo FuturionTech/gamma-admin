@@ -15,7 +15,7 @@
       <!-- Icon with Color -->
       <div class="d-flex flex-center mb-5" v-else-if="solution.icon">
         <img
-          :src="solution.icon"
+          :src="resolveIcon(solution.icon)"
           :alt="solution.title"
           :style="getIconColorStyle(solution)"
           class="h-60px"
@@ -167,5 +167,12 @@ const onImageError = (event: Event) => {
 const onIconError = (event: Event) => {
   const img = event.target as HTMLImageElement
   img.style.display = 'none'
+}
+
+const resolveIcon = (icon: string) => {
+  if (['/cloud', '/brain', '/chart'].includes(icon)) {
+    return `${icon}.svg`
+  }
+  return icon
 }
 </script>

@@ -3,231 +3,246 @@
     <div class="d-flex flex-column flex-column-fluid">
       <div id="kt_app_content" class="app-content flex-column-fluid">
         <div id="kt_app_content_container" class="app-container container-fluid">
-          <!-- Form Card -->
-          <div class="card">
-            <div class="card-body">
-              <form @submit.prevent="handleSubmit">
-                <!-- Section 1: Content -->
-                <div class="mb-10">
-                  <h3 class="fw-bold mb-5">Content</h3>
-
-                  <!-- Title -->
-                  <div class="mb-5">
-                    <label class="form-label required">Title</label>
-                    <input
-                      type="text"
-                      v-model="formData.title"
-                      class="form-control form-control-solid"
-                      :class="{ 'is-invalid': errors.title }"
-                      placeholder="Enter post title"
-                      @input="onTitleChange"
-                    />
-                    <div v-if="errors.title" class="invalid-feedback">
-                      {{ errors.title }}
-                    </div>
+          <form @submit.prevent="handleSubmit">
+            <div class="row g-5">
+              <!-- Main Form Column -->
+              <div class="col-xl-8">
+                <div class="card mb-5">
+                  <div class="card-header">
+                    <h3 class="card-title">Content</h3>
                   </div>
-
-                  <!-- Slug -->
-                  <div class="mb-5">
-                    <label class="form-label">Slug</label>
-                    <input
-                      type="text"
-                      v-model="formData.slug"
-                      class="form-control form-control-solid"
-                      :class="{ 'is-invalid': errors.slug }"
-                      placeholder="post-slug"
-                    />
-                    <div class="form-text">
-                      Leave empty to auto-generate from title
-                    </div>
-                    <div v-if="errors.slug" class="invalid-feedback">
-                      {{ errors.slug }}
-                    </div>
-                  </div>
-
-                  <!-- Excerpt -->
-                  <div class="mb-5">
-                    <label class="form-label">Excerpt</label>
-                    <textarea
-                      v-model="formData.excerpt"
-                      class="form-control form-control-solid"
-                      :class="{ 'is-invalid': errors.excerpt }"
-                      rows="3"
-                      maxlength="200"
-                      placeholder="A short summary of the post (max 200 characters)"
-                    ></textarea>
-                    <div class="form-text">
-                      {{ formData.excerpt?.length || 0 }} / 200 characters
-                    </div>
-                    <div v-if="errors.excerpt" class="invalid-feedback">
-                      {{ errors.excerpt }}
-                    </div>
-                  </div>
-
-                  <!-- Content -->
-                  <div class="mb-5">
-                    <label class="form-label required">Content</label>
-                    <RichTextEditor
-                      v-model="formData.content"
-                      :init-options="{ height: 600 }"
-                    />
-                    <div v-if="errors.content" class="text-danger fs-7 mt-2">
-                      {{ errors.content }}
-                    </div>
-                  </div>
-                </div>
-
-                <div class="separator my-10"></div>
-
-                <!-- Section 2: Media -->
-                <div class="mb-10">
-                  <h3 class="fw-bold mb-5">Media</h3>
-
-                  <!-- Featured Image -->
-                  <div class="mb-5">
-                    <label class="form-label">Featured Image</label>
-
-                    <!-- Image Preview -->
-                    <div v-if="featuredImagePreview" class="mb-3">
-                      <img
-                        :src="featuredImagePreview"
-                        alt="Preview"
-                        class="img-thumbnail"
-                        style="max-width: 300px;"
-                        @error="handleImageError"
-                      />
-                      <div class="mt-2">
-                        <button type="button" class="btn btn-sm btn-light-danger" @click="handleFeaturedImageRemove">
-                          <i class="ki-duotone ki-trash fs-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Upload or URL -->
-                    <div v-else>
-                      <label class="btn btn-light-primary me-3">
-                        <i class="ki-duotone ki-file-up fs-2"><span class="path1"></span><span class="path2"></span></i>
-                        Upload Image
-                        <input type="file" accept="image/*" class="d-none" @change="handleFeaturedImageChange" />
-                      </label>
-
-                      <div class="text-center fw-bold text-muted my-3">or</div>
-
+                  <div class="card-body">
+                    <!-- Title -->
+                    <div class="mb-5">
+                      <label class="form-label required">Title</label>
                       <input
                         type="text"
-                        v-model="formData.featured_image_url"
+                        v-model="formData.title"
                         class="form-control form-control-solid"
-                        placeholder="Image URL"
+                        :class="{ 'is-invalid': errors.title }"
+                        placeholder="Enter post title"
+                        @input="onTitleChange"
+                      />
+                      <div v-if="errors.title" class="invalid-feedback">
+                        {{ errors.title }}
+                      </div>
+                    </div>
+
+                    <!-- Slug -->
+                    <div class="mb-5">
+                      <label class="form-label">Slug</label>
+                      <input
+                        type="text"
+                        v-model="formData.slug"
+                        class="form-control form-control-solid"
+                        :class="{ 'is-invalid': errors.slug }"
+                        placeholder="post-slug"
                       />
                       <div class="form-text">
-                        Upload an image or enter a URL
+                        Leave empty to auto-generate from title
+                      </div>
+                      <div v-if="errors.slug" class="invalid-feedback">
+                        {{ errors.slug }}
+                      </div>
+                    </div>
+
+                    <!-- Excerpt -->
+                    <div class="mb-5">
+                      <label class="form-label">Excerpt</label>
+                      <textarea
+                        v-model="formData.excerpt"
+                        class="form-control form-control-solid"
+                        :class="{ 'is-invalid': errors.excerpt }"
+                        rows="3"
+                        maxlength="200"
+                        placeholder="A short summary of the post (max 200 characters)"
+                      ></textarea>
+                      <div class="form-text">
+                        {{ formData.excerpt?.length || 0 }} / 200 characters
+                      </div>
+                      <div v-if="errors.excerpt" class="invalid-feedback">
+                        {{ errors.excerpt }}
+                      </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="mb-5">
+                      <label class="form-label required">Content</label>
+                      <RichTextEditor
+                        v-model="formData.content"
+                        :init-options="{ height: 600 }"
+                      />
+                      <div v-if="errors.content" class="text-danger fs-7 mt-2">
+                        {{ errors.content }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sidebar Column -->
+              <div class="col-xl-4">
+                <!-- Section 2: Media -->
+                <div class="card mb-5">
+                  <div class="card-header">
+                    <h3 class="card-title">Media</h3>
+                  </div>
+                  <div class="card-body">
+                    <!-- Featured Image -->
+                    <div class="mb-5">
+                      <label class="form-label">Featured Image</label>
+
+                      <!-- Image Preview -->
+                      <div v-if="featuredImagePreview" class="mb-3">
+                        <img
+                          :src="featuredImagePreview"
+                          alt="Preview"
+                          class="img-thumbnail"
+                          style="max-width: 300px;"
+                          @error="handleImageError"
+                        />
+                        <div class="mt-2">
+                          <button type="button" class="btn btn-sm btn-light-danger w-100" @click="handleFeaturedImageRemove">
+                            <i class="ki-duotone ki-trash fs-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- Upload or URL -->
+                      <div v-else>
+                        <label class="btn btn-light-primary w-100 mb-3">
+                          <i class="ki-duotone ki-file-up fs-2"><span class="path1"></span><span class="path2"></span></i>
+                          Upload Image
+                          <input type="file" accept="image/*" class="d-none" @change="handleFeaturedImageChange" />
+                        </label>
+
+                        <div class="text-center fw-bold text-muted my-3">or</div>
+
+                        <input
+                          type="text"
+                          v-model="formData.featured_image_url"
+                          class="form-control form-control-solid"
+                          placeholder="Image URL"
+                        />
+                        <div class="form-text">
+                          Upload an image or enter a URL
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div class="separator my-10"></div>
-
                 <!-- Section 3: Taxonomy -->
-                <div class="mb-10">
-                  <h3 class="fw-bold mb-5">Taxonomy</h3>
-
-                  <!-- Category -->
-                  <div class="mb-5">
-                    <label class="form-label">Category</label>
-                    <input
-                      type="text"
-                      v-model="formData.category"
-                      class="form-control form-control-solid"
-                      placeholder="e.g. AI, Tech Trends, Innovation..."
-                      list="categories-list"
-                    />
-                    <datalist id="categories-list">
-                      <option
-                        v-for="category in blogStore.categories"
-                        :key="category"
-                        :value="category"
+                <div class="card mb-5">
+                  <div class="card-header">
+                    <h3 class="card-title">Taxonomy</h3>
+                  </div>
+                  <div class="card-body">
+                    <!-- Category -->
+                    <div class="mb-5">
+                      <label class="form-label">Category</label>
+                      <input
+                        type="text"
+                        v-model="formData.category"
+                        class="form-control form-control-solid"
+                        placeholder="e.g. AI, Tech Trends..."
+                        list="categories-list"
                       />
-                    </datalist>
-                  </div>
+                      <datalist id="categories-list">
+                        <option
+                          v-for="category in blogStore.categories"
+                          :key="category"
+                          :value="category"
+                        />
+                      </datalist>
+                    </div>
 
-                  <!-- Tags -->
-                  <div class="mb-5">
-                    <label class="form-label">Tags</label>
-                    <TagInput
-                      v-model="formData.tags"
-                      placeholder="Add tags..."
-                    />
-                  </div>
+                    <!-- Tags -->
+                    <div class="mb-5">
+                      <label class="form-label">Tags</label>
+                      <TagInput
+                        v-model="formData.tags"
+                        placeholder="Add tags..."
+                      />
+                    </div>
 
-                  <!-- Author -->
-                  <div class="mb-5">
-                    <label class="form-label">Author</label>
-                    <input
-                      type="text"
-                      v-model="formData.author_id"
-                      class="form-control form-control-solid"
-                      placeholder="Author ID (optional)"
-                    />
-                    <div class="form-text">
-                      Leave empty for anonymous post
+                    <!-- Author -->
+                    <div class="mb-5">
+                      <label class="form-label">Author ID</label>
+                      <input
+                        type="text"
+                        v-model="formData.author_id"
+                        class="form-control form-control-solid"
+                        placeholder="Optional"
+                      />
+                      <div class="form-text">
+                        Leave empty for anonymous post
+                      </div>
                     </div>
                   </div>
                 </div>
-
-                <div class="separator my-10"></div>
 
                 <!-- Section 4: Publication -->
-                <div class="mb-10">
-                  <h3 class="fw-bold mb-5">Publication</h3>
-
-                  <!-- Status -->
-                  <div class="mb-5">
-                    <label class="form-label">Status</label>
-                    <StatusToggle
-                      v-model="formData.status"
-                      :show-description="true"
-                    />
+                <div class="card mb-5">
+                  <div class="card-header">
+                    <h3 class="card-title">Publication</h3>
                   </div>
+                  <div class="card-body">
+                    <!-- Status -->
+                    <div class="mb-5">
+                      <label class="form-label d-block">Status</label>
+                      <StatusToggle
+                        v-model="formData.status"
+                        :show-description="true"
+                      />
+                    </div>
 
-                  <!-- Published At -->
-                  <div class="mb-5" v-if="formData.status === 'published'">
-                    <label class="form-label">Publication Date</label>
-                    <input
-                      type="datetime-local"
-                      v-model="publishedAtLocal"
-                      class="form-control form-control-solid"
-                    />
-                    <div class="form-text">
-                      Leave empty to publish immediately
+                    <!-- Published At -->
+                    <div class="mb-5" v-if="formData.status === 'published'">
+                      <label class="form-label">Publication Date</label>
+                      <input
+                        type="datetime-local"
+                        v-model="publishedAtLocal"
+                        class="form-control form-control-solid"
+                      />
+                      <div class="form-text">
+                        Leave empty to publish immediately
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- Form Actions -->
-                <div class="d-flex justify-content-end gap-3">
-                  <NuxtLink to="/blog/list" class="btn btn-light">
-                    Cancel
-                  </NuxtLink>
-                  <button
-                    type="submit"
-                    class="btn btn-primary"
-                    :disabled="isSubmitting"
-                  >
-                    <span v-if="isSubmitting" class="indicator-progress">
-                      Saving...
-                      <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                    </span>
-                    <span v-else>
-                      <i class="ki-duotone ki-check fs-2"></i>
-                      {{ formData.status === 'published' ? 'Publish' : 'Save' }}
-                    </span>
-                  </button>
+                <!-- Actions Card -->
+                <div class="card mt-5">
+                  <div class="card-body d-flex flex-column gap-3">
+                    <button
+                      type="submit"
+                      class="btn btn-primary w-100"
+                      :disabled="isSubmitting"
+                    >
+                      <span v-if="isSubmitting" class="indicator-progress">
+                        Saving...
+                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                      </span>
+                      <span v-else>
+                        <i class="ki-duotone ki-check fs-2"></i>
+                        {{ formData.status === 'published' ? 'Publish' : 'Save' }}
+                      </span>
+                    </button>
+
+                    <NuxtLink to="/blog/list" class="btn btn-light w-100">
+                      <i class="ki-duotone ki-cross fs-2">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                      </i>
+                      Cancel
+                    </NuxtLink>
+                  </div>
                 </div>
-              </form>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

@@ -12,3 +12,45 @@
 // Layout
 @import "layout/base/layout";
 @import "layout/layout";
+
+/* Premium Dashboard Enhancements */
+.card-flush, .card {
+  backdrop-filter: blur(10px);
+  background-color: var(--bs-card-bg, rgba(255, 255, 255, 0.95));
+  border: 1px solid var(--bs-card-border-color, rgba(255, 255, 255, 0.1));
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-bs-theme="dark"] .card, [data-bs-theme="dark"] .card-flush {
+  background-color: rgba(30, 30, 35, 0.7);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card:not(.card-transparent):not(.bg-transparent):hover, .card-flush:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+[data-bs-theme="dark"] .card:not(.card-transparent):not(.bg-transparent):hover, [data-bs-theme="dark"] .card-flush:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Sidebar premium feel */
+#kt_app_sidebar {
+  backdrop-filter: blur(10px);
+  background-color: var(--bs-body-bg, rgba(255, 255, 255, 0.95));
+}
+
+[data-bs-theme="dark"] #kt_app_sidebar {
+  background-color: rgba(21, 21, 33, 0.85);
+}
+
+/* Button premium effects */
+.btn:not(.btn-icon):not(.btn-active-color-primary) {
+  transition: all 0.3s ease;
+}
+
+.btn-primary:not(.btn-icon):hover {
+  box-shadow: 0 0 15px rgba(var(--bs-primary-rgb), 0.4);
+  transform: translateY(-1px);
+}

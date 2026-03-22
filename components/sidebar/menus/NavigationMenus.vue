@@ -287,15 +287,16 @@ const handleMenuClick = (menuItem: any, event?: Event) => {
   }
 };
 
-// Language support - French as default
-const currentLanguage = ref('fr'); // You can make this reactive based on user preference
+// Language support
+const { locale } = useI18n();
+const currentLanguage = computed(() => locale.value || 'en');
 
 // Helper function to get localized text
 const getLocalizedText = (text: string | { fr: string; en: string }): string => {
   if (typeof text === 'string') {
     return text;
   }
-  return text[currentLanguage.value as keyof typeof text] || text.fr || text.en || '';
+  return text[currentLanguage.value as keyof typeof text] || text.en || text.fr || '';
 };
 
 // Reactive current path for better reactivity

@@ -157,6 +157,7 @@
             <NuxtLink
               to="/blog/create"
               class="btn btn-primary"
+              v-if="blogStore.hasPosts"
             >
               <i class="ki-duotone ki-plus fs-2"></i>
               New Post
@@ -360,7 +361,7 @@
           v-else-if="!blogStore.hasPosts"
           class="text-center py-20"
         >
-          <i class="ki-duotone ki-folder-down fs-5x text-gray-400 mb-5">
+          <i class="ki-duotone ki-document fs-5x text-gray-400 mb-5">
             <span class="path1"></span>
             <span class="path2"></span>
           </i>
