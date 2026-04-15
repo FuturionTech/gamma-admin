@@ -1,35 +1,24 @@
-module.exports = {
-    // The GraphQL endpoint.
-    httpEndpoint: process.env.GQL_HOST || "",
+export default {
+  httpEndpoint: process.env.GQL_HOST || '',
 
-    // Provide a GraphQL endpoint to be used client-side. Overrides `httpEndpoint`.
-    // browserHttpEndpoint: '/graphql',
+  httpLinkOptions: {
+    credentials: 'same-origin',
+  },
 
-    // See https://www.apollographql.com/docs/link/links/http.html#options
-    httpLinkOptions: {
-        credentials: 'same-origin',
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
     },
+  },
 
-    defaultOptions: {
-        watchQuery: {
-            fetchPolicy: 'cache-and-network',
-        },
-    },
+  devtools: {
+    enabled: process.env.NODE_ENV === 'development',
+  },
 
-    // DevTools configuration (replaces deprecated connectToDevTools)
-    devtools: {
-        enabled: process.env.NODE_ENV === 'development',
-    },
+  tokenName: 'auth.token',
+  tokenStorage: 'cookie',
+  authType: 'Bearer',
+  authHeader: 'Authorization',
 
-    // Specify a websocket endpoint to be used for subscriptions.
-    // The `wss` protocol is recommended in production.
-    // wsEndpoint: 'ws://localhost:4000',
-
-    // LocalStorage token
-    tokenName: 'auth.token',
-    authenticationType: 'Bearer',
-
-    // Specify if the client should solely use WebSocket.
-    // requires `wsEndpoint`.
-    websocketsOnly: false,
-};
+  websocketsOnly: false,
+}

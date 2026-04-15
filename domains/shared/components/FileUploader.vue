@@ -24,10 +24,10 @@
           :key="index"
       >
         <div class="file-uploader__preview-image">
-          <img v-if="isImage(preview)" :src="preview.dataUrl" alt="" />
+          <img v-if="isImage(preview)" :src="preview.dataUrl ?? ''" alt="" />
           <video
               v-else-if="isVideo(preview)"
-              :src="preview.dataUrl"
+              :src="preview.dataUrl ?? ''"
               controls
               width="100"
           ></video>
@@ -64,263 +64,234 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import { ref, watch, computed } from 'vue';
+import type { Ref } from 'vue';
 
-export default {
-  name: 'FileUploader',
-  props: {
-    accept: {
-      type: String,
-      default: '',
-    },
-    multiple: {
-      type: Boolean,
-      default: false,
-    },
-    maxFiles: {
-      type: Number,
-      default: Infinity,
-    },
-    modelValue: {
-      type: Array,
-      default: () => [],
-    },
-    initialFiles: {
-      type: Array,
-      default: () => [],
-    },
-    maxFileSize: {
-      type: Number,
-      default: Infinity,
-    },
-    showFileSize: {
-      type: Boolean,
-      default: true,
-    },
-    dropAreaLabel: {
-      type: String,
-      default: 'Cliquer ou glisser-déposer des fichiers ici pour les télécharger',
-    },
-    removeButtonLabel: {
-      type: String,
-      default: 'Supprimer le fichier',
-    },
-    allowRename: {
-      type: Boolean,
-      default: false,
-    },
-    newFileName: {
-      type: String,
-      default: null,
-    },
-  },
-  emits: ['update:modelValue', 'file-error'],
-  setup(props, { emit }) {
-    const files = ref([]);
-    const previews = ref([]);
-    const dragOver = ref(false);
+interface Preview {
+  file: File | null;
+  name: string;
+  newName: string;
+  size: number | null;
+  dataUrl: string | null;
+}
 
-    watch(
-        () => props.initialFiles,
-        (newVal) => {
-          if (newVal && newVal.length > 0) {
-            newVal.forEach((fileUrl) => {
-              createPreviewFromUrl(fileUrl);
-            });
-          }
-        },
-        { immediate: true }
-    );
+interface Props {
+  accept?: string;
+  multiple?: boolean;
+  maxFiles?: number;
+  modelValue?: File[];
+  initialFiles?: string[];
+  maxFileSize?: number;
+  showFileSize?: boolean;
+  dropAreaLabel?: string;
+  removeButtonLabel?: string;
+  allowRename?: boolean;
+  newFileName?: string | null;
+}
 
-    watch(
-        () => props.modelValue,
-        (newVal) => {
-          files.value = [...newVal];
-        },
-        { immediate: true }
-    );
+const props = withDefaults(defineProps<Props>(), {
+  accept: '',
+  multiple: false,
+  maxFiles: Infinity,
+  modelValue: () => [],
+  initialFiles: () => [],
+  maxFileSize: Infinity,
+  showFileSize: true,
+  dropAreaLabel: 'Cliquer ou glisser-déposer des fichiers ici pour les télécharger',
+  removeButtonLabel: 'Supprimer le fichier',
+  allowRename: false,
+  newFileName: null,
+});
 
-    const hasFiles = computed(() => previews.value.length > 0);
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: File[]): void;
+  (e: 'file-error', payload: { file: File; error: string }): void;
+}>();
 
-    const acceptMIME = computed(() => {
-      return props.accept
-          .split(',')
-          .map((type) => type.trim())
-          .filter((type) => type !== '');
-    });
+const files = ref<File[]>([]);
+const previews = ref<Preview[]>([]);
+const dragOver = ref(false);
+const fileInput: Ref<HTMLInputElement | null> = ref(null);
 
-    const triggerFileSelect = () => {
-      fileInput.value.click();
-    };
+const hasFiles = computed(() => previews.value.length > 0);
 
-    const fileInput = ref(null);
+const acceptMIME = computed(() => {
+  return props.accept
+      .split(',')
+      .map((type) => type.trim())
+      .filter((type) => type !== '');
+});
 
-    const handleFileChange = (event) => {
-      const selectedFiles = Array.from(event.target.files);
-      addFiles(selectedFiles);
-      event.target.value = '';
-    };
-
-    const handleDrop = (event) => {
-      dragOver.value = false;
-      const droppedFiles = Array.from(event.dataTransfer.files);
-      addFiles(droppedFiles);
-    };
-
-    const onDragOver = () => {
-      dragOver.value = true;
-    };
-
-    const onDragLeave = () => {
-      dragOver.value = false;
-    };
-
-    const addFiles = (newFiles) => {
-      let updatedFiles = [...files.value];
-      newFiles.forEach((file) => {
-        if (updatedFiles.length >= props.maxFiles) return;
-
-        if (file.size > props.maxFileSize) {
-          emit('file-error', {
-            file,
-            error: 'La taille du fichier dépasse la limite.',
-          });
-          return;
-        }
-
-        if (!isFileTypeAccepted(file)) {
-          emit('file-error', { file, error: 'Type de fichier non accepté.' });
-          return;
-        }
-
-        let renamedFile = file;
-        if (props.newFileName) {
-          renamedFile = new File([file], props.newFileName, {
-            type: file.type,
-            lastModified: file.lastModified,
-          });
-        }
-
-        updatedFiles = [...updatedFiles, renamedFile];
-        createPreview(renamedFile);
-      });
-      files.value = updatedFiles;
-      emit('update:modelValue', files.value);
-    };
-
-    const isFileTypeAccepted = (file) => {
-      if (!acceptMIME.value.length) return true;
-      return acceptMIME.value.some((type) => {
-        if (type.startsWith('.')) {
-          return file.name.endsWith(type);
-        }
-        if (type.endsWith('/*')) {
-          const baseType = type.replace('/*', '');
-          return file.type.startsWith(baseType);
-        }
-        return file.type === type;
-      });
-    };
-
-    const createPreview = (file) => {
-      const preview = {
-        file: file,
-        name: file.name,
-        newName: file.name,
-        size: file.size,
-        dataUrl: null,
-      };
-      if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          preview.dataUrl = e.target.result;
-          previews.value.push(preview);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        previews.value.push(preview);
+watch(
+    () => props.initialFiles,
+    (newVal) => {
+      if (newVal && newVal.length > 0) {
+        newVal.forEach((fileUrl) => {
+          createPreviewFromUrl(fileUrl);
+        });
       }
-    };
+    },
+    { immediate: true }
+);
 
-    const createPreviewFromUrl = (url) => {
-      const preview = {
-        file: null,
-        name: extractFileName(url),
-        newName: extractFileName(url),
-        dataUrl: url,
-        size: null,
-      };
+watch(
+    () => props.modelValue,
+    (newVal) => {
+      files.value = [...newVal];
+    },
+    { immediate: true }
+);
+
+const triggerFileSelect = () => {
+  fileInput.value?.click();
+};
+
+const handleFileChange = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const selectedFiles = Array.from(target.files ?? []);
+  addFiles(selectedFiles);
+  target.value = '';
+};
+
+const handleDrop = (event: DragEvent) => {
+  dragOver.value = false;
+  const droppedFiles = Array.from(event.dataTransfer?.files ?? []);
+  addFiles(droppedFiles);
+};
+
+const onDragOver = () => {
+  dragOver.value = true;
+};
+
+const onDragLeave = () => {
+  dragOver.value = false;
+};
+
+const addFiles = (newFiles: File[]) => {
+  let updatedFiles = [...files.value];
+  newFiles.forEach((file) => {
+    if (updatedFiles.length >= props.maxFiles) return;
+
+    if (file.size > props.maxFileSize) {
+      emit('file-error', {
+        file,
+        error: 'La taille du fichier dépasse la limite.',
+      });
+      return;
+    }
+
+    if (!isFileTypeAccepted(file)) {
+      emit('file-error', { file, error: 'Type de fichier non accepté.' });
+      return;
+    }
+
+    let renamedFile = file;
+    if (props.newFileName) {
+      renamedFile = new File([file], props.newFileName, {
+        type: file.type,
+        lastModified: file.lastModified,
+      });
+    }
+
+    updatedFiles = [...updatedFiles, renamedFile];
+    createPreview(renamedFile);
+  });
+  files.value = updatedFiles;
+  emit('update:modelValue', files.value);
+};
+
+const isFileTypeAccepted = (file: File): boolean => {
+  if (!acceptMIME.value.length) return true;
+  return acceptMIME.value.some((type) => {
+    if (type.startsWith('.')) {
+      return file.name.endsWith(type);
+    }
+    if (type.endsWith('/*')) {
+      const baseType = type.replace('/*', '');
+      return file.type.startsWith(baseType);
+    }
+    return file.type === type;
+  });
+};
+
+const createPreview = (file: File) => {
+  const preview: Preview = {
+    file: file,
+    name: file.name,
+    newName: file.name,
+    size: file.size,
+    dataUrl: null,
+  };
+  if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      preview.dataUrl = (e.target?.result as string) ?? null;
       previews.value.push(preview);
     };
+    reader.readAsDataURL(file);
+  } else {
+    previews.value.push(preview);
+  }
+};
 
-    const extractFileName = (url) => {
-      return url.substring(url.lastIndexOf('/') + 1).split('?')[0];
-    };
+const createPreviewFromUrl = (url: string) => {
+  const preview: Preview = {
+    file: null,
+    name: extractFileName(url),
+    newName: extractFileName(url),
+    dataUrl: url,
+    size: null,
+  };
+  previews.value.push(preview);
+};
 
-    const removeFile = (index) => {
-      files.value = files.value.filter((_, i) => i !== index);
-      previews.value = previews.value.filter((_, i) => i !== index);
-      emit('update:modelValue', files.value);
-    };
+const extractFileName = (url: string): string => {
+  return url.substring(url.lastIndexOf('/') + 1).split('?')[0];
+};
 
-    const renameFile = (index) => {
-      const preview = previews.value[index];
-      if (preview.file) {
-        const extension = preview.file.name.split('.').pop();
-        const newName = preview.newName.includes('.')
-            ? preview.newName
-            : `${preview.newName}.${extension}`;
-        const renamedFile = new File([preview.file], newName, {
-          type: preview.file.type,
-          lastModified: preview.file.lastModified,
-        });
-        const updatedFiles = [...files.value];
-        updatedFiles.splice(index, 1, renamedFile);
-        files.value = updatedFiles;
-        preview.name = newName;
-        preview.file = renamedFile;
-        emit('update:modelValue', files.value);
-      }
-    };
+const removeFile = (index: number) => {
+  files.value = files.value.filter((_, i) => i !== index);
+  previews.value = previews.value.filter((_, i) => i !== index);
+  emit('update:modelValue', files.value);
+};
 
-    const isImage = (preview) => {
-      if (preview.file) {
-        return preview.file.type.startsWith('image/');
-      } else if (preview.dataUrl) {
-        return /\.(jpg|jpeg|png|gif|webp)$/i.test(preview.dataUrl);
-      }
-      return false;
-    };
+const renameFile = (index: number) => {
+  const preview = previews.value[index];
+  if (preview.file) {
+    const extension = preview.file.name.split('.').pop() ?? '';
+    const newName = preview.newName.includes('.')
+        ? preview.newName
+        : `${preview.newName}.${extension}`;
+    const renamedFile = new File([preview.file], newName, {
+      type: preview.file.type,
+      lastModified: preview.file.lastModified,
+    });
+    const updatedFiles = [...files.value];
+    updatedFiles.splice(index, 1, renamedFile);
+    files.value = updatedFiles;
+    preview.name = newName;
+    preview.file = renamedFile;
+    emit('update:modelValue', files.value);
+  }
+};
 
-    const isVideo = (preview) => {
-      if (preview.file) {
-        return preview.file.type.startsWith('video/');
-      } else if (preview.dataUrl) {
-        return /\.(mp4|webm|ogg|mov|avi)$/i.test(preview.dataUrl);
-      }
-      return false;
-    };
+const isImage = (preview: Preview): boolean => {
+  if (preview.file) {
+    return preview.file.type.startsWith('image/');
+  } else if (preview.dataUrl) {
+    return /\.(jpg|jpeg|png|gif|webp)$/i.test(preview.dataUrl);
+  }
+  return false;
+};
 
-    return {
-      files,
-      previews,
-      dragOver,
-      hasFiles,
-      acceptMIME,
-      triggerFileSelect,
-      handleFileChange,
-      handleDrop,
-      onDragOver,
-      onDragLeave,
-      addFiles,
-      removeFile,
-      renameFile,
-      isImage,
-      isVideo,
-      fileInput,
-    };
-  },
+const isVideo = (preview: Preview): boolean => {
+  if (preview.file) {
+    return preview.file.type.startsWith('video/');
+  } else if (preview.dataUrl) {
+    return /\.(mp4|webm|ogg|mov|avi)$/i.test(preview.dataUrl);
+  }
+  return false;
 };
 </script>
 

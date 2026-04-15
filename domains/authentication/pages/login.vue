@@ -194,7 +194,7 @@ onMounted(() => {
     language.value = Language.EN;
   }
 
-  authStore.logout();
+  authStore.reset();
 });
 
 const selectMethod = (methodType: 'EMAIL' | 'SMS') => {

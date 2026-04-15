@@ -21,10 +21,8 @@ export default defineNuxtConfig({
 
         // Public keys (exposed to client-side)
         public: {
-            gqlHost: process.env.GQL_HOST || 'https://gamma.ngrok.app/graphql',
-            authOrigin: process.env.AUTH_ORIGIN || 'https://gamma.ngrok.app/api/auth',
-            // ⚠️ TEMP: Set BYPASS_AUTH=true in .env to skip authentication
-            bypassAuth: process.env.BYPASS_AUTH === 'true',
+            gqlHost: process.env.GQL_HOST || 'https://gamma-api.on-forge.com/graphql',
+            authOrigin: process.env.AUTH_ORIGIN || 'https://gamma-api.on-forge.com/api/auth',
         }
     },
 

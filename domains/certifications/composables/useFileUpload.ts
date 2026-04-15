@@ -56,12 +56,13 @@ export const useFileUpload = () => {
 
       // Upload to server
       const config = useRuntimeConfig()
+      const authToken = useCookie<string | null>('auth.token')
       const response = await fetch(`${config.public.gqlHost}/upload`, {
         method: 'POST',
         body: formData,
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth.token')}`
-        }
+        headers: authToken.value
+          ? { Authorization: `Bearer ${authToken.value}` }
+          : {}
       })
 
       // Simulate progress
