@@ -87,20 +87,16 @@ export default defineNuxtConfig({
     },
   ],
 
+  // Admin UI is English only. Bilingual content editing for public-facing
+  // entities (services, blog posts, etc.) happens at the model layer, not via
+  // the i18n module.
   i18n: {
     locales: [
       { code: 'en', iso: 'en-US', name: 'English' },
-      { code: 'fr', iso: 'fr-FR', name: 'Français' },
     ],
     defaultLocale: 'en',
     strategy: 'no_prefix',
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: 'i18n_locale',
-      redirectOn: 'root',
-      alwaysRedirect: false,
-      fallbackLocale: 'en',
-    },
+    detectBrowserLanguage: false,
     vueI18n: './i18n.config.ts',
   },
 

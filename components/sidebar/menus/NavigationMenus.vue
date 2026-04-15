@@ -247,7 +247,7 @@
             <span class="path2"></span>
           </i>
         </span>
-        <span class="menu-title text-danger">Se Déconnecter</span>
+        <span class="menu-title text-danger">Sign out</span>
       </NuxtLink>
     </div>
   </div>

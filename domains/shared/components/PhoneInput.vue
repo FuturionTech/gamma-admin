@@ -34,7 +34,7 @@
             <input
                 type="text"
                 class="form-control form-control-sm border-0 ps-9"
-                placeholder="Rechercher un pays"
+                placeholder="Search a country"
                 v-model="searchQuery"
                 @input="filterCountries"
                 ref="searchInput"
@@ -65,7 +65,7 @@
           <!-- Empty state -->
           <div v-if="filteredCountries.length === 0" class="p-5 text-center text-gray-500">
             <i class="ki-outline ki-information-5 fs-2 mb-2"></i>
-            <div>Aucun pays ne correspond à votre recherche</div>
+            <div>No country matches your search</div>
           </div>
         </div>
       </div>

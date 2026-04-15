@@ -98,8 +98,8 @@ const props = withDefaults(defineProps<Props>(), {
   initialFiles: () => [],
   maxFileSize: Infinity,
   showFileSize: true,
-  dropAreaLabel: 'Cliquer ou glisser-déposer des fichiers ici pour les télécharger',
-  removeButtonLabel: 'Supprimer le fichier',
+  dropAreaLabel: 'Click or drag-and-drop files here to upload',
+  removeButtonLabel: 'Remove file',
   allowRename: false,
   newFileName: null,
 });

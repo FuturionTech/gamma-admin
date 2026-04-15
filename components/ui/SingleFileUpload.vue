@@ -128,24 +128,24 @@ Exemples d'usage:
                         <i class="fas fa-eye me-1"></i>
                         Aperçu
                     </button>
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         class="btn btn-sm btn-outline-danger"
                         @click="removeFile"
                         :disabled="disabled"
                     >
                         <i class="fas fa-trash me-1"></i>
-                        Supprimer
+                        Delete
                     </button>
                 </div>
             </div>
         </div>
-        
-        <!-- Informations de validation -->
+
+        <!-- Validation info -->
         <div v-if="showValidationInfo" class="validation-info mt-2">
             <small class="text-muted">
                 <i class="fas fa-info-circle me-1"></i>
-                Formats acceptés: {{ formatAcceptTypes(accept) }} • Taille max: {{ formatFileSize(maxSize * 1024 * 1024) }}
+                Accepted formats: {{ formatAcceptTypes(accept) }} • Max size: {{ formatFileSize(maxSize * 1024 * 1024) }}
             </small>
         </div>
         

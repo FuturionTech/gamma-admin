@@ -66,11 +66,11 @@ export const useBlogActions = () => {
    */
   const bulkDeletePosts = async (postIds: string[]): Promise<boolean> => {
     if (postIds.length === 0) {
-      showError('Aucun article sélectionné')
+      showError('No article selected')
       return false
     }
 
-    const confirmMessage = `Êtes-vous sûr de vouloir supprimer ${postIds.length} article(s) ?`
+    const confirmMessage = `Are you sure you want to delete ${postIds.length} article(s)?`
     const warningMessage = t('blog.messages.deleteWarning')
 
     const confirmed = confirm(`${confirmMessage}\n\n${warningMessage}`)
@@ -81,7 +81,7 @@ export const useBlogActions = () => {
 
     try {
       await blogStore.bulkDelete(postIds)
-      showSuccess(`${postIds.length} article(s) supprimé(s) avec succès`)
+      showSuccess(`${postIds.length} article(s) deleted successfully`)
       return true
     } catch (error: any) {
       showError(error.message || t('blog.messages.deleteFailed'))
@@ -96,7 +96,7 @@ export const useBlogActions = () => {
     const posts = blogStore.filteredPosts
 
     if (posts.length === 0) {
-      showError('Aucune donnée à exporter')
+      showError('No data to export')
       return
     }
 

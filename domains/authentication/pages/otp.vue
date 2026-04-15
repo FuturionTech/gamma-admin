@@ -99,19 +99,17 @@ import { useRoute, useRouter } from 'vue-router';
 import { UserType } from '~/domains/shared/types/user';
 import { useAuthenticationStore } from '~/domains/authentication/stores/useAuthenticationStore';
 import type { OtpMethod } from '~/domains/shared/types/authentication';
-import {Language} from "~/domains/shared/types/language";
+import { Language } from '~/domains/shared/types/language';
 
 definePageMeta({
   layout: 'auth',
-  auth: false
+  auth: false,
 });
 
-const {signIn} = useAuth();
+const { signIn } = useAuth();
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthenticationStore();
-
-const language = ref<Language>(Language.FR);
 
 const method = ref<OtpMethod | null>(null);
 const identifier = ref('');
@@ -122,28 +120,14 @@ const resendEnabled = ref(true);
 const resendCountdown = ref(30);
 
 onMounted(() => {
+  method.value = (route.query.method as OtpMethod) || authStore.method;
+  identifier.value = (route.query.identifier as string) || authStore.identifier || '';
 
-  // Get browser language (returns something like 'fr', 'en-US', etc.)
-  const browserLang = navigator.language || (navigator as any).userLanguage;
-
-  // Check if browser language starts with 'fr' (for fr, fr-FR, fr-CA, etc.)
-  if (browserLang.toLowerCase().startsWith('fr')) {
-    language.value = Language.FR;
-  } else {
-    language.value = Language.EN;
-  }
-
-  // Try to get from route query first, then fallback to store
-  method.value = (route.query.method as OtpMethod) || authStore.getMethod;
-  identifier.value = (route.query.identifier as string) || authStore.getIdentifier || '';
-  
-  // If still no method/identifier, redirect to login
   if (!method.value || !identifier.value) {
     router.push('/login');
     return;
   }
-  
-  // Start resend countdown
+
   startResendCountdown();
 });
 
@@ -281,7 +265,8 @@ const resendOTP = async () => {
     const response = await authStore.requestOtp({
       identifier: identifier.value,
       method: method.value,
-      language: language.value
+      userType: UserType.ADMINISTRATOR,
+      language: Language.EN,
     });
     
     if (!response.success) {

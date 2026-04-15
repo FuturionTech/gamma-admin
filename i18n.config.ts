@@ -1,4 +1,3 @@
-import fr from './locales/fr.json'
 import en from './locales/en.json'
 
 export default defineI18nConfig(() => ({
@@ -7,6 +6,5 @@ export default defineI18nConfig(() => ({
   fallbackLocale: 'en',
   messages: {
     en,
-    fr
   },
 }))

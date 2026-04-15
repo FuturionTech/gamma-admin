@@ -161,13 +161,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { ref, onMounted } from 'vue';
 import PhoneInput from '~/domains/shared/components/PhoneInput.vue';
-import { UserType } from '~/domains/shared/types/user';
 import { useAuthenticationStore } from '~/domains/authentication/stores/useAuthenticationStore';
-import type {OtpMethod} from '~/domains/shared/types/authentication';
-import {Language} from "~/domains/shared/types/language";
+import type { OtpMethod } from '~/domains/shared/types/authentication';
+import { Language } from '~/domains/shared/types/language';
+import { UserType } from '~/domains/shared/types/user';
 
 definePageMeta({
   layout: 'auth',
@@ -175,25 +174,13 @@ definePageMeta({
 });
 
 const authStore = useAuthenticationStore();
-const language = ref<Language>(Language.FR);
 
 const method = ref<OtpMethod | null>(null);
 const identifier = ref('');
 const errorMessage = ref<string | null>(null);
 const loading = ref(false);
 
-// Clear any existing auth state when loading login page
 onMounted(() => {
-  // Get browser language (returns something like 'fr', 'en-US', etc.)
-  const browserLang = navigator.language || (navigator as any).userLanguage;
-
-  // Check if browser language starts with 'fr' (for fr, fr-FR, fr-CA, etc.)
-  if (browserLang.toLowerCase().startsWith('fr')) {
-    language.value = Language.FR;
-  } else {
-    language.value = Language.EN;
-  }
-
   authStore.reset();
 });
 
@@ -240,7 +227,8 @@ const handleSubmit = async () => {
     const response = await authStore.requestOtp({
       identifier: identifier.value,
       method: method.value,
-      language: Language.FR
+      userType: UserType.ADMINISTRATOR,
+      language: Language.EN,
     });
 
     if (response.success) {

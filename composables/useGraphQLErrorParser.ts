@@ -1,26 +1,21 @@
-// useGraphQLErrorParser.ts
-
 export function useGraphQLErrorParser() {
     function parse(error: any): string {
-        if (!error) return 'Une erreur inconnue est survenue.';
+        if (!error) return 'An unknown error occurred.';
 
         const messages: string[] = [];
 
-        // GraphQL errors
         if (Array.isArray(error.graphQLErrors)) {
             error.graphQLErrors.forEach((err: any) => {
                 const debugMsg = err.extensions?.debugMessage || '';
                 const userMsg = convertDebugMessageToUserMessage(debugMsg);
-                messages.push(userMsg || err.message || 'Erreur GraphQL inconnue');
+                messages.push(userMsg || err.message || 'Unknown GraphQL error.');
             });
         }
 
-        // Network error
         if (error.networkError) {
-            messages.push(`Erreur réseau : ${error.networkError.message}`);
+            messages.push(`Network error: ${error.networkError.message}`);
         }
 
-        // Generic error message
         if (messages.length === 0 && error.message) {
             messages.push(error.message);
         }
@@ -33,19 +28,18 @@ export function useGraphQLErrorParser() {
         if (match) {
             const field = match[2];
             const label = fieldToLabel(field);
-            return `Le champ "${label}" ne peut pas être vide.`;
+            return `The "${label}" field cannot be empty.`;
         }
         return null;
     }
 
     function fieldToLabel(field: string): string {
-        // Tu peux personnaliser ce mapping si tu veux des labels plus jolis
         const labels: Record<string, string> = {
-            author_name: 'Nom de l’auteur',
-            author_position: 'Poste',
-            author_company: 'Entreprise',
-            content: 'Contenu',
-            rating: 'Note',
+            author_name: 'Author name',
+            author_position: 'Position',
+            author_company: 'Company',
+            content: 'Content',
+            rating: 'Rating',
             image_path: 'Image',
         };
         return labels[field] || field;

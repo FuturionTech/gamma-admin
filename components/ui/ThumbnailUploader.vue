@@ -34,7 +34,7 @@
                 <!--begin::Cancel-->
                 <span v-if="currentImageUrl"
                     class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Annuler l'image"
+                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel image"
                     @click="cancel">
                     <i class="ki-duotone ki-cross fs-2">
                         <span class="path1"></span>
@@ -45,7 +45,7 @@
                 <!--begin::Remove-->
                 <span v-if="currentImageUrl"
                     class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
-                    data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Supprimer l'image"
+                    data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove image"
                     @click="remove">
                     <i class="ki-duotone ki-cross fs-2">
                         <span class="path1"></span>

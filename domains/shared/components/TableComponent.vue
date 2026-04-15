@@ -127,9 +127,9 @@
                 <button
                     class="page-link"
                     @click="goToPage(paginator.currentPage - 1)"
-                    aria-label="Précédent"
+                    aria-label="Previous"
                 >
-                  Précédent
+                  Previous
                 </button>
               </li>
               <li
@@ -152,9 +152,9 @@
                 <button
                     class="page-link"
                     @click="goToPage(paginator.currentPage + 1)"
-                    aria-label="Suivant"
+                    aria-label="Next"
                 >
-                  Suivant
+                  Next
                 </button>
               </li>
             </ul>
@@ -295,12 +295,12 @@ const paginationRange = computed(() => {
 const bulkDeleteActionHandler = async () => {
   if (!props.bulkDeleteAction) return;
   const result = await Swal.fire({
-    text: `Êtes-vous sûr de vouloir supprimer ${selectedItems.value.length} élément(s) sélectionné(s) ?`,
+    text: `Are you sure you want to delete ${selectedItems.value.length} selected item(s)?`,
     icon: 'warning',
     showCancelButton: true,
     buttonsStyling: false,
-    confirmButtonText: 'Oui, supprimer!',
-    cancelButtonText: 'Non, annuler',
+    confirmButtonText: 'Yes, delete',
+    cancelButtonText: 'No, cancel',
     customClass: {
       confirmButton: 'btn fw-bold btn-danger',
       cancelButton: 'btn fw-bold btn-active-light-primary',
@@ -311,10 +311,10 @@ const bulkDeleteActionHandler = async () => {
     const response = await props.bulkDeleteAction(selectedItems.value);
     if (response.success) {
       await Swal.fire({
-        text: `Les éléments sélectionnés ont été supprimés!`,
+        text: `Selected items have been deleted.`,
         icon: 'success',
         buttonsStyling: false,
-        confirmButtonText: 'Ok, compris!',
+        confirmButtonText: 'OK',
         customClass: {
           confirmButton: 'btn fw-bold btn-primary',
         },
@@ -323,10 +323,10 @@ const bulkDeleteActionHandler = async () => {
       await fetchDataInternal(paginator.value?.currentPage || 1);
     } else {
       await Swal.fire({
-        text: response.error || 'Erreur lors de la suppression.',
+        text: response.error || 'Error while deleting.',
         icon: 'error',
         buttonsStyling: false,
-        confirmButtonText: 'Ok, compris!',
+        confirmButtonText: 'OK',
         customClass: {
           confirmButton: 'btn fw-bold btn-primary',
         },
@@ -337,12 +337,12 @@ const bulkDeleteActionHandler = async () => {
 const deleteItem = async (id: string, name: string) => {
   if (!props.singleDeleteAction) return;
   const result = await Swal.fire({
-    text: `Êtes-vous sûr de vouloir supprimer ${name} ?`,
+    text: `Are you sure you want to delete ${name}?`,
     icon: 'warning',
     showCancelButton: true,
     buttonsStyling: false,
-    confirmButtonText: 'Oui, supprimer!',
-    cancelButtonText: 'Non, annuler',
+    confirmButtonText: 'Yes, delete',
+    cancelButtonText: 'No, cancel',
     customClass: {
       confirmButton: 'btn fw-bold btn-danger',
       cancelButton: 'btn fw-bold btn-active-light-primary',
@@ -353,10 +353,10 @@ const deleteItem = async (id: string, name: string) => {
     const response = await props.singleDeleteAction(id, name);
     if (response.success) {
       await Swal.fire({
-        text: `${name} a été supprimé!`,
+        text: `${name} has been deleted.`,
         icon: 'success',
         buttonsStyling: false,
-        confirmButtonText: 'Ok, compris!',
+        confirmButtonText: 'OK',
         customClass: {
           confirmButton: 'btn fw-bold btn-primary',
         },
@@ -364,10 +364,10 @@ const deleteItem = async (id: string, name: string) => {
       await fetchDataInternal(paginator.value?.currentPage || 1);
     } else {
       await Swal.fire({
-        text: response.error || 'Erreur lors de la suppression.',
+        text: response.error || 'Error while deleting.',
         icon: 'error',
         buttonsStyling: false,
-        confirmButtonText: 'Ok, compris!',
+        confirmButtonText: 'OK',
         customClass: {
           confirmButton: 'btn fw-bold btn-primary',
         },
