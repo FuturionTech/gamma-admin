@@ -1,248 +1,128 @@
 <template>
-  <div>
-    <div class="d-flex flex-center flex-column flex-lg-row-fluid">
-      <div class="w-lg-500px p-10">
-        <form @submit.prevent="handleSubmit" class="form w-100" novalidate>
-          <div class="text-center mb-7">
-            <div class="brand-logo mb-5">
-              <img alt="Gamma Neutral Consulting" src="/assets/media/logos/logo.png" class="h-80px" />
-            </div>
+  <div class="auth-card">
+    <header class="auth-card__header">
+      <span class="auth-card__eyebrow">{{ $t('auth.login.eyebrow') }}</span>
+      <h1 class="auth-card__title">{{ $t('auth.login.title') }}</h1>
+      <p class="auth-card__subtitle">{{ $t('auth.login.subtitle') }}</p>
+    </header>
 
-            <h1 class="text-dark fw-bolder mb-2 fs-2x">
-              Welcome
-            </h1>
+    <form class="auth-card__form" novalidate @submit.prevent="handleSubmit">
+      <p class="auth-card__description">{{ $t('auth.login.description') }}</p>
 
-            <div class="fs-6 text-gray-600 mb-1">Administration Panel</div>
-            <div class="fs-5 fw-semibold text-primary mb-1">Gamma Neutral Consulting</div>
-            <div class="fs-7 text-gray-500 fst-italic">Your Data Solutions</div>
-          </div>
-
-          <div class="card auth-card mb-8">
-            <div class="card-header border-0 pt-8 pb-0">
-              <h2 class="card-title text-dark fw-bold fs-3">Sign in to your account</h2>
-            </div>
-            <div class="card-body p-8 pt-3">
-              <p class="text-gray-600 fs-6 mb-7">
-                Choose a method to receive a one-time verification code (OTP)
-              </p>
-              
-              <div class="method-selector mb-8">
-                <div class="row gx-3 gy-3">
-                  <div class="col-6">
-                    <div 
-                      :class="['method-option', method === 'EMAIL' ? 'method-active' : '']" 
-                      @click="selectMethod('EMAIL')"
-                    >
-                      <div class="option-icon">
-                        <i class="ki-outline ki-sms fs-1"></i>
-                      </div>
-                      <div class="option-name">Email</div>
-                      <input
-                        class="form-check-input visually-hidden"
-                        type="radio"
-                        name="method"
-                        id="methodEmail"
-                        value="EMAIL"
-                        v-model="method"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div class="col-6">
-                    <div 
-                      :class="['method-option', method === 'SMS' ? 'method-active' : '']" 
-                      @click="selectMethod('SMS')"
-                    >
-                      <div class="option-icon">
-                        <i class="ki-outline ki-call fs-1"></i>
-                      </div>
-                      <div class="option-name">SMS</div>
-                      <input
-                        class="form-check-input visually-hidden"
-                        type="radio"
-                        name="method"
-                        id="methodSMS"
-                        value="SMS"
-                        v-model="method"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Input fields -->
-              <div class="mb-8">
-                <transition name="fade" mode="out-in">
-                  <div v-if="method === 'EMAIL'" key="email">
-                    <label class="form-label fs-6 fw-medium text-gray-700">Your email address</label>
-                    <div class="input-group">
-                      <span class="input-group-text">
-                        <i class="ki-outline ki-sms fs-3 text-gray-500"></i>
-                      </span>
-                      <input
-                        type="email"
-                        placeholder="example@domain.com"
-                        name="email"
-                        autocomplete="email"
-                        class="form-control form-control-lg"
-                        v-model="identifier"
-                        required
-                      />
-                    </div>
-                    <div class="text-gray-500 fs-7 mt-2">
-                      <i class="ki-outline ki-information-5 fs-7 me-1"></i>
-                      A code will be sent to this address to verify your identity
-                    </div>
-                  </div>
-
-                  <div v-else-if="method === 'SMS'" key="sms">
-                    <label class="form-label fs-6 fw-medium text-gray-700">Your phone number</label>
-                    <PhoneInput
-                      v-model="identifier"
-                      placeholder="+1 XX XX XX XX"
-                      class="phone-input"
-                      required
-                    />
-                    <div class="text-gray-500 fs-7 mt-2">
-                      <i class="ki-outline ki-information-5 fs-7 me-1"></i>
-                      A code will be sent to this number to verify your identity
-                    </div>
-                  </div>
-
-                  <div v-else key="select">
-                    <div class="d-flex flex-column align-items-center py-5">
-                      <div class="empty-state-icon mb-4">
-                        <i class="ki-outline ki-message-notif fs-3x text-primary"></i>
-                      </div>
-                      <div class="text-gray-600 fs-6 text-center">
-                        Select Email or SMS to receive your sign-in code
-                      </div>
-                    </div>
-                  </div>
-                </transition>
-              </div>
-
-              <!-- Error message -->
-              <div v-if="errorMessage" class="alert alert-danger d-flex p-4 mb-6">
-                <i class="ki-outline ki-shield-cross fs-2 text-danger me-3"></i>
-                <div>
-                  {{ errorMessage }}
-                </div>
-              </div>
-
-              <!-- Action buttons -->
-              <div class="d-flex justify-content-center mt-7">
-                <button
-                  type="submit"
-                  class="btn btn-primary btn-sm fw-semibold px-10 py-3"
-                  :disabled="loading || !method"
-                >
-                  <span v-if="!loading" class="indicator-label">
-                    Continue
-                  </span>
-                  <span v-else class="indicator-progress">
-                    <span class="spinner-border spinner-border-sm align-middle"></span>
-                    <span class="ms-2">Please wait...</span>
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="text-center fs-7 text-gray-500 mt-6">
-            <span class="text-gray-600">Having trouble?</span>
-            <a href="#" class="text-primary fw-medium ms-1">Contact support</a>
-          </div>
-          
-        </form>
+      <div class="auth-card__field">
+        <label for="login-email" class="auth-card__label">{{ $t('auth.login.emailLabel') }}</label>
+        <div class="auth-input" :class="{ 'auth-input--focused': emailFocused, 'auth-input--error': showError }">
+          <span class="auth-input__icon" aria-hidden="true" v-html="mailIcon" />
+          <input
+            id="login-email"
+            v-model.trim="identifier"
+            type="email"
+            inputmode="email"
+            autocomplete="email"
+            spellcheck="false"
+            :placeholder="$t('auth.login.emailPlaceholder')"
+            class="auth-input__control"
+            @focus="emailFocused = true"
+            @blur="emailFocused = false"
+          />
+        </div>
+        <p class="auth-card__helper">{{ $t('auth.login.helper.email') }}</p>
       </div>
-    </div>
+
+      <transition name="auth-slide">
+        <div v-if="errorMessage" class="auth-card__error" role="alert">
+          <span class="auth-card__error-icon" aria-hidden="true" v-html="alertIcon" />
+          <span>{{ errorMessage }}</span>
+        </div>
+      </transition>
+
+      <button
+        type="submit"
+        class="auth-card__submit"
+        :disabled="loading || !canSubmit"
+      >
+        <span v-if="!loading">{{ $t('auth.login.submit') }}</span>
+        <span v-else class="auth-card__submit-loading">
+          <span class="auth-card__spinner" aria-hidden="true" />
+          {{ $t('auth.login.submitting') }}
+        </span>
+      </button>
+
+      <p class="auth-card__meta">
+        <span>{{ $t('auth.login.support') }}</span>
+        <a href="#" class="auth-card__meta-link">{{ $t('auth.login.supportAction') }}</a>
+      </p>
+    </form>
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ref, onMounted } from 'vue';
-import PhoneInput from '~/domains/shared/components/PhoneInput.vue';
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useAuthenticationStore } from '~/domains/authentication/stores/useAuthenticationStore';
-import type { OtpMethod } from '~/domains/shared/types/authentication';
-import { Language } from '~/domains/shared/types/language';
 
 definePageMeta({
   layout: 'auth',
   auth: false,
 });
 
+const { t, locale } = useI18n();
 const authStore = useAuthenticationStore();
 
-const method = ref<OtpMethod | null>(null);
+const mailIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h13A2.5 2.5 0 0 1 21 7.5v9A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5v-9Z"/><path d="m3.5 7.5 7.54 5.26a2 2 0 0 0 2.25 0L20.5 7.5"/></svg>`;
+const alertIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>`;
+
 const identifier = ref('');
+const emailFocused = ref(false);
 const errorMessage = ref<string | null>(null);
 const loading = ref(false);
+
+const showError = computed(() => !!errorMessage.value);
+
+const currentLanguage = computed<'EN' | 'FR'>(() => (locale.value === 'fr' ? 'FR' : 'EN'));
+
+const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+const canSubmit = computed(() => isValidEmail(identifier.value));
 
 onMounted(() => {
   authStore.reset();
 });
 
-const selectMethod = (methodType: 'EMAIL' | 'SMS') => {
-  method.value = methodType;
-  identifier.value = '';
-  errorMessage.value = null;
-};
-
-const validateEmail = (email: string) => {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-};
-
-// const validatePhone = (phone: string) => {
-//   // Validate phone number format (+XXX XX XX XX XX)
-//   return /^\+\d{1,4}\s\d{2}\s\d{2}\s\d{2}\s\d{2}$/.test(phone);
-// };
-const validatePhone = (phone: string) => {
-  // Accepts + followed by 9-15 digits (common international format)
-  return /^\+\d{9,15}$/.test(phone);
-};
+watch(identifier, () => {
+  if (errorMessage.value) errorMessage.value = null;
+});
 
 const handleSubmit = async () => {
-  if (!method.value) {
-    errorMessage.value = 'Please select a verification method.';
-    return;
-  }
-
-  // Reset error message
   errorMessage.value = null;
 
-  // Validate input based on method
-  if (method.value === 'EMAIL' && !validateEmail(identifier.value)) {
-    errorMessage.value = 'Please enter a valid email address.';
-    return;
-  } else if (method.value === 'SMS' && !validatePhone(identifier.value)) {
-    errorMessage.value = 'Please enter a valid phone number.';
+  if (!isValidEmail(identifier.value)) {
+    errorMessage.value = t('auth.login.errors.invalidEmail');
     return;
   }
-  
+
   loading.value = true;
-  
   try {
     const response = await authStore.requestOtp({
       identifier: identifier.value,
-      method: method.value,
-      language: Language.EN,
+      method: 'EMAIL',
+      language: currentLanguage.value,
     });
 
     if (response.success) {
-      // Redirect to OTP page with the identifier and method
       await navigateTo({
         path: '/otp',
         query: {
-          method: method.value,
-          identifier: identifier.value
-        }
+          method: 'EMAIL',
+          identifier: identifier.value,
+        },
       });
-    } else {
-      errorMessage.value = response.error || 'An error occurred while requesting the code.';
+      return;
     }
-  } catch (error: any) {
-    errorMessage.value = 'An error occurred. Please try again.';
+
+    errorMessage.value = response.error || t('auth.login.errors.generic');
+  } catch {
+    errorMessage.value = t('auth.login.errors.unknown');
   } finally {
     loading.value = false;
   }
@@ -250,131 +130,282 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-/* Logo styling */
-.brand-logo {
-  padding: 10px;
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  color: #f5f5f7;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.auth-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.auth-card__eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #a78bfa;
+}
+
+.auth-card__title {
+  margin: 0;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: clamp(2rem, 3.4vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.028em;
+  color: #ffffff;
+}
+
+.auth-card__subtitle {
+  margin: 0;
+  font-size: 1rem;
+  color: rgba(245, 245, 247, 0.72);
+  line-height: 1.5;
+}
+
+.auth-card__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.auth-card__description {
+  margin: 0 0 -0.35rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: rgba(245, 245, 247, 0.6);
+}
+
+.auth-card__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.auth-card__label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: rgba(245, 245, 247, 0.72);
+  text-transform: uppercase;
+}
+
+.auth-card__helper {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(245, 245, 247, 0.5);
+  line-height: 1.45;
+}
+
+.auth-input {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.auth-input:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.auth-input--focused {
+  border-color: rgba(167, 139, 250, 0.65);
+  background: rgba(167, 139, 250, 0.07);
+  box-shadow:
+    0 0 0 4px rgba(139, 92, 246, 0.15),
+    0 12px 32px -12px rgba(124, 58, 237, 0.5);
+  transform: translateY(-1px);
+}
+
+.auth-input--error {
+  border-color: rgba(248, 113, 113, 0.55);
+  background: rgba(248, 113, 113, 0.06);
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.15);
+}
+
+.auth-input__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: rgba(245, 245, 247, 0.55);
+  transition: color 0.25s ease;
 }
 
-/* Card styling */
-.auth-card {
-  border: none;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.03);
-  border-radius: 12px;
-}
-
-.card-header {
-  background: transparent;
-}
-
-/* Method selector styling */
-.method-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 22px 15px;
-  border-radius: 8px;
-  border: 1px solid #f1f1f4;
-  background-color: #f9f9f9;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.method-option:hover {
-  background-color: #f5f8fa;
-  border-color: #eaecf0;
-}
-
-.method-active {
-  background-color: rgba(139, 92, 246, 0.04);
-  border-color: rgba(139, 92, 246, 0.3);
-}
-
-.option-icon {
-  margin-bottom: 12px;
-  color: #7E8299;
-}
-
-.method-active .option-icon {
-  color: #8b5cf6;
-}
-
-.option-name {
-  font-weight: 500;
-  font-size: 0.9rem;
-  color: #3F4254;
-}
-
-.method-active .option-name {
-  color: #8b5cf6;
-  font-weight: 600;
-}
-
-.empty-state-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: rgba(139, 92, 246, 0.05);
-}
-
-/* Form styling */
-.form-control {
-  height: calc(3.25rem + 2px);
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  border-radius: 0.5rem;
-  border-color: #e4e6ef;
-}
-
-.form-control:focus {
-  border-color: rgba(139, 92, 246, 0.4);
-  box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.15);
-}
-
-.phone-input {
+.auth-input__icon :deep(svg) {
   width: 100%;
-  min-height: calc(3.25rem + 2px);
-  font-size: 1rem;
+  height: 100%;
+}
+
+.auth-input--focused .auth-input__icon {
+  color: #a78bfa;
+}
+
+.auth-input__control {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  padding: 0.95rem 0;
+  font-size: 0.98rem;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  line-height: 1.4;
+  outline: none;
+  font-family: inherit;
+  min-width: 0;
+}
+
+.auth-input__control::placeholder {
+  color: rgba(245, 245, 247, 0.35);
   font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #e4e6ef;
-  border-radius: 0.5rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.phone-input:focus-within {
-  border-color: rgba(139, 92, 246, 0.4);
-  box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.15);
-  outline: 0;
+.auth-card__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  border-radius: 12px;
+  color: #fca5a5;
+  font-size: 0.88rem;
+  line-height: 1.45;
 }
 
-.input-group-text {
-  background-color: #f5f8fa;
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
-  border-color: #e4e6ef;
-  border-right: 0;
-  padding: 0 1rem;
+.auth-card__error-icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
 }
 
-/* Transition animation */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s, transform 0.3s;
+.auth-card__error-icon :deep(svg) {
+  width: 100%;
+  height: 100%;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.auth-card__submit {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  height: 54px;
+  padding: 0 1.75rem;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 50%, #6d28d9 100%);
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow:
+    0 18px 40px -18px rgba(124, 58, 237, 0.75),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  transition:
+    transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.3s ease,
+    filter 0.25s ease;
+}
+
+.auth-card__submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow:
+    0 24px 48px -20px rgba(124, 58, 237, 0.85),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+}
+
+.auth-card__submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.auth-card__submit:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.4) brightness(0.85);
+  box-shadow: none;
+}
+
+.auth-card__submit:focus-visible {
+  outline: 2px solid rgba(167, 139, 250, 0.9);
+  outline-offset: 3px;
+}
+
+.auth-card__submit-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.auth-card__spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  animation: auth-spin 0.8s linear infinite;
+}
+
+.auth-card__meta {
+  margin: 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(245, 245, 247, 0.55);
+}
+
+.auth-card__meta-link {
+  color: #a78bfa;
+  text-decoration: none;
+  margin-left: 0.35rem;
+  font-weight: 500;
+  transition: color 0.25s ease;
+}
+
+.auth-card__meta-link:hover {
+  color: #c4b5fd;
+}
+
+@keyframes auth-spin {
+  to { transform: rotate(360deg); }
+}
+
+.auth-slide-enter-active,
+.auth-slide-leave-active {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.auth-slide-enter-from {
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(8px);
+}
+
+.auth-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
 }
 </style>
