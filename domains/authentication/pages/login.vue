@@ -166,7 +166,6 @@ import PhoneInput from '~/domains/shared/components/PhoneInput.vue';
 import { useAuthenticationStore } from '~/domains/authentication/stores/useAuthenticationStore';
 import type { OtpMethod } from '~/domains/shared/types/authentication';
 import { Language } from '~/domains/shared/types/language';
-import { UserType } from '~/domains/shared/types/user';
 
 definePageMeta({
   layout: 'auth',
@@ -227,7 +226,6 @@ const handleSubmit = async () => {
     const response = await authStore.requestOtp({
       identifier: identifier.value,
       method: method.value,
-      userType: UserType.ADMINISTRATOR,
       language: Language.EN,
     });
 

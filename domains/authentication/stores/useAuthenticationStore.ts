@@ -7,7 +7,6 @@ import type {
   RequestOtpResult,
 } from '~/domains/shared/types/authentication';
 import type { NetworkResponse } from '~/domains/shared/types/network';
-import { UserType } from '~/domains/shared/types/user';
 
 /**
  * Transient state for the OTP sign-in flow only.
@@ -18,7 +17,6 @@ export const useAuthenticationStore = defineStore('authentication', {
   state: () => ({
     method: null as OtpMethod | null,
     identifier: '',
-    userType: null as UserType | null,
   }),
 
   getters: {
@@ -26,15 +24,12 @@ export const useAuthenticationStore = defineStore('authentication', {
       const { status } = useAuth();
       return status.value === 'authenticated';
     },
-    getMethod: (state) => state.method,
-    getIdentifier: (state) => state.identifier,
   },
 
   actions: {
     async requestOtp(input: RequestOtpInput): Promise<NetworkResponse<RequestOtpResult>> {
       this.method = input.method;
       this.identifier = input.identifier;
-      this.userType = input.userType;
 
       try {
         const { mutate } = useMutation<RequestOtpResult>(requestOtpMutation);
@@ -73,7 +68,6 @@ export const useAuthenticationStore = defineStore('authentication', {
     reset() {
       this.method = null;
       this.identifier = '';
-      this.userType = null;
     },
   },
 });

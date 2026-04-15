@@ -96,7 +96,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { UserType } from '~/domains/shared/types/user';
 import { useAuthenticationStore } from '~/domains/authentication/stores/useAuthenticationStore';
 import type { OtpMethod } from '~/domains/shared/types/authentication';
 import { Language } from '~/domains/shared/types/language';
@@ -265,7 +264,6 @@ const resendOTP = async () => {
     const response = await authStore.requestOtp({
       identifier: identifier.value,
       method: method.value,
-      userType: UserType.ADMINISTRATOR,
       language: Language.EN,
     });
     

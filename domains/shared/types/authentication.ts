@@ -1,12 +1,9 @@
-import type {UserType} from "~/domains/shared/types/user";
-
 export type OtpMethod = 'EMAIL' | 'SMS';
 
 export interface RequestOtpInput {
     identifier: string;
-    userType: UserType;
     method: OtpMethod;
-    language?: string;
+    language: 'EN' | 'FR';
 }
 
 export interface RequestOtpResult {
@@ -18,8 +15,8 @@ export interface RequestOtpResult {
 
 export interface VerifyOtpInput {
     identifier: string;
-    userType: UserType;
-    code: string;
+    otp_code: string;
+    method: OtpMethod;
 }
 
 export interface VerifyOtpResult {
