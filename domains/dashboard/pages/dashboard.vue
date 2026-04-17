@@ -79,28 +79,19 @@
               <div class="col-xl-3 col-md-6">
                 <div class="gn-insight gn-insight--primary">
                   <div class="gn-insight__icon">
-                    <i class="ki-duotone ki-setting-2 fs-2x">
-                      <span class="path1"></span><span class="path2"></span>
-                    </i>
+                    <i class="ki-duotone ki-setting-2 fs-2x"><span class="path1"></span><span class="path2"></span></i>
                   </div>
                   <div>
-                    <div class="gn-insight__value">{{ counts.services + counts.solutions }}</div>
-                    <div class="gn-insight__label">Active Offerings</div>
-                    <div class="gn-insight__hint">{{ counts.services }} services · {{ counts.solutions }} solutions</div>
+                    <div class="gn-insight__value">{{ counts.services }}</div>
+                    <div class="gn-insight__label">Services</div>
+                    <div class="gn-insight__hint">Active consulting services</div>
                   </div>
                 </div>
               </div>
-
-              <!-- Blog hidden — no blog page on gamma-web yet -->
-
               <div class="col-xl-3 col-md-6">
                 <div class="gn-insight gn-insight--success">
                   <div class="gn-insight__icon">
-                    <i class="ki-duotone ki-people fs-2x">
-                      <span class="path1"></span><span class="path2"></span>
-                      <span class="path3"></span><span class="path4"></span>
-                      <span class="path5"></span>
-                    </i>
+                    <i class="ki-duotone ki-people fs-2x"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
                   </div>
                   <div>
                     <div class="gn-insight__value">{{ counts.team }}</div>
@@ -109,13 +100,10 @@
                   </div>
                 </div>
               </div>
-
               <div class="col-xl-3 col-md-6">
                 <div class="gn-insight gn-insight--warning">
                   <div class="gn-insight__icon">
-                    <i class="ki-duotone ki-sms fs-2x">
-                      <span class="path1"></span><span class="path2"></span>
-                    </i>
+                    <i class="ki-duotone ki-sms fs-2x"><span class="path1"></span><span class="path2"></span></i>
                   </div>
                   <div>
                     <div class="gn-insight__value">{{ counts.contactRequests }}</div>
@@ -124,77 +112,78 @@
                   </div>
                 </div>
               </div>
+              <div class="col-xl-3 col-md-6">
+                <div class="gn-insight gn-insight--info">
+                  <div class="gn-insight__icon">
+                    <i class="ki-duotone ki-question fs-2x"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                  </div>
+                  <div>
+                    <div class="gn-insight__value">{{ counts.faqs }}</div>
+                    <div class="gn-insight__label">FAQs</div>
+                    <div class="gn-insight__hint">Published questions</div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <!-- Section: Content -->
+            <!-- Section: Content & Taxonomy -->
             <div class="d-flex flex-wrap align-items-end justify-content-between mb-4">
               <div>
-                <h2 class="gn-section-title mb-1">Content library</h2>
-                <div class="gn-section-subtitle">All published assets across the Gamma Neutral site</div>
+                <h2 class="gn-section-title mb-1">Content & Taxonomy</h2>
+                <div class="gn-section-subtitle">Services, industries, methodology, and compliance on the public site</div>
               </div>
-              <NuxtLink to="/blog/list" class="btn btn-sm btn-light-primary">Manage content</NuxtLink>
+              <NuxtLink to="/services" class="btn btn-sm btn-light-primary">Manage services</NuxtLink>
             </div>
 
             <div class="row g-5 g-xl-6 mb-6 mb-xl-10">
               <div class="col-xl-3 col-md-6">
-                <MetricCard title="Services" :count="counts.services" icon="ki-duotone ki-setting-2" color="#7239EA" link="/services/list" />
+                <MetricCard title="Services" :count="counts.services" icon="ki-duotone ki-setting-2" color="#7239EA" link="/services" />
               </div>
-              <!-- Solutions hidden — no dedicated page on gamma-web yet -->
-              <div class="col-xl-3 col-md-6">
-                <!-- Blog metric hidden — no blog page on gamma-web yet -->
-              </div>
-            </div>
-
-            <!-- Section: Operations -->
-            <div class="d-flex flex-wrap align-items-end justify-content-between mb-4">
-              <div>
-                <h2 class="gn-section-title mb-1">Operations & People</h2>
-                <div class="gn-section-subtitle">Team and customer engagement</div>
-              </div>
-              <NuxtLink to="/contact-requests" class="btn btn-sm btn-light-primary">Review inquiries</NuxtLink>
-            </div>
-
-            <div class="row g-5 g-xl-6 mb-6 mb-xl-10">
-              <div class="col-xl-3 col-md-6">
-                <MetricCard title="Team Members" :count="counts.team" icon="ki-duotone ki-people" color="#FFC700" link="/team/list" />
-              </div>
-              <!-- Partners, Clients hidden — features not yet on gamma-web frontend -->
-              <div class="col-xl-3 col-md-6">
-                <MetricCard title="Contact Requests" :count="counts.contactRequests" icon="ki-duotone ki-sms" color="#009EF7" link="/contact-requests" :subtitle="contactSubtitle" />
-              </div>
-            </div>
-
-            <div class="row g-5 g-xl-6 mb-6 mb-xl-10">
-              <!-- Testimonials hidden — feature not yet on gamma-web frontend -->
-              <div class="col-xl-3 col-md-6">
-                <MetricCard title="Certifications" :count="counts.certifications" icon="ki-duotone ki-shield-tick" color="#FFC700" link="/certifications" />
-              </div>
-              <div class="col-xl-3 col-md-6">
-                <MetricCard title="FAQs" :count="counts.faqs" icon="ki-duotone ki-question" color="#7239EA" link="/faqs/list" />
-              </div>
-              <div class="col-xl-3 col-md-6">
-                <MetricCard title="Job Positions" :count="counts.jobPositions" icon="ki-duotone ki-rocket" color="#17C653" link="/careers" :subtitle="jobSubtitle" />
-              </div>
-            </div>
-
-            <!-- Section: Taxonomy -->
-            <div class="row g-5 g-xl-6 mb-6 mb-xl-10">
               <div class="col-xl-3 col-md-6">
                 <MetricCard title="Industries" :count="counts.industries" icon="ki-duotone ki-bank" color="#50CD89" link="/industries" />
               </div>
               <div class="col-xl-3 col-md-6">
                 <MetricCard title="Process Steps" :count="counts.processSteps" icon="ki-duotone ki-chart" color="#009EF7" link="/process-steps" />
               </div>
-              <div class="col-xl-6 d-none d-xl-block">
+              <div class="col-xl-3 col-md-6">
+                <MetricCard title="Compliance" :count="7" icon="ki-duotone ki-shield-tick" color="#FFC700" link="/compliance" />
+              </div>
+            </div>
+
+            <!-- Section: Engagement -->
+            <div class="d-flex flex-wrap align-items-end justify-content-between mb-4">
+              <div>
+                <h2 class="gn-section-title mb-1">Engagement & Careers</h2>
+                <div class="gn-section-subtitle">Team, customer inquiries, and recruitment</div>
+              </div>
+              <NuxtLink to="/contact-requests" class="btn btn-sm btn-light-primary">Review inquiries</NuxtLink>
+            </div>
+
+            <div class="row g-5 g-xl-6 mb-6 mb-xl-10">
+              <div class="col-xl-3 col-md-6">
+                <MetricCard title="Team Members" :count="counts.team" icon="ki-duotone ki-people" color="#FFC700" link="/team" />
+              </div>
+              <div class="col-xl-3 col-md-6">
+                <MetricCard title="Contact Requests" :count="counts.contactRequests" icon="ki-duotone ki-sms" color="#009EF7" link="/contact-requests" :subtitle="contactSubtitle" />
+              </div>
+              <div class="col-xl-3 col-md-6">
+                <MetricCard title="FAQs" :count="counts.faqs" icon="ki-duotone ki-question" color="#7239EA" link="/faqs" />
+              </div>
+              <div class="col-xl-3 col-md-6">
+                <MetricCard title="Job Positions" :count="counts.jobPositions" icon="ki-duotone ki-rocket" color="#17C653" link="/careers/positions" :subtitle="jobSubtitle" />
+              </div>
+            </div>
+
+            <!-- Analytics CTA -->
+            <div class="row g-5 g-xl-6 mb-6 mb-xl-10">
+              <div class="col-12">
                 <NuxtLink to="/analytics" class="gn-cta-card">
                   <div>
                     <div class="gn-cta-card__eyebrow">Explore</div>
                     <div class="gn-cta-card__title">Power Analytics Dashboard</div>
                     <div class="gn-cta-card__subtitle">Visitors, traffic sources, funnels and country insights in real time.</div>
                   </div>
-                  <i class="ki-duotone ki-arrow-right fs-2x">
-                    <span class="path1"></span><span class="path2"></span>
-                  </i>
+                  <i class="ki-duotone ki-arrow-right fs-2x"><span class="path1"></span><span class="path2"></span></i>
                 </NuxtLink>
               </div>
             </div>
@@ -261,8 +250,8 @@
                 </div>
               </div>
 
-              <!-- Blog section hidden — no blog page on gamma-web yet -->
               <div class="col-xl-6" style="display:none">
+                <!-- Blog section hidden — no blog page on gamma-web yet -->
                 <div class="card card-flush h-xl-100 border-0 shadow-sm">
                   <div class="card-header pt-7">
                     <h3 class="card-title align-items-start flex-column">
