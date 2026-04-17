@@ -1,550 +1,129 @@
 {
   "sections": [
     {
-      "title": {
-        "fr": "Tableau de Bord",
-        "en": "Dashboard"
-      },
+      "title": { "fr": "Tableau de Bord", "en": "Dashboard" },
       "key": "dashboard_section",
       "priority": 1,
       "routes": [
         {
           "key": "dashboard",
-          "title": {
-            "fr": "Aperçu",
-            "en": "Overview"
-          },
+          "title": { "fr": "Aperçu", "en": "Overview" },
           "path": "/",
-          "icon": "fas fa-tachometer-alt fs-2",
-          "description": {
-            "fr": "Vue d'ensemble du système",
-            "en": "System overview"
-          }
+          "icon": "fas fa-tachometer-alt"
         },
         {
           "key": "analytics",
-          "title": {
-            "fr": "Analytiques",
-            "en": "Analytics"
-          },
+          "title": { "fr": "Analytiques", "en": "Analytics" },
           "path": "/analytics",
-          "icon": "fas fa-chart-area fs-2",
-          "description": {
-            "fr": "Statistiques de visite",
-            "en": "Website analytics"
-          }
+          "icon": "fas fa-chart-area"
         }
       ]
     },
     {
-      "title": {
-        "fr": "Gestion de Contenu",
-        "en": "Content Management"
-      },
-      "key": "content_management_section",
+      "title": { "fr": "Gestion de Contenu", "en": "Content" },
+      "key": "content_section",
       "priority": 2,
       "routes": [
         {
           "key": "services",
-          "title": {
-            "fr": "Services",
-            "en": "Services"
-          },
-          "icon": "fas fa-concierge-bell fs-2",
+          "title": { "fr": "Services", "en": "Services" },
+          "path": "/services",
+          "icon": "fas fa-concierge-bell",
           "children": [
             {
-              "key": "services_list",
-              "title": {
-                "fr": "Tous les Services",
-                "en": "All Services"
-              },
-              "path": "/services",
-              "icon": "fas fa-list fs-2",
-              "description": {
-                "fr": "Gérer les services de l'entreprise",
-                "en": "Manage company services"
-              }
+              "key": "services_all",
+              "title": { "fr": "Tous les services", "en": "All services" },
+              "path": "/services"
             },
             {
-              "key": "services_create",
-              "title": {
-                "fr": "Créer un Service",
-                "en": "Create Service"
-              },
-              "path": "/services/create",
-              "icon": "fas fa-plus fs-2",
-              "description": {
-                "fr": "Ajouter un nouveau service",
-                "en": "Add a new service"
-              }
-            }
-          ]
-        },
-        {
-          "key": "solutions",
-          "title": {
-            "fr": "Solutions",
-            "en": "Solutions"
-          },
-          "icon": "fas fa-lightbulb fs-2",
-          "children": [
-            {
-              "key": "solutions_list",
-              "title": {
-                "fr": "Toutes les Solutions",
-                "en": "All Solutions"
-              },
-              "path": "/solutions",
-              "icon": "fas fa-list fs-2",
-              "description": {
-                "fr": "Gérer les solutions par secteur d'activité",
-                "en": "Manage industry solutions"
-              }
-            },
-            {
-              "key": "solutions_create",
-              "title": {
-                "fr": "Créer une Solution",
-                "en": "Create Solution"
-              },
-              "path": "/solutions/create",
-              "icon": "fas fa-plus fs-2",
-              "description": {
-                "fr": "Ajouter une nouvelle solution",
-                "en": "Add a new solution"
-              }
-            }
-          ]
-        },
-        {
-          "key": "partners",
-          "title": {
-            "fr": "Partenaires",
-            "en": "Partners"
-          },
-          "icon": "fas fa-handshake fs-2",
-          "children": [
-            {
-              "key": "partners_list",
-              "title": {
-                "fr": "Tous les Partenaires",
-                "en": "All Partners"
-              },
-              "path": "/partners",
-              "icon": "fas fa-list fs-2"
-            },
-            {
-              "key": "partners_create",
-              "title": {
-                "fr": "Ajouter un Partenaire",
-                "en": "Add Partner"
-              },
-              "path": "/partners/create",
-              "icon": "fas fa-plus fs-2"
-            }
-          ]
-        },
-        {
-          "key": "clients",
-          "title": {
-            "fr": "Clients",
-            "en": "Clients"
-          },
-          "icon": "fas fa-users fs-2",
-          "children": [
-            {
-              "key": "clients_list",
-              "title": {
-                "fr": "Tous les Clients",
-                "en": "All Clients"
-              },
-              "path": "/clients",
-              "icon": "fas fa-list fs-2"
-            },
-            {
-              "key": "clients_create",
-              "title": {
-                "fr": "Ajouter un Client",
-                "en": "Add Client"
-              },
-              "path": "/clients/create",
-              "icon": "fas fa-plus fs-2"
-            }
-          ]
-        },
-        {
-          "key": "testimonials",
-          "title": {
-            "fr": "Témoignages",
-            "en": "Testimonials"
-          },
-          "icon": "fas fa-quote-right fs-2",
-          "children": [
-            {
-              "key": "testimonials_list",
-              "title": {
-                "fr": "Tous les Témoignages",
-                "en": "All Testimonials"
-              },
-              "path": "/testimonials",
-              "icon": "fas fa-list fs-2"
-            },
-            {
-              "key": "testimonials_create",
-              "title": {
-                "fr": "Ajouter un Témoignage",
-                "en": "Add Testimonial"
-              },
-              "path": "/testimonials/create",
-              "icon": "fas fa-plus fs-2"
+              "key": "service_categories",
+              "title": { "fr": "Catégories", "en": "Categories" },
+              "path": "/services/categories"
             }
           ]
         },
         {
           "key": "industries",
-          "title": {
-            "fr": "Industries",
-            "en": "Industries"
-          },
-          "icon": "fas fa-industry fs-2",
-          "children": [
-            {
-              "key": "industries_list",
-              "title": {
-                "fr": "Toutes les Industries",
-                "en": "All Industries"
-              },
-              "path": "/industries",
-              "icon": "fas fa-list fs-2",
-              "description": {
-                "fr": "Gérer les secteurs d'activité",
-                "en": "Manage industry sectors"
-              }
-            },
-            {
-              "key": "industries_create",
-              "title": {
-                "fr": "Ajouter une Industrie",
-                "en": "Add Industry"
-              },
-              "path": "/industries/create",
-              "icon": "fas fa-plus fs-2",
-              "description": {
-                "fr": "Ajouter un nouveau secteur",
-                "en": "Add a new industry sector"
-              }
-            }
-          ]
+          "title": { "fr": "Industries", "en": "Industries" },
+          "path": "/industries",
+          "icon": "fas fa-industry"
         },
         {
           "key": "process_steps",
-          "title": {
-            "fr": "Méthodologie",
-            "en": "Process Steps"
-          },
-          "icon": "fas fa-tasks fs-2",
-          "children": [
-            {
-              "key": "process_steps_list",
-              "title": {
-                "fr": "Toutes les Étapes",
-                "en": "All Steps"
-              },
-              "path": "/process-steps",
-              "icon": "fas fa-list fs-2",
-              "description": {
-                "fr": "Gérer les étapes de la méthodologie",
-                "en": "Manage methodology steps"
-              }
-            },
-            {
-              "key": "process_steps_create",
-              "title": {
-                "fr": "Ajouter une Étape",
-                "en": "Add Step"
-              },
-              "path": "/process-steps/create",
-              "icon": "fas fa-plus fs-2",
-              "description": {
-                "fr": "Ajouter une nouvelle étape",
-                "en": "Add a new process step"
-              }
-            }
-          ]
+          "title": { "fr": "Méthodologie", "en": "Process" },
+          "path": "/process-steps",
+          "icon": "fas fa-tasks"
         },
         {
-          "key": "stats",
-          "title": {
-            "fr": "Statistiques",
-            "en": "Statistics"
-          },
-          "icon": "fas fa-chart-line fs-2",
+          "key": "faqs",
+          "title": { "fr": "FAQ", "en": "FAQs" },
+          "path": "/faqs",
+          "icon": "fas fa-question-circle",
           "children": [
             {
-              "key": "stats_list",
-              "title": {
-                "fr": "Toutes les Statistiques",
-                "en": "All Statistics"
-              },
-              "path": "/stats",
-              "icon": "fas fa-list fs-2"
+              "key": "faqs_all",
+              "title": { "fr": "Toutes les FAQ", "en": "All FAQs" },
+              "path": "/faqs"
             },
             {
-              "key": "stats_create",
-              "title": {
-                "fr": "Ajouter une Statistique",
-                "en": "Add Statistic"
-              },
-              "path": "/stats/create",
-              "icon": "fas fa-plus fs-2"
+              "key": "faq_categories",
+              "title": { "fr": "Catégories", "en": "Categories" },
+              "path": "/faqs/categories"
             }
           ]
         }
       ]
     },
     {
-      "title": {
-        "fr": "À Propos",
-        "en": "About Us"
-      },
-      "key": "about_section",
+      "title": { "fr": "Entreprise", "en": "Company" },
+      "key": "company_section",
       "priority": 3,
       "routes": [
         {
           "key": "team",
-          "title": {
-            "fr": "Équipe",
-            "en": "Team"
-          },
-          "icon": "fas fa-user-tie fs-2",
-          "children": [
-            {
-              "key": "team_list",
-              "title": {
-                "fr": "Tous les Membres",
-                "en": "All Members"
-              },
-              "path": "/team",
-              "icon": "fas fa-list fs-2"
-            },
-            {
-              "key": "team_create",
-              "title": {
-                "fr": "Ajouter un Membre",
-                "en": "Add Member"
-              },
-              "path": "/team/create",
-              "icon": "fas fa-plus fs-2"
-            }
-          ]
+          "title": { "fr": "Équipe", "en": "Team" },
+          "path": "/team",
+          "icon": "fas fa-user-tie"
         },
         {
-          "key": "certifications",
-          "title": {
-            "fr": "Certifications",
-            "en": "Certifications"
-          },
-          "icon": "fas fa-certificate fs-2",
-          "children": [
-            {
-              "key": "certifications_list",
-              "title": {
-                "fr": "Toutes les Certifications",
-                "en": "All Certifications"
-              },
-              "path": "/certifications",
-              "icon": "fas fa-list fs-2"
-            },
-            {
-              "key": "certifications_create",
-              "title": {
-                "fr": "Ajouter une Certification",
-                "en": "Add Certification"
-              },
-              "path": "/certifications/create",
-              "icon": "fas fa-plus fs-2"
-            }
-          ]
+          "key": "compliance",
+          "title": { "fr": "Conformité", "en": "Compliance" },
+          "path": "/compliance",
+          "icon": "fas fa-shield-alt"
         }
       ]
     },
     {
-      "title": {
-        "fr": "Carrières",
-        "en": "Careers"
-      },
+      "title": { "fr": "Recrutement", "en": "Careers" },
       "key": "careers_section",
       "priority": 4,
       "routes": [
         {
           "key": "job_positions",
-          "title": {
-            "fr": "Offres d'Emploi",
-            "en": "Job Positions"
-          },
-          "icon": "fas fa-briefcase fs-2",
-          "children": [
-            {
-              "key": "jobs_list",
-              "title": {
-                "fr": "Toutes les Offres",
-                "en": "All Positions"
-              },
-              "path": "/careers/positions",
-              "icon": "fas fa-list fs-2"
-            },
-            {
-              "key": "jobs_create",
-              "title": {
-                "fr": "Publier une Offre",
-                "en": "Post Position"
-              },
-              "path": "/careers/positions/create",
-              "icon": "fas fa-plus fs-2"
-            }
-          ]
+          "title": { "fr": "Offres d'Emploi", "en": "Job Positions" },
+          "path": "/careers/positions",
+          "icon": "fas fa-briefcase"
         }
       ]
     },
     {
-      "title": {
-        "fr": "Blog & Projets",
-        "en": "Blog & Projects"
-      },
-      "key": "blog_projects_section",
+      "title": { "fr": "Support", "en": "Support" },
+      "key": "support_section",
       "priority": 5,
       "routes": [
         {
-          "key": "blog",
-          "title": {
-            "fr": "Articles de Blog",
-            "en": "Blog Posts"
-          },
-          "icon": "fas fa-blog fs-2",
-          "children": [
-            {
-              "key": "blog_list",
-              "title": {
-                "fr": "Tous les Articles",
-                "en": "All Posts"
-              },
-              "path": "/blog",
-              "icon": "fas fa-list fs-2"
-            },
-            {
-              "key": "blog_create",
-              "title": {
-                "fr": "Nouvel Article",
-                "en": "New Post"
-              },
-              "path": "/blog/create",
-              "icon": "fas fa-plus fs-2"
-            }
-          ]
-        },
-        {
-          "key": "projects",
-          "title": {
-            "fr": "Projets",
-            "en": "Projects"
-          },
-          "icon": "fas fa-project-diagram fs-2",
-          "children": [
-            {
-              "key": "projects_list",
-              "title": {
-                "fr": "Tous les Projets",
-                "en": "All Projects"
-              },
-              "path": "/projects",
-              "icon": "fas fa-list fs-2"
-            },
-            {
-              "key": "projects_create",
-              "title": {
-                "fr": "Nouveau Projet",
-                "en": "New Project"
-              },
-              "path": "/projects/create",
-              "icon": "fas fa-plus fs-2"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": {
-        "fr": "Support",
-        "en": "Support"
-      },
-      "key": "support_section",
-      "priority": 6,
-      "routes": [
-        {
           "key": "contact_requests",
-          "title": {
-            "fr": "Demandes de Contact",
-            "en": "Contact Requests"
-          },
-          "icon": "fas fa-envelope fs-2",
-          "children": [
-            {
-              "key": "contact_requests_list",
-              "title": {
-                "fr": "Toutes les Demandes",
-                "en": "All Requests"
-              },
-              "path": "/contact-requests",
-              "icon": "fas fa-list fs-2"
-            }
-          ]
-        },
-        {
-          "key": "faqs",
-          "title": {
-            "fr": "FAQ",
-            "en": "FAQs"
-          },
-          "icon": "fas fa-question-circle fs-2",
-          "children": [
-            {
-              "key": "faqs_list",
-              "title": {
-                "fr": "Toutes les FAQ",
-                "en": "All FAQs"
-              },
-              "path": "/faqs",
-              "icon": "fas fa-list fs-2"
-            },
-            {
-              "key": "faqs_create",
-              "title": {
-                "fr": "Ajouter une FAQ",
-                "en": "Add FAQ"
-              },
-              "path": "/faqs/create",
-              "icon": "fas fa-plus fs-2"
-            }
-          ]
+          "title": { "fr": "Demandes de Contact", "en": "Contact Requests" },
+          "path": "/contact-requests",
+          "icon": "fas fa-envelope"
         }
       ]
     }
   ],
   "metadata": {
-    "version": "3.0.0",
-    "description": "Menu d'administration pour Gamma Neutral - Gestion de contenu du site web",
-    "total_sections": 6,
-    "total_routes": 18,
+    "version": "4.0.0",
+    "description": "Flat admin navigation — each route links directly to its list page",
     "default_language": "fr",
-    "supported_languages": [
-      "fr",
-      "en"
-    ],
-    "features": {
-      "multilingual_support": true,
-      "nested_navigation": true,
-      "icon_support": true,
-      "priority_ordering": true
-    }
+    "supported_languages": ["fr", "en"]
   }
 }

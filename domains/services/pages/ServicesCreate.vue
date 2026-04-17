@@ -3,80 +3,102 @@
     <div class="d-flex flex-column flex-column-fluid">
       <div id="kt_app_content" class="app-content flex-column-fluid">
         <div id="kt_app_content_container" class="app-container container-fluid">
-          <form @submit.prevent="handleSubmit">
-            <div class="row g-5">
-              <!-- Main Form Column -->
-              <div class="col-xl-8">
-                <div class="card mb-5">
-                  <div class="card-header">
-                    <h3 class="card-title">Basic Information</h3>
-                  </div>
-                  <div class="card-body">
-                    <!-- Loading State -->
-                    <div v-if="isSubmitting" class="text-center py-20">
-                      <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                      </div>
-                    </div>
-                    <ServiceFormBasicInfo
-                      v-else
-                      v-model="form"
-                      :errors="errors"
-                    />
-                  </div>
-                </div>
+
+          <form class="gn-form" @submit.prevent="submit">
+            <header class="gn-form__hero">
+              <div class="gn-form__hero-icon">
+                <GIcon :name="form.icon || 'layers'" :size="42" />
+              </div>
+              <div class="gn-form__hero-body">
+                <span class="gn-form__eyebrow">New service</span>
+                <h1 class="gn-form__title">{{ form.title || 'Untitled service' }}</h1>
+                <p class="gn-form__subtitle">
+                  Define a consulting service that will appear on the public site.
+                </p>
+              </div>
+              <div class="gn-form__hero-actions">
+                <NuxtLink to="/services" class="gn-form__btn gn-form__btn--ghost">Cancel</NuxtLink>
+                <button type="submit" class="gn-form__btn gn-form__btn--primary" :disabled="isSubmitting">
+                  <GIcon name="check" :size="16" />
+                  {{ isSubmitting ? 'Saving…' : 'Create service' }}
+                </button>
+              </div>
+            </header>
+
+            <section class="gn-form__card">
+              <div class="gn-form__card-header">
+                <h3 class="gn-form__card-title">Service details</h3>
+                <LocaleToggle v-model="locale" />
               </div>
 
-              <!-- Sidebar Column -->
-              <div class="col-xl-4">
-                <div class="card mb-5">
-                  <div class="card-header">
-                    <h3 class="card-title">Settings & Icon</h3>
+              <div class="gn-form__fields">
+                <div class="gn-form__field">
+                  <label class="gn-form__label" for="svc-title">
+                    Title
+                    <span class="gn-form__locale-badge">{{ locale.toUpperCase() }}</span>
+                  </label>
+                  <input
+                    id="svc-title"
+                    v-model="form.title"
+                    type="text"
+                    class="gn-form__input"
+                    placeholder="e.g. AI & Intelligent Systems"
+                    required
+                    maxlength="255"
+                    autofocus
+                  />
+                </div>
+
+                <div class="gn-form__field">
+                  <label class="gn-form__label" for="svc-short">
+                    Short description
+                    <span class="gn-form__locale-badge">{{ locale.toUpperCase() }}</span>
+                  </label>
+                  <textarea
+                    id="svc-short"
+                    v-model="form.short_description"
+                    class="gn-form__textarea"
+                    rows="2"
+                    placeholder="One-liner shown on service cards"
+                    maxlength="300"
+                  />
+                  <span class="gn-form__helper">{{ (form.short_description || '').length }} / 300</span>
+                </div>
+
+                <div class="gn-form__row">
+                  <div class="gn-form__field">
+                    <label class="gn-form__label" for="svc-category">Category</label>
+                    <select id="svc-category" v-model="form.category" class="gn-form__select">
+                      <option value="">Select a category</option>
+                      <option v-for="cat in SERVICE_CATEGORIES" :key="cat.value" :value="cat.value">
+                        {{ cat.label }}
+                      </option>
+                    </select>
                   </div>
-                  <div class="card-body">
-                    <ServiceFormSettings
-                      v-model="form"
-                      :errors="errors"
-                      :iconPreview="iconPreview"
-                      @iconChanged="handleIconChange"
-                      @iconRemoved="handleIconRemove"
-                    />
+
+                  <div class="gn-form__field">
+                    <label class="gn-form__label" for="svc-icon">Icon</label>
+                    <IconPicker v-model="form.icon" placeholder="Pick an icon" />
                   </div>
                 </div>
 
-                <!-- Actions Card -->
-                <div class="card mt-5">
-                  <div class="card-body d-flex flex-column gap-3">
-                    <button
-                      type="submit"
-                      class="btn btn-primary w-100"
-                      :disabled="!isFormValid || isSubmitting"
-                    >
-                      <span v-if="!isSubmitting">
-                        <i class="ki-duotone ki-check fs-2"></i>
-                        Save Service
-                      </span>
-                      <span v-else>
-                        <span class="spinner-border spinner-border-sm me-2"></span>
-                        Saving...
-                      </span>
-                    </button>
-
-                    <NuxtLink
-                      to="/services/list"
-                      class="btn btn-light w-100"
-                    >
-                      <i class="ki-duotone ki-cross fs-2">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                      </i>
-                      Cancel
-                    </NuxtLink>
-                  </div>
+                <div class="gn-form__field">
+                  <label class="gn-form__label" for="svc-desc">
+                    Full description
+                    <span class="gn-form__locale-badge">{{ locale.toUpperCase() }}</span>
+                  </label>
+                  <textarea
+                    id="svc-desc"
+                    v-model="form.description"
+                    class="gn-form__textarea"
+                    rows="5"
+                    placeholder="Detailed description shown on the service detail page"
+                  />
                 </div>
               </div>
-            </div>
+            </section>
           </form>
+
         </div>
       </div>
     </div>
@@ -84,129 +106,82 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import Swal from 'sweetalert2'
 import { useServicesStore } from '../stores/useServicesStore'
 import { useServiceFormatters } from '../composables/useServiceFormatters'
 import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
-import type { ServiceFormData } from '../types'
+import { useServiceCategoriesStore } from '../stores/useServiceCategoriesStore'
+import { useLocaleForm } from '~/composables/useLocaleForm'
+import GIcon from '~/components/icons/GIcon.vue'
+import IconPicker from '~/components/icons/IconPicker.vue'
+import LocaleToggle from '~/components/LocaleToggle.vue'
 
-const servicesStore = useServicesStore()
-const breadcrumbStore = useBreadcrumbStore()
+definePageMeta({ middleware: 'auth' })
+
 const router = useRouter()
-const { showSuccess, showError } = useNotification()
+const servicesStore = useServicesStore()
+const categoriesStore = useServiceCategoriesStore()
+const breadcrumbStore = useBreadcrumbStore()
 const { generateSlug } = useServiceFormatters()
 
-// Form state
-const form = reactive<ServiceFormData>({
-  title: '',
-  description: null,
-  icon: null,
-  category: null,
-  slug: null,
-  order: 0,
-  is_active: true,
-  iconFile: null
+const SERVICE_CATEGORIES = computed(() =>
+  categoriesStore.sortedCategories.map((c) => ({ value: c.slug, label: c.name }))
+)
+
+const { locale, form, setLocale, getSubmitPayload } = useLocaleForm({
+  translatableKeys: ['title', 'short_description', 'description'],
+  defaults: {
+    title: '',
+    short_description: '',
+    description: '',
+    category: '',
+    icon: '',
+  },
 })
 
-const errors = ref<Record<string, string>>({})
-const activeTab = ref<'basic' | 'settings'>('basic')
 const isSubmitting = ref(false)
-const iconPreview = ref('')
 
-// Validation
-const isFormValid = computed(() => {
-  return (
-    form.title.trim() !== '' &&
-    (form.slug?.trim() || '') !== '' &&
-    Object.keys(errors.value).length === 0
-  )
-})
-
-const validateForm = (): boolean => {
-  errors.value = {}
-
-  if (!form.title.trim()) {
-    errors.value.title = 'Title is required'
-  } else if (form.title.length > 255) {
-    errors.value.title = 'Title cannot exceed 255 characters'
-  }
-
-  if (!form.slug?.trim()) {
-    // Auto-generate if empty
-    if (form.title.trim()) {
-      form.slug = generateSlug(form.title)
-    } else {
-      errors.value.slug = 'Slug is required'
-    }
-  }
-
-  if (form.order !== null && form.order !== undefined && form.order < 0) {
-    errors.value.order = 'Order must be a positive number'
-  }
-
-  return Object.keys(errors.value).length === 0
-}
-
-// Handlers
-const handleIconChange = (file: File) => {
-  form.iconFile = file
-
-  // Create preview
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    iconPreview.value = e.target?.result as string
-  }
-  reader.readAsDataURL(file)
-
-  // Base64 preview is stored in iconPreview and sent as icon value on submit
-}
-
-const handleIconRemove = () => {
-  form.icon = null
-  form.iconFile = null
-  iconPreview.value = ''
-}
-
-const handleSubmit = async () => {
-  if (!validateForm()) {
-    showError('An error occurred')
-    return
-  }
-
+const submit = async () => {
+  const payload = getSubmitPayload()
+  if (!payload.title?.trim()) return
   isSubmitting.value = true
-
   try {
-    // Prepare input
-    const input = {
-      title: form.title,
-      description: form.description || null,
-      icon: iconPreview.value || form.icon || null,
-      category: form.category || null,
-      slug: form.slug || generateSlug(form.title),
-      order: form.order ?? 0,
-      is_active: form.is_active ?? true
-    }
-
-    // Create service
-    const newService = await servicesStore.createService(input)
-
-    showSuccess('Service created successfully')
-
-    // Redirect to list
-    await router.push('/services/list')
-  } catch (error: any) {
-    showError(error.message || 'Failed to save service')
+    await servicesStore.createService({
+      title: payload.title.trim(),
+      short_description: (payload.short_description as string)?.trim() || null,
+      description: (payload.description as string)?.trim() || null,
+      category: (payload.category as string) || null,
+      icon: (payload.icon as string) || null,
+      slug: generateSlug(payload.title),
+      is_active: true,
+      locale: payload.locale,
+    } as any)
+    await Swal.fire({
+      title: 'Created',
+      text: `Service created (${payload.locale.toUpperCase()})`,
+      icon: 'success',
+      timer: 1800,
+      showConfirmButton: false,
+    })
+    router.push('/services')
+  } catch (err: any) {
+    await Swal.fire({
+      title: 'Failed to create',
+      text: err.message || 'Something went wrong',
+      icon: 'error',
+    })
   } finally {
     isSubmitting.value = false
   }
 }
 
-// Lifecycle
-onMounted(() => {
+onMounted(async () => {
   breadcrumbStore.setBreadcrumb([
-    { title: 'Home', path: '/' },
-    { title: 'Services', path: '/services/list' },
-    { title: 'Create Service', path: '/services/create' }
+    { title: 'Dashboard', path: '/' },
+    { title: 'Services', path: '/services' },
+    { title: 'New service', path: '/services/create' },
   ])
+  await categoriesStore.fetchCategories()
 })
 </script>

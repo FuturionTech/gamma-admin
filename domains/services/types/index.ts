@@ -1,20 +1,33 @@
-export interface Service {
+export interface ServiceFeature {
   id: string
   title: string
   description?: string | null
   icon?: string | null
+  order: number
+}
+
+export interface Service {
+  id: string
+  title: string
+  short_description?: string | null
+  description?: string | null
+  icon?: string | null
+  icon_color?: string | null
   category?: string | null
   slug: string
   order: number
   is_active: boolean
   created_at: string
   updated_at: string
+  features?: ServiceFeature[]
 }
 
 export interface CreateServiceInput {
   title: string
+  short_description?: string | null
   description?: string | null
   icon?: string | null
+  icon_color?: string | null
   category?: string | null
   slug?: string | null
   order?: number | null
@@ -23,8 +36,10 @@ export interface CreateServiceInput {
 
 export interface UpdateServiceInput {
   title?: string | null
+  short_description?: string | null
   description?: string | null
   icon?: string | null
+  icon_color?: string | null
   category?: string | null
   slug?: string | null
   order?: number | null
@@ -63,7 +78,6 @@ export interface UpdateServiceResponse {
 
 export interface DeleteServiceResponse {
   deleteService: {
-    id: string
     success: boolean
     message: string
   }

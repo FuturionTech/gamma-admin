@@ -154,12 +154,6 @@
             </div>
           </div>
 
-          <!-- Order -->
-          <div class="mb-7">
-            <label class="fw-bold fs-6 mb-2">Display Order</label>
-            <div class="text-gray-800">{{ faq.order }}</div>
-          </div>
-
           <!-- Created At -->
           <div class="mb-7">
             <label class="fw-bold fs-6 mb-2">Created At</label>

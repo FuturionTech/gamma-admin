@@ -1,19 +1,6 @@
 <template>
   <div class="card card-flush">
     <div class="card-body">
-      <!-- Order -->
-      <div class="mb-5">
-        <label class="form-label">Order</label>
-        <input
-          type="number"
-          class="form-control"
-          v-model.number="formData.order"
-          placeholder="0"
-          min="0"
-        />
-        <div class="form-text">Display order (lower = shown first)</div>
-      </div>
-
       <!-- Is Active -->
       <div class="mb-0">
         <div class="form-check form-switch">

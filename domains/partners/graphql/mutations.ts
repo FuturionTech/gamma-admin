@@ -33,7 +33,6 @@ export const UPDATE_PARTNER = gql`
 export const DELETE_PARTNER = gql`
   mutation DeletePartner($id: ID!) {
     deletePartner(id: $id) {
-      id
       success
       message
     }

@@ -116,12 +116,12 @@ export const useServicesStore = defineStore('services', {
     },
 
     setServices(services: Service[]) {
-      this.services = services
+      this.services = [...services]
       this.updateStatistics()
     },
 
     setCurrentService(service: Service | null) {
-      this.currentService = service
+      this.currentService = service ? { ...service } : null
     },
 
     setFilters(filters: Partial<ServiceFilterInput>) {
@@ -155,28 +155,15 @@ export const useServicesStore = defineStore('services', {
       this.setError(null)
 
       try {
-        const variables: any = {}
-
-        // Only add optional filters if they have values
+        const variables: Record<string, unknown> = {}
         if (this.filters.is_active !== null && this.filters.is_active !== undefined) {
           variables.is_active = this.filters.is_active
         }
 
-        const { data, error } = await useAsyncQuery<ServicesResponse>(
-          GET_SERVICES,
-          variables
-        )
-
-        if (error.value) {
-          throw new Error(error.value.message || 'Failed to fetch services')
-        }
-
-        if (data.value) {
-          this.setServices(data.value.services)
-        }
+        const data = await useApi().query<ServicesResponse>(GET_SERVICES, { variables })
+        this.setServices(data.services || [])
       } catch (err: any) {
         this.setError(err.message || 'Failed to load services')
-        // Set empty array on error
         this.setServices([])
       } finally {
         this.setLoading(false)
@@ -188,18 +175,12 @@ export const useServicesStore = defineStore('services', {
       this.setError(null)
 
       try {
-        const { data, error } = await useAsyncQuery<ServiceResponse>(
-          GET_SERVICE,
-          { id }
-        )
-
-        if (error.value) {
-          throw new Error(error.value.message || 'Failed to fetch service')
-        }
-
-        if (data.value) {
-          this.setCurrentService(data.value.service)
-          return data.value.service
+        const data = await useApi().query<ServiceResponse>(GET_SERVICE, {
+          variables: { id },
+        })
+        if (data.service) {
+          this.setCurrentService(data.service)
+          return data.service
         }
       } catch (err: any) {
         this.setError(err.message || 'Failed to load service')
@@ -214,25 +195,11 @@ export const useServicesStore = defineStore('services', {
       this.setError(null)
 
       try {
-        const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
-
-        const response = await apolloClient.mutate<CreateServiceResponse>({
-          mutation: CREATE_SERVICE,
-          variables: { input }
+        const data = await useApi().mutate<CreateServiceResponse>(CREATE_SERVICE, {
+          variables: { input },
         })
-
-        if (response?.errors?.length) {
-          throw new Error(response.errors[0].message)
-        }
-
-        if (response?.data?.createService) {
-          // Refresh the services list
-          await this.fetchServices()
-          return response.data.createService
-        }
-
-        throw new Error('No data returned from server')
+        await this.fetchServices()
+        return data.createService
       } catch (err: any) {
         this.setError(err.message || 'Failed to create service')
         throw err
@@ -246,35 +213,21 @@ export const useServicesStore = defineStore('services', {
       this.setError(null)
 
       try {
-        const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
-
-        const response = await apolloClient.mutate<UpdateServiceResponse>({
-          mutation: UPDATE_SERVICE,
-          variables: { id, input }
+        const data = await useApi().mutate<UpdateServiceResponse>(UPDATE_SERVICE, {
+          variables: { id, input },
         })
+        const updated = data.updateService
 
-        if (response?.errors?.length) {
-          throw new Error(response.errors[0].message)
+        const index = this.services.findIndex(s => s.id === id)
+        if (index !== -1) {
+          this.services.splice(index, 1, updated)
+        }
+        if (this.currentService?.id === id) {
+          this.setCurrentService(updated)
         }
 
-        if (response?.data?.updateService) {
-          // Update in local state
-          const index = this.services.findIndex(s => s.id === id)
-          if (index !== -1) {
-            this.services[index] = response.data.updateService
-          }
-
-          // Update current service if it's the one being edited
-          if (this.currentService?.id === id) {
-            this.setCurrentService(response.data.updateService)
-          }
-
-          this.updateStatistics()
-          return response.data.updateService
-        }
-
-        throw new Error('No data returned from server')
+        this.updateStatistics()
+        return updated
       } catch (err: any) {
         this.setError(err.message || 'Failed to update service')
         throw err
@@ -288,32 +241,17 @@ export const useServicesStore = defineStore('services', {
       this.setError(null)
 
       try {
-        const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
-
-        const response = await apolloClient.mutate<DeleteServiceResponse>({
-          mutation: DELETE_SERVICE,
-          variables: { id }
+        const data = await useApi().mutate<DeleteServiceResponse>(DELETE_SERVICE, {
+          variables: { id },
         })
 
-        if (response?.errors?.length) {
-          throw new Error(response.errors[0].message)
+        this.services = this.services.filter(s => s.id !== id)
+        if (this.currentService?.id === id) {
+          this.setCurrentService(null)
         }
+        this.updateStatistics()
 
-        if (response?.data?.deleteService) {
-          // Remove from local state
-          this.services = this.services.filter(s => s.id !== id)
-
-          // Clear current service if it was deleted
-          if (this.currentService?.id === id) {
-            this.setCurrentService(null)
-          }
-
-          this.updateStatistics()
-          return response.data.deleteService
-        }
-
-        throw new Error('No data returned from server')
+        return data.deleteService
       } catch (err: any) {
         this.setError(err.message || 'Failed to delete service')
         throw err

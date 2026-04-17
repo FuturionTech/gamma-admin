@@ -22,7 +22,7 @@
         <div class="mb-3">
           <NuxtLink
             :to="`/team/${team.id}`"
-            class="text-gray-800 text-hover-primary fs-4 fw-bold mb-0"
+            class="text-gray-800 text-hover-primary fs-4 fw-bold mb-0 d-block"
           >
             {{ team.name }}
           </NuxtLink>
@@ -84,10 +84,21 @@
       </div>
 
       <!-- Actions -->
-      <div class="d-flex justify-content-between pt-4 border-top">
+      <div class="d-flex gap-2 pt-4 border-top">
+        <NuxtLink
+          :to="`/team/${team.id}`"
+          class="btn btn-sm btn-light-info flex-grow-1"
+        >
+          <i class="ki-duotone ki-eye fs-3">
+            <span class="path1"></span>
+            <span class="path2"></span>
+            <span class="path3"></span>
+          </i>
+          View
+        </NuxtLink>
         <NuxtLink
           :to="`/team/${team.id}/edit`"
-          class="btn btn-sm btn-light-primary"
+          class="btn btn-sm btn-light-primary flex-grow-1"
         >
           <i class="ki-duotone ki-pencil fs-3">
             <span class="path1"></span>
@@ -95,7 +106,6 @@
           </i>
           Edit
         </NuxtLink>
-
         <button
           type="button"
           class="btn btn-sm btn-light-danger"
@@ -108,7 +118,6 @@
             <span class="path4"></span>
             <span class="path5"></span>
           </i>
-          Delete
         </button>
       </div>
     </div>

@@ -145,19 +145,6 @@
                     </option>
                   </select>
 
-                  <!-- Export -->
-                  <button
-                    type="button"
-                    class="btn btn-light-primary"
-                    @click="handleExport"
-                  >
-                    <i class="ki-duotone ki-exit-up fs-2">
-                      <span class="path1"></span>
-                      <span class="path2"></span>
-                    </i>
-                    Export
-                  </button>
-
                   <!-- Create New -->
                   <NuxtLink
                     to="/team/create"
@@ -249,8 +236,7 @@ const teamStore = useTeamStore()
 const breadcrumbStore = useBreadcrumbStore()
 
 const {
-  confirmAndDeleteTeam,
-  exportTeamsToCSV
+  confirmAndDeleteTeam
 } = useTeamActions()
 
 // Search and filters
@@ -273,10 +259,6 @@ const handleRoleFilter = async () => {
 
 const handleDelete = async (team: Team) => {
   await confirmAndDeleteTeam(team)
-}
-
-const handleExport = () => {
-  exportTeamsToCSV()
 }
 
 // Lifecycle

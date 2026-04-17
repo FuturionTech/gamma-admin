@@ -214,7 +214,7 @@ export const useClientsStore = defineStore('clients', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<CreateClientResponse>({
           mutation: CREATE_CLIENT,
@@ -246,7 +246,7 @@ export const useClientsStore = defineStore('clients', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<UpdateClientResponse>({
           mutation: UPDATE_CLIENT,
@@ -288,7 +288,7 @@ export const useClientsStore = defineStore('clients', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<DeleteClientResponse>({
           mutation: DELETE_CLIENT,

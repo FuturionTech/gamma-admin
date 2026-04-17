@@ -45,20 +45,10 @@ export default defineNuxtModule({
           }
         },
         {
-          name: 'process-steps-detail',
-          path: '/process-steps/:id',
-          file: resolver.resolve('./pages/ProcessStepsDetail.vue'),
-          meta: {
-            requiresAuth: true
-          }
-        },
-        {
           name: 'process-steps-edit',
           path: '/process-steps/:id/edit',
           file: resolver.resolve('./pages/ProcessStepsEdit.vue'),
-          meta: {
-            requiresAuth: true
-          }
+          meta: { requiresAuth: true },
         }
       )
     })

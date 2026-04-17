@@ -1,7 +1,8 @@
 <template>
-  <!-- Page Header -->
-  <PageHeader title="Testimonials" subtitle="Manage customer testimonials and reviews" />
-
+  <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+    <div class="d-flex flex-column flex-column-fluid">
+      <div id="kt_app_content" class="app-content flex-column-fluid">
+        <div id="kt_app_content_container" class="app-container container-fluid">
   <!-- Statistics Cards -->
   <div class="row g-5 g-xl-8 mb-5 mb-xl-8" v-if="!testimonialsStore.isLoading">
     <div class="col-xl-3">
@@ -133,19 +134,6 @@
             <option :value="1">1 star</option>
           </select>
 
-          <!-- Export -->
-          <button
-            type="button"
-            class="btn btn-light-primary"
-            @click="handleExport"
-          >
-            <i class="ki-duotone ki-exit-up fs-2">
-              <span class="path1"></span>
-              <span class="path2"></span>
-            </i>
-            Export
-          </button>
-
           <!-- Create New -->
           <NuxtLink
             to="/testimonials/create"
@@ -197,62 +185,16 @@
                 />
               </div>
               <div class="card-toolbar">
-                <button
-                  type="button"
-                  class="btn btn-sm btn-icon btn-light btn-active-light-primary"
-                  data-kt-menu-trigger="click"
-                  data-kt-menu-placement="bottom-end"
+                <span
+                  class="badge"
+                  :class="getStatusBadgeClass(testimonial.is_active)"
                 >
-                  <i class="ki-duotone ki-dots-vertical fs-2">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                    <span class="path3"></span>
-                  </i>
-                </button>
-
-                <div
-                  class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                  data-kt-menu="true"
-                >
-                  <div class="menu-item px-3">
-                    <NuxtLink
-                      :to="`/testimonials/${testimonial.id}`"
-                      class="menu-link px-3"
-                    >
-                      View
-                    </NuxtLink>
-                  </div>
-                  <div class="menu-item px-3">
-                    <NuxtLink
-                      :to="`/testimonials/${testimonial.id}/edit`"
-                      class="menu-link px-3"
-                    >
-                      Edit
-                    </NuxtLink>
-                  </div>
-                  <div class="menu-item px-3">
-                    <a
-                      href="#"
-                      class="menu-link px-3"
-                      @click.prevent="handleToggleStatus(testimonial)"
-                    >
-                      {{ testimonial.is_active ? 'Deactivate' : 'Activate' }}
-                    </a>
-                  </div>
-                  <div class="menu-item px-3">
-                    <a
-                      href="#"
-                      class="menu-link px-3 text-danger"
-                      @click.prevent="handleDelete(testimonial)"
-                    >
-                      Delete
-                    </a>
-                  </div>
-                </div>
+                  {{ getStatusText(testimonial.is_active) }}
+                </span>
               </div>
             </div>
 
-            <div class="card-body text-center pt-5">
+            <div class="card-body text-center pt-5 d-flex flex-column">
               <!-- Quote Icon -->
               <i class="fa-solid fa-quote-right fs-3x text-gray-300 mb-5"></i>
 
@@ -276,7 +218,7 @@
               </div>
 
               <!-- Author -->
-              <div class="d-flex align-items-center justify-content-center mb-3">
+              <div class="d-flex align-items-center justify-content-center mb-5">
                 <div class="me-3">
                   <div
                     v-if="testimonial.image_url"
@@ -295,7 +237,12 @@
                   </div>
                 </div>
                 <div class="text-start">
-                  <div class="fw-bold text-gray-900 fs-6">{{ testimonial.name }}</div>
+                  <NuxtLink
+                    :to="`/testimonials/${testimonial.id}/edit`"
+                    class="fw-bold text-gray-900 text-hover-primary fs-6 d-block"
+                  >
+                    {{ testimonial.name }}
+                  </NuxtLink>
                   <div class="text-muted fs-7">
                     <span v-if="testimonial.position">{{ testimonial.position }}</span>
                     <span v-if="testimonial.position && testimonial.company"> · </span>
@@ -304,14 +251,32 @@
                 </div>
               </div>
 
-              <!-- Status Badge -->
-              <div>
-                <span
-                  class="badge"
-                  :class="getStatusBadgeClass(testimonial.is_active)"
+              <!-- Actions -->
+              <div class="d-flex gap-2 mt-auto pt-4 border-top">
+                <NuxtLink
+                  :to="`/testimonials/${testimonial.id}/edit`"
+                  class="btn btn-sm btn-light-primary flex-grow-1"
+                  title="Edit"
                 >
-                  {{ getStatusText(testimonial.is_active) }}
-                </span>
+                  <i class="ki-duotone ki-pencil fs-3">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                  </i>
+                </NuxtLink>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-light-danger flex-grow-1"
+                  title="Delete"
+                  @click="handleDelete(testimonial)"
+                >
+                  <i class="ki-duotone ki-trash fs-3">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                    <span class="path3"></span>
+                    <span class="path4"></span>
+                    <span class="path5"></span>
+                  </i>
+                </button>
               </div>
             </div>
           </div>
@@ -363,6 +328,10 @@
       </div>
     </div>
   </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -387,8 +356,7 @@ const {
 const {
   confirmAndDeleteTestimonial,
   toggleTestimonialStatus,
-  bulkDeleteTestimonials,
-  exportTestimonialsToCSV
+  bulkDeleteTestimonials
 } = useTestimonialActions()
 
 // Search and filters
@@ -451,17 +419,13 @@ const handleBulkDelete = async () => {
   }
 }
 
-const handleExport = () => {
-  exportTestimonialsToCSV()
-}
+breadcrumbStore.setBreadcrumb([
+  { title: 'Dashboard', path: '/' },
+  { title: 'Testimonials', path: '/testimonials' },
+])
 
 // Lifecycle
 onMounted(async () => {
-  breadcrumbStore.setBreadcrumb([
-    { title: 'Home', path: '/' },
-    { title: 'Testimonials', path: '/testimonials' }
-  ])
-
   await testimonialsStore.initialize()
 })
 </script>

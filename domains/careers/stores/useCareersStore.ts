@@ -263,7 +263,7 @@ export const useCareersStore = defineStore('careers', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<CreateJobPositionResponse>({
           mutation: CREATE_JOB_POSITION,
@@ -294,7 +294,7 @@ export const useCareersStore = defineStore('careers', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<UpdateJobPositionResponse>({
           mutation: UPDATE_JOB_POSITION,
@@ -336,7 +336,7 @@ export const useCareersStore = defineStore('careers', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<DeleteJobPositionResponse>({
           mutation: DELETE_JOB_POSITION,

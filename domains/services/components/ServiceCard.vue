@@ -27,8 +27,13 @@
       </div>
 
       <!-- Title -->
-      <h3 class="fs-4 fw-bold text-gray-900 mb-3">
-        {{ service.title }}
+      <h3 class="fs-4 fw-bold mb-3">
+        <NuxtLink
+          :to="`/services/${service.id}`"
+          class="text-gray-900 text-hover-primary text-decoration-none"
+        >
+          {{ service.title }}
+        </NuxtLink>
       </h3>
 
       <!-- Description -->
@@ -51,6 +56,18 @@
 
       <!-- Actions -->
       <div class="d-flex gap-2 mt-5 pt-5 border-top border-gray-300">
+        <NuxtLink
+          :to="`/services/${service.id}`"
+          class="btn btn-sm btn-light-info flex-grow-1"
+        >
+          <i class="ki-duotone ki-eye fs-3">
+            <span class="path1"></span>
+            <span class="path2"></span>
+            <span class="path3"></span>
+          </i>
+          View
+        </NuxtLink>
+
         <NuxtLink
           :to="`/services/${service.id}/edit`"
           class="btn btn-sm btn-light-primary flex-grow-1"

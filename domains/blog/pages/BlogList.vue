@@ -140,19 +140,6 @@
               </option>
             </select>
 
-            <!-- Export -->
-            <button
-              type="button"
-              class="btn btn-light-primary"
-              @click="handleExport"
-            >
-              <i class="ki-duotone ki-exit-up fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-              </i>
-              Export
-            </button>
-
             <!-- Create New -->
             <NuxtLink
               to="/blog/create"
@@ -225,8 +212,8 @@
                 <td>
                   <div class="d-flex flex-column">
                     <NuxtLink
-                      :to="`/blog/${post.id}`"
-                      class="text-gray-800 fw-bold text-hover-primary mb-1"
+                      :to="`/blog/${post.id}/edit`"
+                      class="text-gray-800 fw-bold text-hover-primary mb-1 d-block"
                     >
                       {{ post.title }}
                     </NuxtLink>
@@ -275,62 +262,30 @@
                   </span>
                 </td>
                 <td class="text-end">
+                  <NuxtLink
+                    :to="`/blog/${post.id}/edit`"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                    title="Edit"
+                  >
+                    <i class="ki-duotone ki-pencil fs-3">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                    </i>
+                  </NuxtLink>
                   <button
                     type="button"
-                    class="btn btn-sm btn-icon btn-light btn-active-light-primary"
-                    data-kt-menu-trigger="click"
-                    data-kt-menu-placement="bottom-end"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-danger"
+                    title="Delete"
+                    @click="handleDelete(post)"
                   >
-                    <i class="ki-duotone ki-dots-vertical fs-2">
+                    <i class="ki-duotone ki-trash fs-3">
                       <span class="path1"></span>
                       <span class="path2"></span>
                       <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
                     </i>
                   </button>
-
-                  <div
-                    class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                    data-kt-menu="true"
-                  >
-                    <div class="menu-item px-3">
-                      <NuxtLink
-                        :to="`/blog/${post.id}`"
-                        class="menu-link px-3"
-                      >
-                        View
-                      </NuxtLink>
-                    </div>
-                    <div class="menu-item px-3">
-                      <NuxtLink
-                        :to="`/blog/${post.id}/edit`"
-                        class="menu-link px-3"
-                      >
-                        Edit
-                      </NuxtLink>
-                    </div>
-                    <div class="menu-item px-3">
-                      <a
-                        href="#"
-                        class="menu-link px-3"
-                        @click.prevent="handleToggleStatus(post)"
-                      >
-                        {{
-                          post.status === 'published'
-                            ? 'Set as Draft'
-                            : 'Publish'
-                        }}
-                      </a>
-                    </div>
-                    <div class="menu-item px-3">
-                      <a
-                        href="#"
-                        class="menu-link px-3 text-danger"
-                        @click.prevent="handleDelete(post)"
-                      >
-                        Delete
-                      </a>
-                    </div>
-                  </div>
                 </td>
               </tr>
             </tbody>
@@ -424,8 +379,7 @@ const {
 const {
   confirmAndDeletePost,
   togglePostStatus,
-  bulkDeletePosts,
-  exportPostsToCSV
+  bulkDeletePosts
 } = useBlogActions()
 
 // Search and filters
@@ -486,10 +440,6 @@ const handleBulkDelete = async () => {
   if (success) {
     selectedIds.value = []
   }
-}
-
-const handleExport = () => {
-  exportPostsToCSV()
 }
 
 // Lifecycle

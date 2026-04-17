@@ -58,55 +58,31 @@
           </div>
         </div>
 
-        <div class="row">
-          <!-- Category -->
-          <div class="col-md-6 mb-10">
-            <label class="form-label">Category</label>
-            <select
-              v-model="form.category"
-              class="form-select"
-              :class="{
-                'is-invalid': touched.category && errors.category,
-                'is-valid': touched.category && form.category && !errors.category
-              }"
-              @blur="validateField('category')"
-              @change="clearError('category')"
+        <!-- Category -->
+        <div class="mb-10">
+          <label class="form-label">Category</label>
+          <select
+            v-model="form.category"
+            class="form-select"
+            :class="{
+              'is-invalid': touched.category && errors.category,
+              'is-valid': touched.category && form.category && !errors.category
+            }"
+            @blur="validateField('category')"
+            @change="clearError('category')"
+          >
+            <option :value="null">Select a category</option>
+            <option
+              v-for="category in FAQ_CATEGORIES"
+              :key="category"
+              :value="category"
             >
-              <option :value="null">Select a category</option>
-              <option
-                v-for="category in FAQ_CATEGORIES"
-                :key="category"
-                :value="category"
-              >
-                {{ category }}
-              </option>
-            </select>
-            <div class="form-text">Category for grouping related FAQs</div>
-            <div v-if="touched.category && errors.category" class="invalid-feedback d-block">
-              {{ errors.category }}
-            </div>
-          </div>
-
-          <!-- Order -->
-          <div class="col-md-6 mb-10">
-            <label class="form-label">Order</label>
-            <input
-              type="number"
-              v-model.number="form.order"
-              class="form-control"
-              :class="{
-                'is-invalid': touched.order && errors.order,
-                'is-valid': touched.order && form.order !== null && !errors.order
-              }"
-              placeholder="0"
-              min="0"
-              @blur="validateField('order')"
-              @input="clearError('order')"
-            />
-            <div class="form-text">Display order (lower numbers appear first)</div>
-            <div v-if="touched.order && errors.order" class="invalid-feedback d-block">
-              {{ errors.order }}
-            </div>
+              {{ category }}
+            </option>
+          </select>
+          <div class="form-text">Category for grouping related FAQs</div>
+          <div v-if="touched.category && errors.category" class="invalid-feedback d-block">
+            {{ errors.category }}
           </div>
         </div>
 
@@ -223,14 +199,6 @@ const validateField = (field: string): boolean => {
       errors.value.answer = ''
       return true
 
-    case 'order':
-      if (form.order !== null && form.order !== undefined && form.order < 0) {
-        errors.value.order = 'Order must be a positive number'
-        return false
-      }
-      errors.value.order = ''
-      return true
-
     default:
       return true
   }
@@ -245,7 +213,6 @@ const validateForm = (): boolean => {
 
   if (!validateField('question')) isValid = false
   if (!validateField('answer')) isValid = false
-  if (!validateField('order')) isValid = false
 
   return isValid
 }

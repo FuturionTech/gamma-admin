@@ -1,706 +1,405 @@
 <template>
-  <div class="d-flex flex-column flex-root min-h-100vh" id="kt_app_root">
-    <div class="d-flex flex-column flex-lg-row flex-column-fluid">
-      <!-- Colonne visuelle --------------------------------------------------->
-      <div class="d-flex flex-lg-row-fluid w-lg-50 hero-bg position-relative overflow-hidden">
-        <!-- Vagues animées -->
-        <div class="wave wave1"></div>
-        <div class="wave wave2"></div>
-        
-        <!-- Éléments décoratifs -->
-        <div class="hero-pattern"></div>
-        <div class="animated-gradient"></div>
-        <span class="shape shape-1"></span>
-        <span class="shape shape-2"></span>
-        <span class="shape shape-3"></span>
-        
-        <!-- Particles -->
-        <div class="particles-container">
-          <div class="particle particle-1"></div>
-          <div class="particle particle-2"></div>
-          <div class="particle particle-3"></div>
-          <div class="particle particle-4"></div>
-          <div class="particle particle-5"></div>
-        </div>
-        
-        <!-- Effet de lumière -->
-        <div class="light-effect"></div>
-        
-        <div class="d-flex flex-column flex-center p-6 p-lg-10 w-100 text-center">
-          <!-- Logo avec effet -->
-          <div class="logo-frame mb-7 mt-5 slide-in-top">
-            <div class="logo-border"></div>
-            <NuxtLink to="/" class="logo-link">
-              <img
-                src="/assets/media/logos/logo.png"
-                alt="Gamma Neutral Consulting logo"
-                class="h-80px h-lg-150px logo-hover"
-              />
-            </NuxtLink>
-          </div>
+  <div class="auth-shell" data-bs-theme="dark">
+    <!-- Cinematic hero panel -->
+    <aside class="auth-shell__stage" aria-hidden="true">
+      <video
+        class="auth-shell__video"
+        src="/assets/videos/toronto_drone_footage.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        disableremoteplayback
+      />
+      <div class="auth-shell__veil" />
+      <div class="auth-shell__grid" />
+      <div class="auth-shell__glow auth-shell__glow--top" />
+      <div class="auth-shell__glow auth-shell__glow--bottom" />
+    </aside>
 
-          <!-- Contenu avec typographie améliorée -->
-          <div class="hero-content mb-5 px-lg-10">
-            <div class="brand-container">
-              <h1 class="text-white fs-1 fs-lg-2qx fw-bolder glowing-text slide-in-bottom">
-                <span class="text-shadow">Gamma Neutral Consulting</span>
-              </h1>
-              <div class="brand-line"></div>
-            </div>
-
-            <p class="text-white fs-base fs-lg-4 fw-medium lh-lg mb-0 slide-in-bottom" style="animation-delay: 0.3s">
-              <span class="text-emphasis">Your Data Solutions</span><br class="d-none d-lg-block">
-              Empowering businesses to harness the full potential of their data
-            </p>
-            <div class="tagline-container mt-4 slide-in-bottom" style="animation-delay: 0.5s">
-              <p class="text-white fw-medium fs-base bg-glass py-2 px-4 d-inline-block rounded-pill">
-                <span class="tag-highlight">Analyze.</span> <span class="tag-highlight">Optimize.</span> <span class="tag-highlight">Succeed.</span>
-              </p>
-            </div>
-          </div>
-        </div>
+    <!-- Foreground content -->
+    <div class="auth-shell__stage-content">
+      <div class="auth-shell__brand">
+        <NuxtLink to="/" class="auth-shell__wordmark" aria-label="Gamma Neutral">
+          <span class="auth-shell__wordmark-strong">Gamma</span>
+          <span class="auth-shell__wordmark-light">Neutral</span>
+        </NuxtLink>
+        <span class="auth-shell__eyebrow">{{ $t('auth.brand.eyebrow') }}</span>
       </div>
 
-      <!-- Colonne formulaire -------------------------------------------------->
-      <div class="d-flex flex-column flex-lg-row-fluid w-lg-50 p-10">
-        <div class="d-flex flex-center flex-column flex-lg-row-fluid">
-          <div class="w-lg-500px p-10">
-            <slot />
-          </div>
-        </div>
+      <div class="auth-shell__pitch">
+        <span class="auth-shell__badge">
+          <span class="auth-shell__badge-dot" />
+          {{ $t('auth.brand.location') }}
+        </span>
+        <h2 class="auth-shell__headline">
+          {{ $t('auth.brand.tagline') }}
+        </h2>
+      </div>
+
+      <div class="auth-shell__footer-stage">
+        <span>© {{ year }} Gamma Neutral Consulting Inc.</span>
       </div>
     </div>
+
+    <!-- Form panel -->
+    <main class="auth-shell__panel">
+      <div class="auth-shell__panel-brand">
+        <NuxtLink to="/" class="auth-shell__wordmark auth-shell__wordmark--compact" aria-label="Gamma Neutral">
+          <span class="auth-shell__wordmark-strong">Gamma</span>
+          <span class="auth-shell__wordmark-light">Neutral</span>
+        </NuxtLink>
+      </div>
+
+      <div class="auth-shell__panel-inner">
+        <slot />
+      </div>
+
+      <footer class="auth-shell__panel-footer">
+        <a href="#" class="auth-shell__footer-link">{{ $t('auth.login.terms') }}</a>
+        <span class="auth-shell__footer-sep">·</span>
+        <a href="#" class="auth-shell__footer-link">{{ $t('auth.login.privacy') }}</a>
+      </footer>
+    </main>
   </div>
 </template>
 
-<style scoped>
-/* --- Background and patterns ----------------------------------------- */
-.hero-bg {
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 35%, #c084fc 65%, #f3e8ff 100%);
-  position: relative;
-  z-index: 0;
-}
-
-.hero-pattern {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  opacity: 0.4;
-  z-index: -1;
-}
-
-.animated-gradient {
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.1) 25%, rgba(192, 132, 252, 0.05) 50%, rgba(243, 232, 255, 0) 70%);
-  z-index: -1;
-  animation: pulse-gradient 15s ease-in-out infinite alternate;
-}
-
-/* Wave animation */
-.wave {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 88.7'%3E%3Cpath d='M800 56.9c-155.5 0-204.9-50-405.5-49.3-200 0.7-250 49.3-394.5 49.3v31.8h800v-31.8z' fill='%23ffffff' fill-opacity='0.1'/%3E%3C/svg%3E");
-  background-size: 800px 100px;
-  background-repeat: repeat-x;
-  z-index: 1;
-}
-
-.wave1 {
-  animation: wave-animation 20s linear infinite;
-  z-index: 2;
-  opacity: 0.5;
-  bottom: 0;
-  height: 80px;
-}
-
-.wave2 {
-  animation: wave-animation 15s linear reverse infinite;
-  z-index: 1;
-  opacity: 0.3;
-  bottom: 10px;
-  height: 60px;
-}
-
-@keyframes wave-animation {
-  0% { background-position-x: 0; }
-  100% { background-position-x: 800px; }
-}
-
-/* Light effect */
-.light-effect {
-  position: absolute;
-  top: 20%;
-  left: 40%;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
-  border-radius: 50%;
-  filter: blur(30px);
-  opacity: 0.6;
-  z-index: 0;
-  animation: light-pulse 10s ease-in-out infinite alternate;
-}
-
-@keyframes light-pulse {
-  0% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.2); }
-  100% { opacity: 0.4; transform: scale(1); }
-}
-
-@keyframes pulse-gradient {
-  0% { transform: scale(1) rotate(0deg); opacity: 0.5; }
-  50% { transform: scale(1.1) rotate(5deg); opacity: 0.7; }
-  100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
-}
-
-.shape {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.3;
-  animation: float 18s ease-in-out infinite;
-  z-index: 0;
-}
-
-.shape-1 {
-  width: 500px;
-  height: 500px;
-  background: #8b5cf6;
-  top: -150px;
-  left: -120px;
-}
-
-.shape-2 {
-  width: 400px;
-  height: 400px;
-  background: #7c3aed;
-  bottom: -100px;
-  right: -120px;
-  animation-delay: 3s;
-}
-
-.shape-3 {
-  width: 250px;
-  height: 250px;
-  background: #c084fc;
-  top: 40%;
-  left: 20%;
-  animation-delay: 6s;
-  opacity: 0.2;
-}
-
-/* Particles */
-.particles-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.particle {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 50%;
-  animation: float-particle 15s linear infinite;
-}
-
-.particle-1 {
-  top: 20%;
-  left: 20%;
-  width: 4px;
-  height: 4px;
-}
-
-.particle-2 {
-  top: 70%;
-  left: 10%;
-  width: 6px;
-  height: 6px;
-  animation-delay: 2s;
-  animation-duration: 25s;
-}
-
-.particle-3 {
-  top: 40%;
-  left: 60%;
-  width: 8px;
-  height: 8px;
-  animation-delay: 4s;
-  animation-duration: 20s;
-}
-
-.particle-4 {
-  top: 80%;
-  left: 40%;
-  width: 5px;
-  height: 5px;
-  animation-delay: 6s;
-}
-
-.particle-5 {
-  top: 30%;
-  left: 80%;
-  width: 3px;
-  height: 3px;
-  animation-delay: 8s;
-  animation-duration: 30s;
-}
-
-@keyframes float-particle {
-  0% { transform: translateY(0) translateX(0); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateY(-30vh) translateX(20vw); opacity: 0; }
-}
-
-.shape-3 {
-  width: 300px;
-  height: 300px;
-  background: #c084fc;
-  top: 50%;
-  left: 30%;
-  animation-delay: 6s;
-}
-
-.floating-badge {
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  animation: float-badge 6s ease-in-out infinite;
-  z-index: 10;
-}
-
-.badge-premium {
-  background: linear-gradient(45deg, #8b5cf6 0%, #7c3aed 100%);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 1px;
-  box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  z-index: 2;
-}
-
-/* --- Logo effects and animations ------------------------------------ */
-.logo-container {
-  position: relative;
-  display: inline-block;
-}
-
-.logo-link {
-  display: inline-block;
-  position: relative;
-  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.logo-hover {
-  transition: transform 0.3s ease-out;
-}
-
-.logo-hover:hover {
-  transform: translateY(-5px) scale(1.05);
-}
-
-.logo-shadow {
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.2);
-  filter: blur(10px);
-  opacity: 0.6;
-  transition: all 0.3s ease-out;
-}
-
-.logo-link:hover .logo-shadow {
-  width: 65%;
-  opacity: 0.4;
-}
-
-/* --- Glass card and decorations ------------------------------------- */
-.card-glass {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(12px);
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-}
-
-.card-glass-shine {
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.05) 25%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0.05) 75%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: rotate(35deg);
-  z-index: -1;
-  animation: shine 8s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes shine {
-  0% { transform: translateX(-100%) rotate(35deg); }
-  100% { transform: translateX(100%) rotate(35deg); }
-}
-
-.corner-decoration {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  z-index: -1;
-}
-
-.top-left {
-  top: -60px;
-  left: -60px;
-}
-
-.top-right {
-  top: -60px;
-  right: -60px;
-}
-
-.highlight {
-  position: relative;
-  display: inline-block;
-}
-
-.highlight::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 8px;
-  background: linear-gradient(90deg, #8b5cf6, #7c3aed);
-  opacity: 0.5;
-  border-radius: 4px;
-  z-index: -1;
-}
-
-.gradient-text {
-  background: linear-gradient(90deg, #f3e8ff, #c084fc);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  padding-right: 5px;
-}
-
-/* --- Features & value props ------------------------------------------- */
-/* Logo styling */
-.logo-frame {
-  position: relative;
-  display: inline-block;
-  padding: 2px;
-}
-
-.logo-border {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: 2px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  opacity: 0;
-  transform: scale(0.9);
-  transition: all 0.5s ease;
-}
-
-.logo-frame:hover .logo-border {
-  opacity: 1;
-  transform: scale(1.05);
-}
-
-.logo-hover {
-  transition: all 0.3s ease-out;
-  filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.3));
-}
-
-.logo-hover:hover {
-  transform: translateY(-5px);
-  filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
-}
-
-/* Content styling */
-.hero-content {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.brand-container {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 1.5rem;
-}
-
-.brand-line {
-  position: absolute;
-  bottom: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 3px;
-  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
-  border-radius: 3px;
-  animation: pulse-width 4s ease-in-out infinite;
-}
-
-@keyframes pulse-width {
-  0%, 100% { width: 40px; opacity: 0.6; }
-  50% { width: 80px; opacity: 1; }
-}
-
-.glowing-text {
-  position: relative;
-}
-
-.text-shadow {
-  text-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
-}
-
-.text-emphasis {
-  font-weight: bold;
-  position: relative;
-  display: inline-block;
-}
-
-.text-emphasis::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
-}
-
-/* Tagline styling */
-.bg-glass {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Feature badges */
-.feature-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
-  background: rgba(139, 92, 246, 0.15);
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  border-radius: 20px;
-  color: white;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.feature-badge:hover {
-  background: rgba(139, 92, 246, 0.25);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-}
-
-.tag-highlight {
-  position: relative;
-  color: #f3e8ff;
-  font-weight: 600;
-  text-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
-}
-
-.tag-highlight:not(:last-child)::after {
-  content: '';
-  display: inline-block;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #c084fc;
-  margin: 0 3px 3px 3px;
-  vertical-align: middle;
-}
-
-/* --- Animations ----------------------------------------------------- */
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50%      { transform: translateY(-40px) rotate(10deg); }
-}
-
-@keyframes float-badge {
-  0%, 100% { transform: translateY(0) rotate(-3deg); }
-  50%      { transform: translateY(-10px) rotate(3deg); }
-}
-
-@keyframes slide-in-top {
-  0% { opacity: 0; transform: translateY(-30px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-.slide-in-top {
-  opacity: 0;
-  animation: slide-in-top 0.8s 0.2s forwards;
-}
-
-.fade-in {
-  opacity: 0;
-  animation: fadeInUp 0.8s 0.3s forwards;
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.slide-in-right {
-  opacity: 0;
-  animation: slideInRight 0.8s 0.4s forwards;
-}
-
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(50px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-.slide-in-left {
-  opacity: 0;
-  animation: slideInLeft 0.8s 0.6s forwards;
-}
-
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-50px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-.slide-in-bottom {
-  opacity: 0;
-  animation: slideInBottom 0.8s 0.8s forwards;
-}
-
-@keyframes slideInBottom {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+<script setup lang="ts">
+import { computed } from 'vue';
+
+useHead({
+  bodyAttrs: { class: 'auth-body' },
+  link: [
+    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap',
+    },
+  ],
+});
+
+const year = computed(() => new Date().getFullYear());
+</script>
+
+<style>
+/* Non-scoped body tweak: remove scroll on auth screens and apply app typography */
+.auth-body {
+  min-height: 100vh;
+  background: #050608;
+  color: #f5f5f7;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 </style>
 
-
-<script setup lang="ts">
-definePageMeta({
-  layout: 'auth'
-})
-</script>
-
 <style scoped>
-.bgi-size-cover {
-  background-size: cover !important;
+.auth-shell {
+  --auth-bg: #050608;
+  --auth-surface: #0e0f13;
+  --auth-surface-raised: #141720;
+  --auth-border: rgba(255, 255, 255, 0.08);
+  --auth-border-strong: rgba(255, 255, 255, 0.16);
+  --auth-text: #f5f5f7;
+  --auth-text-muted: #9199a7;
+  --auth-text-dim: #6b7280;
+  --auth-accent: #a78bfa;
+  --auth-accent-strong: #8b5cf6;
+  --auth-accent-deep: #6d28d9;
+  --auth-danger: #f87171;
+  --auth-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+  background: var(--auth-bg);
+  color: var(--auth-text);
+  overflow: hidden;
 }
 
-.bgi-position-center {
-  background-position: center !important;
+.auth-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(80% 60% at 50% 0%, rgba(139, 92, 246, 0.12), transparent 60%);
+  pointer-events: none;
 }
 
-.flex-column-fluid {
-  flex: 1 0 auto;
+/* Hero stage */
+.auth-shell__stage {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  grid-row: 1;
+  grid-column: 1;
 }
 
-.flex-lg-row-fluid {
-  flex: 1 0 auto;
-}
-
-.w-lg-50 {
+.auth-shell__video {
+  position: absolute;
+  inset: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.8) contrast(1.05);
+  opacity: 0.65;
+}
+
+.auth-shell__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 6, 8, 0.25) 0%, rgba(5, 6, 8, 0.55) 55%, rgba(5, 6, 8, 0.9) 100%),
+    linear-gradient(115deg, rgba(109, 40, 217, 0.25) 0%, rgba(5, 6, 8, 0) 65%);
+}
+
+.auth-shell__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(70% 70% at 30% 40%, #000 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(70% 70% at 30% 40%, #000 30%, transparent 80%);
+  opacity: 0.6;
+}
+
+.auth-shell__glow {
+  position: absolute;
+  width: 560px;
+  height: 560px;
+  border-radius: 999px;
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+.auth-shell__glow--top {
+  top: -180px;
+  left: -160px;
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.45) 0%, rgba(5, 6, 8, 0) 70%);
+}
+
+.auth-shell__glow--bottom {
+  bottom: -220px;
+  right: -200px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.35) 0%, rgba(5, 6, 8, 0) 70%);
+}
+
+.auth-shell__stage-content {
+  display: none;
+  position: absolute;
+  inset: 0;
+  padding: 4rem 4.5rem;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.auth-shell__stage-content > * {
+  pointer-events: auto;
+}
+
+.auth-shell__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(-12px);
+  animation: auth-fade-in 0.9s var(--auth-ease) 0.1s forwards;
+}
+
+.auth-shell__wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 2.25rem;
+  letter-spacing: -0.028em;
+  text-decoration: none;
+  color: var(--auth-text);
+  line-height: 1;
+}
+
+.auth-shell__wordmark-strong {
+  font-weight: 700;
+}
+
+.auth-shell__wordmark-light {
+  font-weight: 300;
+  color: rgba(245, 245, 247, 0.72);
+}
+
+.auth-shell__wordmark--compact {
+  font-size: 1.6rem;
+}
+
+@media (min-width: 1400px) {
+  .auth-shell__wordmark {
+    font-size: 2.6rem;
+  }
+}
+
+.auth-shell__eyebrow {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--auth-accent);
+}
+
+.auth-shell__pitch {
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: auth-fade-in 1s var(--auth-ease) 0.25s forwards;
+}
+
+.auth-shell__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.95rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(245, 245, 247, 0.85);
+  align-self: flex-start;
+}
+
+.auth-shell__badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #a78bfa;
+  box-shadow: 0 0 0 0 rgba(167, 139, 250, 0.6);
+  animation: auth-pulse 2.4s ease-in-out infinite;
+}
+
+.auth-shell__headline {
+  margin: 0;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.9rem, 3vw, 2.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--auth-text);
+}
+
+.auth-shell__footer-stage {
+  font-size: 0.78rem;
+  color: rgba(245, 245, 247, 0.5);
+  opacity: 0;
+  animation: auth-fade-in 0.8s var(--auth-ease) 0.5s forwards;
+}
+
+/* Form panel */
+.auth-shell__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 2rem 1.5rem 2.5rem;
+  background: linear-gradient(180deg, rgba(20, 23, 32, 0.6) 0%, rgba(5, 6, 8, 1) 100%);
+  z-index: 1;
+}
+
+.auth-shell__panel-brand {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1.5rem;
 }
 
 @media (min-width: 992px) {
-  .flex-root {
-    min-height: 100vh;
-  }
-
-  .w-lg-50 {
-    width: 50%;
-  }
-  
-  .fs-lg-2qx {
-    font-size: 3rem !important;
-  }
-  
-  .fs-lg-4 {
-    font-size: 1.35rem !important;
+  .auth-shell__panel-brand {
+    display: none;
   }
 }
 
-/* Mobile optimizations */
-@media (max-width: 991px) {
-  .hero-bg {
-    background: linear-gradient(180deg, #8b5cf6 0%, #7c3aed 100%);
+.auth-shell__panel-inner {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-shell__panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+  font-size: 0.78rem;
+  color: var(--auth-text-dim);
+}
+
+.auth-shell__footer-link {
+  color: var(--auth-text-muted);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.auth-shell__footer-link:hover {
+  color: var(--auth-accent);
+}
+
+.auth-shell__footer-sep {
+  opacity: 0.5;
+}
+
+@media (min-width: 992px) {
+  .auth-shell {
+    grid-template-columns: 1.05fr 0.95fr;
   }
-  
-  .shape-1, .shape-2, .shape-3 {
-    opacity: 0.2;
+
+  .auth-shell__stage {
+    display: block;
+    grid-column: 1;
   }
-  
-  .value-proposition {
-    grid-template-columns: 1fr;
+
+  .auth-shell__stage-content {
+    display: flex;
   }
-  
-  .features-list {
+
+  .auth-shell__panel {
+    grid-column: 2;
+    padding: 3rem 3.5rem 3rem;
+  }
+
+  .auth-shell__panel-brand {
     justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 12px;
-    flex-wrap: nowrap;
-    max-width: 100%;
-    scrollbar-width: none;
   }
-  
-  .features-list::-webkit-scrollbar {
-    display: none;
+}
+
+@media (min-width: 1400px) {
+  .auth-shell__panel {
+    padding: 3.5rem 5rem;
   }
-  
-  .card-glass {
-    margin-left: -16px;
-    margin-right: -16px;
-    border-radius: 20px;
+}
+
+@keyframes auth-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .floating-badge {
-    top: 20px;
-    right: 20px;
+}
+
+@keyframes auth-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(167, 139, 250, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(167, 139, 250, 0);
   }
 }
 </style>

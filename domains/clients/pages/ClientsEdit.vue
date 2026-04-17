@@ -124,27 +124,6 @@
                     <div class="form-text">Client's website URL (optional)</div>
                   </div>
 
-                  <!-- Display Order -->
-                  <div class="mb-5">
-                    <label class="form-label">Display Order</label>
-                    <input
-                      type="number"
-                      v-model.number="form.order"
-                      class="form-control"
-                      :class="{
-                        'is-invalid': touched.order && errors.order,
-                        'is-valid': touched.order && (form.order !== null && form.order !== undefined) && !errors.order
-                      }"
-                      min="0"
-                      placeholder="0"
-                      @blur="validateField('order')"
-                      @input="clearError('order')"
-                    />
-                    <div v-if="touched.order && errors.order" class="invalid-feedback d-block">
-                      {{ errors.order }}
-                    </div>
-                    <div class="form-text">Display order (lower = shown first)</div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -316,14 +295,6 @@ const validateField = (field: keyof UpdateClientInput): boolean => {
       errors.value.website_url = ''
       return true
 
-    case 'order':
-      if (value !== null && value !== undefined && typeof value === 'number' && value < 0) {
-        errors.value.order = 'Order must be a positive number'
-        return false
-      }
-      errors.value.order = ''
-      return true
-
     default:
       return true
   }
@@ -331,7 +302,7 @@ const validateField = (field: keyof UpdateClientInput): boolean => {
 
 const validateAll = (): boolean => {
   let isValid = true
-  const fieldsToValidate: Array<keyof UpdateClientInput> = ['name', 'website_url', 'order']
+  const fieldsToValidate: Array<keyof UpdateClientInput> = ['name', 'website_url']
 
   for (const field of fieldsToValidate) {
     if (!validateField(field)) {

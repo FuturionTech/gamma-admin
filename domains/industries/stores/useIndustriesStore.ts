@@ -118,12 +118,12 @@ export const useIndustriesStore = defineStore('industries', {
     },
 
     setIndustries(industries: Industry[]) {
-      this.industries = industries
+      this.industries = [...industries]
       this.updateStatistics()
     },
 
     setCurrentIndustry(industry: Industry | null) {
-      this.currentIndustry = industry
+      this.currentIndustry = industry ? { ...industry } : null
     },
 
     setFilters(filters: Partial<IndustryFilterInput>) {
@@ -157,32 +157,18 @@ export const useIndustriesStore = defineStore('industries', {
       this.setError(null)
 
       try {
-        const variables: any = {}
-
-        // Only add optional filters if they have values
+        const variables: Record<string, unknown> = {}
         if (this.filters.is_active !== null && this.filters.is_active !== undefined) {
           variables.is_active = this.filters.is_active
         }
-
         if (this.filters.category) {
           variables.category = this.filters.category
         }
 
-        const { data, error } = await useAsyncQuery<IndustriesResponse>(
-          GET_INDUSTRIES,
-          variables
-        )
-
-        if (error.value) {
-          throw new Error(error.value.message || 'Failed to fetch industries')
-        }
-
-        if (data.value) {
-          this.setIndustries(data.value.industries)
-        }
+        const data = await useApi().query<IndustriesResponse>(GET_INDUSTRIES, { variables })
+        this.setIndustries(data.industries || [])
       } catch (err: any) {
         this.setError(err.message || 'Failed to load industries')
-        // Set empty array on error
         this.setIndustries([])
       } finally {
         this.setLoading(false)
@@ -194,19 +180,12 @@ export const useIndustriesStore = defineStore('industries', {
       this.setError(null)
 
       try {
-        const { data, error } = await useAsyncQuery<IndustryResponse>(
-          GET_INDUSTRY,
-          { id }
-        )
-
-        if (error.value) {
-          throw new Error(error.value.message || 'Failed to fetch industry')
+        const data = await useApi().query<IndustryResponse>(GET_INDUSTRY, { variables: { id } })
+        if (data.industry) {
+          this.setCurrentIndustry(data.industry)
+          return data.industry
         }
-
-        if (data.value) {
-          this.setCurrentIndustry(data.value.industry)
-          return data.value.industry
-        }
+        return null
       } catch (err: any) {
         this.setError(err.message || 'Failed to load industry')
         throw err
@@ -215,30 +194,17 @@ export const useIndustriesStore = defineStore('industries', {
       }
     },
 
-    async createIndustry(input: CreateIndustryInput) {
+    async createIndustry(input: CreateIndustryInput, locale?: string) {
       this.setLoading(true)
       this.setError(null)
 
       try {
-        const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
-
-        const response = await apolloClient.mutate<CreateIndustryResponse>({
-          mutation: CREATE_INDUSTRY,
-          variables: { input }
+        const data = await useApi().mutate<CreateIndustryResponse>(CREATE_INDUSTRY, {
+          variables: { input },
+          locale,
         })
-
-        if (response?.errors?.length) {
-          throw new Error(response.errors[0].message)
-        }
-
-        if (response?.data?.createIndustry) {
-          // Refresh the industries list
-          await this.fetchIndustries()
-          return response.data.createIndustry
-        }
-
-        throw new Error('No data returned from server')
+        await this.fetchIndustries()
+        return data.createIndustry
       } catch (err: any) {
         this.setError(err.message || 'Failed to create industry')
         throw err
@@ -247,40 +213,27 @@ export const useIndustriesStore = defineStore('industries', {
       }
     },
 
-    async updateIndustry(id: string, input: UpdateIndustryInput) {
+    async updateIndustry(id: string, input: UpdateIndustryInput, locale?: string) {
       this.setLoading(true)
       this.setError(null)
 
       try {
-        const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
-
-        const response = await apolloClient.mutate<UpdateIndustryResponse>({
-          mutation: UPDATE_INDUSTRY,
-          variables: { id, input }
+        const data = await useApi().mutate<UpdateIndustryResponse>(UPDATE_INDUSTRY, {
+          variables: { id, input },
+          locale,
         })
+        const updated = data.updateIndustry
 
-        if (response?.errors?.length) {
-          throw new Error(response.errors[0].message)
+        const index = this.industries.findIndex(i => i.id === id)
+        if (index !== -1) {
+          this.industries.splice(index, 1, updated)
+        }
+        if (this.currentIndustry?.id === id) {
+          this.setCurrentIndustry(updated)
         }
 
-        if (response?.data?.updateIndustry) {
-          // Update in local state
-          const index = this.industries.findIndex(i => i.id === id)
-          if (index !== -1) {
-            this.industries[index] = response.data.updateIndustry
-          }
-
-          // Update current industry if it's the one being edited
-          if (this.currentIndustry?.id === id) {
-            this.setCurrentIndustry(response.data.updateIndustry)
-          }
-
-          this.updateStatistics()
-          return response.data.updateIndustry
-        }
-
-        throw new Error('No data returned from server')
+        this.updateStatistics()
+        return updated
       } catch (err: any) {
         this.setError(err.message || 'Failed to update industry')
         throw err
@@ -294,32 +247,17 @@ export const useIndustriesStore = defineStore('industries', {
       this.setError(null)
 
       try {
-        const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
-
-        const response = await apolloClient.mutate<DeleteIndustryResponse>({
-          mutation: DELETE_INDUSTRY,
-          variables: { id }
+        const data = await useApi().mutate<DeleteIndustryResponse>(DELETE_INDUSTRY, {
+          variables: { id },
         })
 
-        if (response?.errors?.length) {
-          throw new Error(response.errors[0].message)
+        this.industries = this.industries.filter(i => i.id !== id)
+        if (this.currentIndustry?.id === id) {
+          this.setCurrentIndustry(null)
         }
+        this.updateStatistics()
 
-        if (response?.data?.deleteIndustry) {
-          // Remove from local state
-          this.industries = this.industries.filter(i => i.id !== id)
-
-          // Clear current industry if it was deleted
-          if (this.currentIndustry?.id === id) {
-            this.setCurrentIndustry(null)
-          }
-
-          this.updateStatistics()
-          return response.data.deleteIndustry
-        }
-
-        throw new Error('No data returned from server')
+        return data.deleteIndustry
       } catch (err: any) {
         this.setError(err.message || 'Failed to delete industry')
         throw err

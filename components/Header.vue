@@ -5,7 +5,8 @@
     <PageHeader />
     <!--end::Page header-->
     <!--begin::Wrapper-->
-    <div class="d-flex">
+    <div class="d-flex align-items-center gap-3">
+      <ThemeToggle />
       <!--begin::Navbar-->
       <div class="app-navbar flex-shrink-0">
         <!--begin::User menu-->
@@ -21,6 +22,7 @@
 <script setup lang="ts">
 import ProfileDropdown from "~/components/sidebar/profile/ProfileDropdown.vue";
 import PageHeader from "~/components/header/PageHeader.vue";
+import ThemeToggle from "~/components/ThemeToggle.vue";
 </script>
 
 <style scoped>

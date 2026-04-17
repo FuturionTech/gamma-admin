@@ -126,20 +126,6 @@
                 </div>
               </div>
 
-              <!-- Order -->
-              <div class="mb-5">
-                <label class="form-label">Display Order</label>
-                <input
-                  v-model.number="formData.order"
-                  type="number"
-                  class="form-control"
-                  min="0"
-                  placeholder="0"
-                />
-                <div class="form-text">
-                  Display order (lower numbers appear first)
-                </div>
-              </div>
             </div>
           </div>
 

@@ -70,11 +70,7 @@ import { useRouter } from 'vue-router';
 import { useCurrentUser } from '~/composables/useCurrentUser';
 
 const router = useRouter();
-const { user, fullName, hasRole, primaryRole } = useCurrentUser();
-
-const primaryRoleLabel = computed(
-  () => primaryRole.value?.display_name || primaryRole.value?.name || '',
-);
+const { user, fullName, hasRole, primaryRoleLabel } = useCurrentUser();
 
 const handleLogout = () => {
   router.push('/logout');

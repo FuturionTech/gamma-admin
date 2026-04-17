@@ -91,21 +91,7 @@
                 </div>
               </div>
 
-              <div class="col-xl-3 col-md-6">
-                <div class="gn-insight gn-insight--info">
-                  <div class="gn-insight__icon">
-                    <i class="ki-duotone ki-book fs-2x">
-                      <span class="path1"></span><span class="path2"></span>
-                      <span class="path3"></span><span class="path4"></span>
-                    </i>
-                  </div>
-                  <div>
-                    <div class="gn-insight__value">{{ counts.blogPosts }}</div>
-                    <div class="gn-insight__label">Blog Articles</div>
-                    <div class="gn-insight__hint">{{ blogSubtitle || '—' }}</div>
-                  </div>
-                </div>
-              </div>
+              <!-- Blog hidden — no blog page on gamma-web yet -->
 
               <div class="col-xl-3 col-md-6">
                 <div class="gn-insight gn-insight--success">
@@ -117,9 +103,9 @@
                     </i>
                   </div>
                   <div>
-                    <div class="gn-insight__value">{{ counts.team + counts.clients + counts.partners }}</div>
-                    <div class="gn-insight__label">People in Network</div>
-                    <div class="gn-insight__hint">{{ counts.team }} team · {{ counts.clients }} clients · {{ counts.partners }} partners</div>
+                    <div class="gn-insight__value">{{ counts.team }}</div>
+                    <div class="gn-insight__label">Team Members</div>
+                    <div class="gn-insight__hint">Active team members</div>
                   </div>
                 </div>
               </div>
@@ -153,14 +139,9 @@
               <div class="col-xl-3 col-md-6">
                 <MetricCard title="Services" :count="counts.services" icon="ki-duotone ki-setting-2" color="#7239EA" link="/services/list" />
               </div>
+              <!-- Solutions hidden — no dedicated page on gamma-web yet -->
               <div class="col-xl-3 col-md-6">
-                <MetricCard title="Solutions" :count="counts.solutions" icon="ki-duotone ki-abstract-26" color="#17C653" link="/solutions/list" />
-              </div>
-              <div class="col-xl-3 col-md-6">
-                <MetricCard title="Blog Posts" :count="counts.blogPosts" icon="ki-duotone ki-book" color="#009EF7" link="/blog/list" :subtitle="blogSubtitle" />
-              </div>
-              <div class="col-xl-3 col-md-6">
-                <MetricCard title="Projects" :count="counts.projects" icon="ki-duotone ki-briefcase" color="#F1416C" link="/projects/list" />
+                <!-- Blog metric hidden — no blog page on gamma-web yet -->
               </div>
             </div>
 
@@ -168,7 +149,7 @@
             <div class="d-flex flex-wrap align-items-end justify-content-between mb-4">
               <div>
                 <h2 class="gn-section-title mb-1">Operations & People</h2>
-                <div class="gn-section-subtitle">Team, clients, partners and customer engagement</div>
+                <div class="gn-section-subtitle">Team and customer engagement</div>
               </div>
               <NuxtLink to="/contact-requests" class="btn btn-sm btn-light-primary">Review inquiries</NuxtLink>
             </div>
@@ -177,21 +158,14 @@
               <div class="col-xl-3 col-md-6">
                 <MetricCard title="Team Members" :count="counts.team" icon="ki-duotone ki-people" color="#FFC700" link="/team/list" />
               </div>
-              <div class="col-xl-3 col-md-6">
-                <MetricCard title="Clients" :count="counts.clients" icon="ki-duotone ki-user-tick" color="#7239EA" link="/clients" />
-              </div>
-              <div class="col-xl-3 col-md-6">
-                <MetricCard title="Partners" :count="counts.partners" icon="ki-duotone ki-handshake" color="#17C653" link="/partners" />
-              </div>
+              <!-- Partners, Clients hidden — features not yet on gamma-web frontend -->
               <div class="col-xl-3 col-md-6">
                 <MetricCard title="Contact Requests" :count="counts.contactRequests" icon="ki-duotone ki-sms" color="#009EF7" link="/contact-requests" :subtitle="contactSubtitle" />
               </div>
             </div>
 
             <div class="row g-5 g-xl-6 mb-6 mb-xl-10">
-              <div class="col-xl-3 col-md-6">
-                <MetricCard title="Testimonials" :count="counts.testimonials" icon="ki-duotone ki-like" color="#F1416C" link="/testimonials" />
-              </div>
+              <!-- Testimonials hidden — feature not yet on gamma-web frontend -->
               <div class="col-xl-3 col-md-6">
                 <MetricCard title="Certifications" :count="counts.certifications" icon="ki-duotone ki-shield-tick" color="#FFC700" link="/certifications" />
               </div>
@@ -240,12 +214,22 @@
                     </div>
                   </div>
                   <div class="card-body pt-4">
-                    <div v-if="recentContacts.length === 0" class="text-center text-muted py-10">
-                      <i class="ki-duotone ki-inbox fs-3x text-gray-300 d-block mb-3">
-                        <span class="path1"></span><span class="path2"></span>
-                      </i>
-                      No contact requests yet
-                    </div>
+                    <EmptyState
+                      v-if="recentContacts.length === 0"
+                      compact
+                      title="No contact requests yet"
+                      description="New inquiries from the public site will appear here as soon as they arrive."
+                    >
+                      <template #icon>
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M8 14a4 4 0 0 1 4-4h24a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V14Z" />
+                          <path d="m10 16 12 9a3 3 0 0 0 4 0l12-9" />
+                        </svg>
+                      </template>
+                      <template #action>
+                        <NuxtLink to="/contact-requests" class="btn btn-sm btn-light-primary">Open inbox</NuxtLink>
+                      </template>
+                    </EmptyState>
                     <div v-else class="gn-timeline">
                       <div
                         v-for="contact in recentContacts"
@@ -277,8 +261,8 @@
                 </div>
               </div>
 
-              <!-- Recent Blog Posts -->
-              <div class="col-xl-6">
+              <!-- Blog section hidden — no blog page on gamma-web yet -->
+              <div class="col-xl-6" style="display:none">
                 <div class="card card-flush h-xl-100 border-0 shadow-sm">
                   <div class="card-header pt-7">
                     <h3 class="card-title align-items-start flex-column">
@@ -290,13 +274,22 @@
                     </div>
                   </div>
                   <div class="card-body pt-4">
-                    <div v-if="recentPosts.length === 0" class="text-center text-muted py-10">
-                      <i class="ki-duotone ki-book fs-3x text-gray-300 d-block mb-3">
-                        <span class="path1"></span><span class="path2"></span>
-                        <span class="path3"></span><span class="path4"></span>
-                      </i>
-                      No blog posts yet
-                    </div>
+                    <EmptyState
+                      v-if="recentPosts.length === 0"
+                      compact
+                      title="No articles yet"
+                      description="Publish your first article to share insights with visitors and improve SEO."
+                    >
+                      <template #icon>
+                        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M10 8h20a6 6 0 0 1 6 6v26l-6-4-4 4-4-4-4 4-4-4-4 4V14a6 6 0 0 1 6-6Z" />
+                          <path d="M16 18h14M16 24h14M16 30h10" />
+                        </svg>
+                      </template>
+                      <template #action>
+                        <NuxtLink to="/blog/create" class="btn btn-sm btn-primary">Write first article</NuxtLink>
+                      </template>
+                    </EmptyState>
                     <div v-else>
                       <div
                         v-for="post in recentPosts"
@@ -353,19 +346,6 @@
                       <div>
                         <div class="fw-bold fs-6 text-gray-900">New Blog Post</div>
                         <div class="fs-7 text-gray-500">Write a new article</div>
-                      </div>
-                    </NuxtLink>
-                  </div>
-                  <div class="col-lg-3 col-md-6">
-                    <NuxtLink to="/projects/create" class="gn-quick-action">
-                      <div class="gn-quick-action__icon bg-light-success text-success">
-                        <i class="ki-duotone ki-briefcase fs-2x">
-                          <span class="path1"></span><span class="path2"></span>
-                        </i>
-                      </div>
-                      <div>
-                        <div class="fw-bold fs-6 text-gray-900">New Project</div>
-                        <div class="fs-7 text-gray-500">Add a case study</div>
                       </div>
                     </NuxtLink>
                   </div>
@@ -427,6 +407,7 @@ import { useDashboardData } from '../composables/useDashboardData'
 import { useCurrentUser } from '~/composables/useCurrentUser'
 import DashboardSkeleton from '../components/DashboardSkeleton.vue'
 import MetricCard from '../components/metrics/MetricCard.vue'
+import EmptyState from '~/domains/shared/components/EmptyState.vue'
 
 definePageMeta({
   middleware: 'auth',
@@ -441,7 +422,7 @@ const {
   user,
   fullName,
   initials,
-  primaryRole,
+  primaryRoleLabel,
 } = useCurrentUser()
 
 const firstName = computed(() => {
@@ -452,7 +433,6 @@ const firstName = computed(() => {
 
 const userInitials = computed(() => initials.value || '')
 const userEmail = computed(() => user.value?.email || '')
-const primaryRoleLabel = computed(() => primaryRole.value?.display_name || primaryRole.value?.name || '')
 
 const greeting = computed(() => {
   const hour = new Date().getHours()
@@ -694,13 +674,13 @@ onMounted(async () => {
 .gn-section-title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #121519;
+  color: var(--gn-section-title-color, #121519);
   letter-spacing: -0.01em;
 }
 
 .gn-section-subtitle {
   font-size: 0.8rem;
-  color: #858c97;
+  color: var(--gn-section-subtitle-color, #858c97);
   font-weight: 500;
 }
 
@@ -783,19 +763,107 @@ onMounted(async () => {
 
 /* ── Dark mode tweaks ───────────────────────────────── */
 :global([data-bs-theme='dark']) .gn-insight {
-  background: #1b1d22;
-  border-color: #2a2c34;
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 28px -18px rgba(0, 0, 0, 0.55);
+}
+
+:global([data-bs-theme='dark']) .gn-insight:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(167, 139, 250, 0.25);
+  box-shadow: 0 18px 40px -20px rgba(124, 58, 237, 0.4);
 }
 
 :global([data-bs-theme='dark']) .gn-insight__value {
-  color: #f6f9fc;
+  color: #f5f5f7;
+}
+
+:global([data-bs-theme='dark']) .gn-insight__label {
+  color: rgba(245, 245, 247, 0.75);
+}
+
+:global([data-bs-theme='dark']) .gn-insight__hint {
+  color: rgba(245, 245, 247, 0.5);
+}
+
+:global([data-bs-theme='dark']) .gn-insight--primary .gn-insight__icon {
+  background: rgba(167, 139, 250, 0.18);
+  color: #c4b5fd;
+}
+
+:global([data-bs-theme='dark']) .gn-insight--info .gn-insight__icon {
+  background: rgba(96, 165, 250, 0.18);
+  color: #93c5fd;
+}
+
+:global([data-bs-theme='dark']) .gn-insight--success .gn-insight__icon {
+  background: rgba(52, 211, 153, 0.18);
+  color: #6ee7b7;
+}
+
+:global([data-bs-theme='dark']) .gn-insight--warning .gn-insight__icon {
+  background: rgba(251, 191, 36, 0.18);
+  color: #fcd34d;
+}
+
+/* CSS vars flip based on theme so scoped styles don't need :global workaround */
+:global([data-bs-theme='dark']) .gn-hero,
+:global([data-bs-theme='dark']) .gn-insight,
+:global([data-bs-theme='dark']) .gn-quick-action,
+:global([data-bs-theme='dark']) .gn-section-title,
+:global([data-bs-theme='dark']) .gn-section-subtitle {
+  --gn-section-title-color: #f5f5f7;
+  --gn-section-subtitle-color: rgba(245, 245, 247, 0.55);
+}
+
+:global(html[data-bs-theme='dark']) {
+  --gn-section-title-color: #f5f5f7;
+  --gn-section-subtitle-color: rgba(245, 245, 247, 0.55);
 }
 
 :global([data-bs-theme='dark']) .gn-quick-action {
-  background: #1b1d22;
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
 :global([data-bs-theme='dark']) .gn-quick-action:hover {
-  background: #22252c;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(167, 139, 250, 0.35);
+  box-shadow: 0 18px 40px -20px rgba(124, 58, 237, 0.5);
+}
+
+:global([data-bs-theme='dark']) .gn-quick-action .text-gray-900 {
+  color: #f5f5f7 !important;
+}
+
+:global([data-bs-theme='dark']) .gn-quick-action .text-gray-500 {
+  color: rgba(245, 245, 247, 0.55) !important;
+}
+
+/* Recent activity cards in dark mode */
+:global([data-bs-theme='dark']) .card.card-flush {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+:global([data-bs-theme='dark']) .card.card-flush .card-label {
+  color: #f5f5f7 !important;
+}
+
+:global([data-bs-theme='dark']) .card.card-flush .text-gray-500 {
+  color: rgba(245, 245, 247, 0.55) !important;
+}
+
+:global([data-bs-theme='dark']) .card.card-flush .text-gray-900 {
+  color: #f5f5f7 !important;
+}
+
+:global([data-bs-theme='dark']) .card.card-flush .border-gray-100 {
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+:global([data-bs-theme='dark']) .gn-hero {
+  background: linear-gradient(135deg, #0c0d12 0%, #14141f 45%, #1e1a33 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 </style>

@@ -3,203 +3,171 @@
     <div class="d-flex flex-column flex-column-fluid">
       <div id="kt_app_content" class="app-content flex-column-fluid">
         <div id="kt_app_content_container" class="app-container container-fluid">
-          <div class="card">
-            <div class="card-body">
-              <!-- Form -->
-              <form @submit.prevent="handleSubmit" :class="{ 'opacity-50 pe-none': isSubmitting }">
-                <div class="row">
-                  <!-- Basic Information -->
-                  <div class="col-md-8">
-                    <div class="mb-10">
-                      <h3 class="mb-5">Basic Information</h3>
 
-                      <!-- Partner Name -->
-                      <div class="mb-7">
-                        <label class="form-label required">Partner Name</label>
-                        <input
-                          type="text"
-                          v-model="form.name"
-                          class="form-control"
-                          :class="{
-                            'is-invalid': touched.name && errors.name,
-                            'is-valid': touched.name && form.name && !errors.name
-                          }"
-                          placeholder="Enter partner name"
-                          @blur="validateField('name')"
-                          @input="clearError('name')"
-                        />
-                        <div v-if="touched.name && errors.name" class="invalid-feedback d-block">
-                          {{ errors.name }}
-                        </div>
-                      </div>
+          <form class="gn-form" novalidate @submit.prevent="handleSubmit">
+            <!-- Hero -->
+            <header class="gn-form__hero">
+              <div class="gn-form__hero-icon" aria-hidden="true">
+                <GIcon name="handshake" :size="32" />
+              </div>
+              <div class="gn-form__hero-body">
+                <span class="gn-form__eyebrow">New partner</span>
+                <h1 class="gn-form__title">{{ form.name || 'Untitled partner' }}</h1>
+                <p class="gn-form__subtitle">
+                  Add a company Gamma Neutral works with. Featured on the website partner strip.
+                </p>
+              </div>
+              <div class="gn-form__hero-actions">
+                <NuxtLink to="/partners" class="gn-form__btn gn-form__btn--secondary">
+                  Cancel
+                </NuxtLink>
+                <button
+                  type="submit"
+                  class="gn-form__btn gn-form__btn--primary"
+                  :disabled="!isFormValid || isSubmitting"
+                >
+                  <span v-if="!isSubmitting">Create partner</span>
+                  <span v-else class="gn-form__btn-loading">
+                    <span class="gn-form__spinner" />
+                    Creating…
+                  </span>
+                </button>
+              </div>
+            </header>
 
-                      <!-- Website URL -->
-                      <div class="mb-7">
-                        <label class="form-label">Website URL</label>
-                        <div class="input-group">
-                          <span class="input-group-text">
-                            <i class="ki-duotone ki-global fs-2">
-                              <span class="path1"></span>
-                              <span class="path2"></span>
-                            </i>
-                          </span>
-                          <input
-                            type="url"
-                            v-model="form.website_url"
-                            class="form-control"
-                            :class="{
-                              'is-invalid': touched.website_url && errors.website_url,
-                              'is-valid': touched.website_url && form.website_url && !errors.website_url
-                            }"
-                            placeholder="https://example.com"
-                            @blur="validateField('website_url')"
-                            @input="clearError('website_url')"
-                          />
-                        </div>
-                        <div v-if="touched.website_url && errors.website_url" class="invalid-feedback d-block">
-                          {{ errors.website_url }}
-                        </div>
-                        <div class="form-text">Partner's official website (optional)</div>
-                      </div>
+            <div class="gn-form__layout">
+              <!-- Main column -->
+              <div class="gn-form__main">
+                <section class="gn-form__card">
+                  <header class="gn-form__card-header">
+                    <h3 class="gn-form__card-title">Company details</h3>
+                    <p class="gn-form__card-hint">Shown next to the logo on the public site.</p>
+                  </header>
 
-                      <!-- Display Order -->
-                      <div class="mb-7">
-                        <label class="form-label">Display Order</label>
-                        <input
-                          type="number"
-                          v-model.number="form.order"
-                          class="form-control"
-                          :class="{
-                            'is-invalid': touched.order && errors.order,
-                            'is-valid': touched.order && form.order !== null && !errors.order
-                          }"
-                          min="0"
-                          placeholder="0"
-                          @blur="validateField('order')"
-                          @input="clearError('order')"
-                        />
-                        <div v-if="touched.order && errors.order" class="invalid-feedback d-block">
-                          {{ errors.order }}
-                        </div>
-                        <div class="form-text">Display order (lower numbers appear first)</div>
-                      </div>
-
-                      <!-- Active Status -->
-                      <div class="mb-7">
-                        <div class="form-check form-switch form-check-custom form-check-solid">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            v-model="form.is_active"
-                            id="is_active"
-                          />
-                          <label class="form-check-label" for="is_active">
-                            Active
-                          </label>
-                        </div>
-                        <div class="form-text">Enable or disable this partner on the website</div>
-                      </div>
-                    </div>
+                  <div class="gn-form__field">
+                    <label class="gn-form__label" for="partner-name">
+                      Partner name <span class="gn-form__required">*</span>
+                    </label>
+                    <input
+                      id="partner-name"
+                      v-model="form.name"
+                      type="text"
+                      class="gn-form__input"
+                      :class="{ 'gn-form__input--error': touched.name && errors.name }"
+                      placeholder="e.g. Acme Corporation"
+                      @blur="validateField('name')"
+                      @input="clearError('name')"
+                    />
+                    <span
+                      v-if="touched.name && errors.name"
+                      class="gn-form__helper gn-form__helper--error"
+                    >
+                      {{ errors.name }}
+                    </span>
                   </div>
 
-                  <!-- Logo Upload -->
-                  <div class="col-md-4">
-                    <div class="mb-10">
-                      <h3 class="mb-5">Logo</h3>
-
-                      <div class="mb-7">
-                        <label class="form-label required">Partner Logo</label>
-
-                        <!-- Logo Preview -->
-                        <div
-                          v-if="logoPreview"
-                          class="border border-dashed border-gray-300 rounded p-5 mb-5 text-center"
-                        >
-                          <img
-                            :src="logoPreview"
-                            alt="Logo Preview"
-                            class="mw-100"
-                            style="max-height: 200px; object-fit: contain;"
-                          />
-                        </div>
-
-                        <!-- Upload Area -->
-                        <div
-                          v-else
-                          class="border border-dashed border-gray-300 rounded p-10 text-center mb-5"
-                        >
-                          <i class="ki-duotone ki-file-up fs-3x text-primary mb-3">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                          </i>
-                          <div class="text-gray-600 fw-semibold fs-6 mb-2">
-                            Drop logo here or click to upload
-                          </div>
-                          <div class="text-muted fs-7">
-                            PNG, SVG, JPG (max 2MB)
-                          </div>
-                        </div>
-
-                        <!-- File Input -->
-                        <input
-                          ref="fileInput"
-                          type="file"
-                          class="form-control"
-                          :class="{ 'is-invalid': errors.logo_url }"
-                          accept="image/png,image/jpeg,image/jpg,image/svg+xml"
-                          @change="handleLogoChange"
-                        />
-                        <div v-if="errors.logo_url" class="invalid-feedback d-block">
-                          {{ errors.logo_url }}
-                        </div>
-
-                        <!-- Remove Button -->
-                        <button
-                          v-if="logoPreview"
-                          type="button"
-                          class="btn btn-light-danger btn-sm mt-3 w-100"
-                          @click="handleLogoRemove"
-                        >
-                          <i class="ki-duotone ki-trash fs-2">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                            <span class="path3"></span>
-                            <span class="path4"></span>
-                            <span class="path5"></span>
-                          </i>
-                          Remove Logo
-                        </button>
-                      </div>
+                  <div class="gn-form__field">
+                    <label class="gn-form__label" for="partner-url">Website</label>
+                    <div class="gn-form__input-group">
+                      <span class="gn-form__input-icon">
+                        <GIcon name="globe" :size="18" />
+                      </span>
+                      <input
+                        id="partner-url"
+                        v-model="form.website_url"
+                        type="url"
+                        class="gn-form__input gn-form__input--with-icon"
+                        :class="{ 'gn-form__input--error': touched.website_url && errors.website_url }"
+                        placeholder="https://example.com"
+                        @blur="validateField('website_url')"
+                        @input="clearError('website_url')"
+                      />
                     </div>
+                    <span
+                      v-if="touched.website_url && errors.website_url"
+                      class="gn-form__helper gn-form__helper--error"
+                    >
+                      {{ errors.website_url }}
+                    </span>
+                    <span v-else class="gn-form__helper">Optional. The partner's public website.</span>
                   </div>
-                </div>
+                </section>
+              </div>
 
-                <!-- Form Actions -->
-                <div class="d-flex justify-content-end gap-3 pt-10 border-top">
-                  <NuxtLink
-                    to="/partners"
-                    class="btn btn-light"
-                  >
-                    Cancel
-                  </NuxtLink>
-                  <button
-                    type="submit"
-                    class="btn btn-primary"
-                    :disabled="!isFormValid || isSubmitting"
-                  >
-                    <span v-if="!isSubmitting">
-                      <i class="ki-duotone ki-check fs-2"></i>
-                      Save
+              <!-- Sidebar -->
+              <aside class="gn-form__aside">
+                <section class="gn-form__card">
+                  <header class="gn-form__card-header">
+                    <h3 class="gn-form__card-title">Logo</h3>
+                    <p class="gn-form__card-hint">PNG or SVG with a transparent background works best.</p>
+                  </header>
+
+                  <div class="gn-form__logo-area">
+                    <div
+                      v-if="logoPreview"
+                      class="gn-form__logo-preview"
+                    >
+                      <img :src="logoPreview" alt="Partner logo" />
+                      <button
+                        type="button"
+                        class="gn-form__logo-remove"
+                        title="Remove logo"
+                        @click="handleLogoRemove"
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    <label v-else class="gn-form__logo-drop" :class="{ 'gn-form__logo-drop--error': errors.logo_url }">
+                      <input
+                        ref="fileInput"
+                        type="file"
+                        accept="image/png,image/jpeg,image/jpg,image/svg+xml"
+                        class="gn-form__logo-input"
+                        @change="handleLogoChange"
+                      />
+                      <span class="gn-form__logo-icon">
+                        <GIcon name="image-plus" :size="28" />
+                      </span>
+                      <span class="gn-form__logo-title">Upload logo</span>
+                      <span class="gn-form__logo-hint">PNG, SVG or JPG — up to 2MB</span>
+                    </label>
+
+                    <span v-if="errors.logo_url" class="gn-form__helper gn-form__helper--error">
+                      {{ errors.logo_url }}
                     </span>
-                    <span v-else>
-                      <span class="spinner-border spinner-border-sm me-2"></span>
-                      Loading...
+                  </div>
+                </section>
+
+                <section class="gn-form__card">
+                  <header class="gn-form__card-header">
+                    <h3 class="gn-form__card-title">Publishing</h3>
+                  </header>
+                  <label class="gn-form__toggle">
+                    <input
+                      v-model="form.is_active"
+                      type="checkbox"
+                      class="gn-form__toggle-input"
+                    />
+                    <span class="gn-form__toggle-track">
+                      <span class="gn-form__toggle-thumb" />
                     </span>
-                  </button>
-                </div>
-              </form>
+                    <span class="gn-form__toggle-body">
+                      <span class="gn-form__toggle-title">
+                        {{ form.is_active ? 'Active' : 'Inactive' }}
+                      </span>
+                      <span class="gn-form__toggle-hint">
+                        {{ form.is_active ? 'Visible on the public site' : 'Hidden from the public site' }}
+                      </span>
+                    </span>
+                  </label>
+                </section>
+              </aside>
             </div>
-          </div>
+          </form>
+
         </div>
       </div>
     </div>
@@ -207,11 +175,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { usePartnersStore } from '../stores/usePartnersStore'
 import { usePartnerFormatters } from '../composables/usePartnerFormatters'
 import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
 import type { PartnerFormData } from '../types'
+import GIcon from '~/components/icons/GIcon.vue'
+
+definePageMeta({ middleware: 'auth' })
 
 const partnersStore = usePartnersStore()
 const breadcrumbStore = useBreadcrumbStore()
@@ -219,14 +191,13 @@ const router = useRouter()
 const { showSuccess, showError } = useNotification()
 const { isValidUrl } = usePartnerFormatters()
 
-// Form state
 const form = reactive<PartnerFormData>({
   name: '',
   logo_url: null,
   website_url: null,
   order: 0,
   is_active: true,
-  logoFile: null
+  logoFile: null,
 })
 
 const errors = ref<Record<string, string>>({})
@@ -235,7 +206,6 @@ const isSubmitting = ref(false)
 const logoPreview = ref('')
 const fileInput = ref<HTMLInputElement | null>(null)
 
-// Validation
 const isFormValid = computed(() => {
   return (
     form.name.trim() !== '' &&
@@ -247,37 +217,29 @@ const isFormValid = computed(() => {
 const validateField = (field: string): boolean => {
   touched.value[field] = true
 
-  switch (field) {
-    case 'name':
-      if (!form.name.trim()) {
-        errors.value.name = 'Partner name is required'
-        return false
-      } else if (form.name.length > 255) {
-        errors.value.name = 'Partner name cannot exceed 255 characters'
-        return false
-      }
-      delete errors.value.name
-      return true
-
-    case 'website_url':
-      if (form.website_url && !isValidUrl(form.website_url)) {
-        errors.value.website_url = 'Please enter a valid URL (e.g., https://example.com)'
-        return false
-      }
-      delete errors.value.website_url
-      return true
-
-    case 'order':
-      if (form.order !== null && form.order !== undefined && form.order < 0) {
-        errors.value.order = 'Order must be a positive number'
-        return false
-      }
-      delete errors.value.order
-      return true
-
-    default:
-      return true
+  if (field === 'name') {
+    if (!form.name.trim()) {
+      errors.value.name = 'Partner name is required'
+      return false
+    }
+    if (form.name.length > 255) {
+      errors.value.name = 'Partner name cannot exceed 255 characters'
+      return false
+    }
+    delete errors.value.name
+    return true
   }
+
+  if (field === 'website_url') {
+    if (form.website_url && !isValidUrl(form.website_url)) {
+      errors.value.website_url = 'Enter a valid URL (e.g. https://example.com)'
+      return false
+    }
+    delete errors.value.website_url
+    return true
+  }
+
+  return true
 }
 
 const clearError = (field: string) => {
@@ -285,14 +247,7 @@ const clearError = (field: string) => {
 }
 
 const validateForm = (): boolean => {
-  // Mark all fields as touched
-  touched.value = {
-    name: true,
-    website_url: true,
-    order: true,
-    logo_url: true
-  }
-
+  touched.value = { name: true, website_url: true, logo_url: true }
   errors.value = {}
 
   if (!form.name.trim()) {
@@ -302,47 +257,37 @@ const validateForm = (): boolean => {
   }
 
   if (!logoPreview.value) {
-    errors.value.logo_url = 'Partner logo is required'
+    errors.value.logo_url = 'A logo is required'
   }
 
   if (form.website_url && !isValidUrl(form.website_url)) {
-    errors.value.website_url = 'Please enter a valid URL (e.g., https://example.com)'
-  }
-
-  if (form.order !== null && form.order !== undefined && form.order < 0) {
-    errors.value.order = 'Order must be a positive number'
+    errors.value.website_url = 'Enter a valid URL (e.g. https://example.com)'
   }
 
   return Object.keys(errors.value).length === 0
 }
 
-// Handlers
 const handleLogoChange = (event: Event) => {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
-
   if (!file) return
 
-  // Validate file type
   const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml']
   if (!validTypes.includes(file.type)) {
-    errors.value.logo_url = 'Invalid file type. Accepted formats: PNG, SVG, JPG'
+    errors.value.logo_url = 'Invalid file type. Accepted: PNG, SVG, JPG'
     return
   }
 
-  // Validate file size (max 2MB)
-  const maxSize = 2 * 1024 * 1024 // 2MB
+  const maxSize = 2 * 1024 * 1024
   if (file.size > maxSize) {
-    errors.value.logo_url = 'File is too large. Maximum size: 2MB'
+    errors.value.logo_url = 'File too large. Max size: 2MB'
     return
   }
 
   form.logoFile = file
-
-  // Create preview
   const reader = new FileReader()
   reader.onload = (e) => {
-    logoPreview.value = e.target?.result as string
+    logoPreview.value = (e.target?.result as string) ?? ''
     delete errors.value.logo_url
   }
   reader.readAsDataURL(file)
@@ -359,21 +304,20 @@ const handleLogoRemove = () => {
 
 const handleSubmit = async () => {
   if (!validateForm()) {
-    showError('Please fix validation errors')
+    showError('Please fix the form errors')
     return
   }
 
   isSubmitting.value = true
 
   try {
-    // Prepare input — send base64 via 'logo' field for server-side upload
     const logoBase64 = logoPreview.value?.startsWith('data:image') ? logoPreview.value : null
 
     const input: Record<string, unknown> = {
       name: form.name,
       website_url: form.website_url || null,
       order: form.order ?? 0,
-      is_active: form.is_active ?? true
+      is_active: form.is_active ?? true,
     }
 
     if (logoBase64) {
@@ -382,26 +326,598 @@ const handleSubmit = async () => {
       input.logo_url = logoPreview.value
     }
 
-    // Create partner
     await partnersStore.createPartner(input)
-
     showSuccess('Partner created successfully')
-
-    // Redirect to list
-    await router.push('/partners')
-  } catch (error: any) {
-    showError(error.message || 'Failed to save partner')
+    router.push('/partners')
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Failed to create partner'
+    showError(message)
   } finally {
     isSubmitting.value = false
   }
 }
 
-// Lifecycle
 onMounted(() => {
   breadcrumbStore.setBreadcrumb([
-    { title: 'Home', path: '/' },
+    { title: 'Dashboard', path: '/' },
     { title: 'Partners', path: '/partners' },
-    { title: 'Create Partner', path: '/partners/create' }
+    { title: 'New partner', path: '/partners/create' },
   ])
 })
 </script>
+
+<style scoped>
+.gn-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #0f172a;
+}
+
+/* Hero */
+.gn-form__hero {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem 1.75rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 20px 48px -32px rgba(15, 23, 42, 0.15);
+}
+
+.gn-form__hero-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.18) 0%, rgba(124, 58, 237, 0.24) 100%);
+  border: 1px solid rgba(167, 139, 250, 0.38);
+  color: #6d28d9;
+  flex-shrink: 0;
+  box-shadow: 0 12px 24px -14px rgba(124, 58, 237, 0.5);
+}
+
+.gn-form__hero-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.gn-form__eyebrow {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #a78bfa;
+  margin-bottom: 0.3rem;
+}
+
+.gn-form__title {
+  margin: 0;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  line-height: 1.12;
+  color: #0f172a;
+}
+
+.gn-form__subtitle {
+  margin: 0.35rem 0 0;
+  font-size: 0.92rem;
+  color: rgba(15, 23, 42, 0.6);
+  line-height: 1.5;
+}
+
+.gn-form__hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.gn-form__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  border: 0;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    filter 0.25s ease;
+}
+
+.gn-form__btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.gn-form__btn--primary {
+  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 55%, #6d28d9 100%);
+  color: #ffffff;
+  box-shadow: 0 16px 32px -14px rgba(124, 58, 237, 0.6);
+}
+
+.gn-form__btn--primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 22px 44px -16px rgba(124, 58, 237, 0.7);
+}
+
+.gn-form__btn--secondary {
+  background: rgba(15, 23, 42, 0.05);
+  color: rgba(15, 23, 42, 0.7);
+}
+
+.gn-form__btn--secondary:hover {
+  background: rgba(15, 23, 42, 0.09);
+  color: #0f172a;
+}
+
+.gn-form__btn-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gn-form__spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  animation: gn-spin 0.75s linear infinite;
+}
+
+@keyframes gn-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Layout */
+.gn-form__layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1200px) {
+  .gn-form__layout {
+    grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.9fr);
+  }
+}
+
+.gn-form__main,
+.gn-form__aside {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Cards */
+.gn-form__card {
+  padding: 1.75rem;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px -32px rgba(15, 23, 42, 0.14);
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.gn-form__card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.gn-form__card-title {
+  margin: 0;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: #0f172a;
+}
+
+.gn-form__card-hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(15, 23, 42, 0.55);
+  line-height: 1.45;
+}
+
+/* Fields */
+.gn-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.gn-form__label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(15, 23, 42, 0.58);
+}
+
+.gn-form__required {
+  color: #dc2626;
+  margin-left: 0.15rem;
+}
+
+.gn-form__input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: rgba(15, 23, 42, 0.02);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #0f172a;
+  line-height: 1.5;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.gn-form__input:focus {
+  outline: none;
+  border-color: rgba(139, 92, 246, 0.55);
+  background: rgba(139, 92, 246, 0.04);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+.gn-form__input--error {
+  border-color: rgba(220, 38, 38, 0.5);
+  background: rgba(220, 38, 38, 0.04);
+}
+
+.gn-form__input::placeholder {
+  color: rgba(15, 23, 42, 0.35);
+  font-weight: 400;
+}
+
+.gn-form__input-group {
+  position: relative;
+}
+
+.gn-form__input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  color: rgba(15, 23, 42, 0.5);
+  pointer-events: none;
+}
+
+.gn-form__input--with-icon {
+  padding-left: 2.6rem;
+}
+
+.gn-form__input-group:focus-within .gn-form__input-icon {
+  color: #7c3aed;
+}
+
+.gn-form__helper {
+  font-size: 0.76rem;
+  color: rgba(15, 23, 42, 0.5);
+  line-height: 1.45;
+}
+
+.gn-form__helper--error {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* Logo upload */
+.gn-form__logo-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.gn-form__logo-preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.02);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+}
+
+.gn-form__logo-preview img {
+  max-width: 100%;
+  max-height: 160px;
+  object-fit: contain;
+}
+
+.gn-form__logo-remove {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.gn-form__logo-remove svg {
+  width: 16px;
+  height: 16px;
+}
+
+.gn-form__logo-remove:hover {
+  background: rgba(220, 38, 38, 0.18);
+}
+
+.gn-form__logo-drop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 180px;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.02);
+  border: 1.5px dashed rgba(15, 23, 42, 0.14);
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.gn-form__logo-drop:hover {
+  border-color: rgba(139, 92, 246, 0.5);
+  background: rgba(139, 92, 246, 0.04);
+}
+
+.gn-form__logo-drop--error {
+  border-color: rgba(220, 38, 38, 0.5);
+  background: rgba(220, 38, 38, 0.04);
+}
+
+.gn-form__logo-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.gn-form__logo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(139, 92, 246, 0.1);
+  color: #7c3aed;
+  margin-bottom: 0.3rem;
+}
+
+.gn-form__logo-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.gn-form__logo-hint {
+  font-size: 0.76rem;
+  color: rgba(15, 23, 42, 0.55);
+}
+
+/* Toggle */
+.gn-form__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.gn-form__toggle-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.gn-form__toggle-track {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 24px;
+  background: rgba(15, 23, 42, 0.12);
+  border-radius: 999px;
+  transition: background 0.3s ease;
+  flex-shrink: 0;
+}
+
+.gn-form__toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gn-form__toggle-input:checked + .gn-form__toggle-track {
+  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+}
+
+.gn-form__toggle-input:checked + .gn-form__toggle-track .gn-form__toggle-thumb {
+  transform: translateX(18px);
+}
+
+.gn-form__toggle-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  flex: 1;
+}
+
+.gn-form__toggle-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.gn-form__toggle-hint {
+  font-size: 0.76rem;
+  color: rgba(15, 23, 42, 0.55);
+}
+</style>
+
+<style>
+/* Dark theme */
+html[data-bs-theme='dark'] .gn-form__hero {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 48px -28px rgba(0, 0, 0, 0.55);
+}
+
+html[data-bs-theme='dark'] .gn-form__hero-icon {
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.22) 0%, rgba(124, 58, 237, 0.3) 100%);
+  border-color: rgba(167, 139, 250, 0.45);
+  color: #c4b5fd;
+}
+
+html[data-bs-theme='dark'] .gn-form__title {
+  color: #f5f5f7;
+}
+
+html[data-bs-theme='dark'] .gn-form__subtitle {
+  color: rgba(245, 245, 247, 0.65);
+}
+
+html[data-bs-theme='dark'] .gn-form__btn--secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(245, 245, 247, 0.8);
+}
+
+html[data-bs-theme='dark'] .gn-form__btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+html[data-bs-theme='dark'] .gn-form__card {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 22px 48px -28px rgba(0, 0, 0, 0.55);
+}
+
+html[data-bs-theme='dark'] .gn-form__card-title {
+  color: #f5f5f7;
+}
+
+html[data-bs-theme='dark'] .gn-form__card-hint {
+  color: rgba(245, 245, 247, 0.55);
+}
+
+html[data-bs-theme='dark'] .gn-form__label {
+  color: rgba(245, 245, 247, 0.55);
+}
+
+html[data-bs-theme='dark'] .gn-form__input {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f5f5f7;
+}
+
+html[data-bs-theme='dark'] .gn-form__input:focus {
+  border-color: rgba(167, 139, 250, 0.6);
+  background: rgba(167, 139, 250, 0.06);
+}
+
+html[data-bs-theme='dark'] .gn-form__input::placeholder {
+  color: rgba(245, 245, 247, 0.35);
+}
+
+html[data-bs-theme='dark'] .gn-form__input-icon {
+  color: rgba(245, 245, 247, 0.45);
+}
+
+html[data-bs-theme='dark'] .gn-form__helper {
+  color: rgba(245, 245, 247, 0.5);
+}
+
+html[data-bs-theme='dark'] .gn-form__logo-preview,
+html[data-bs-theme='dark'] .gn-form__logo-drop {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+html[data-bs-theme='dark'] .gn-form__logo-drop:hover {
+  border-color: rgba(167, 139, 250, 0.5);
+  background: rgba(167, 139, 250, 0.06);
+}
+
+html[data-bs-theme='dark'] .gn-form__logo-icon {
+  background: rgba(167, 139, 250, 0.18);
+  color: #c4b5fd;
+}
+
+html[data-bs-theme='dark'] .gn-form__logo-title {
+  color: #f5f5f7;
+}
+
+html[data-bs-theme='dark'] .gn-form__logo-hint {
+  color: rgba(245, 245, 247, 0.5);
+}
+
+html[data-bs-theme='dark'] .gn-form__logo-remove {
+  background: rgba(248, 113, 113, 0.16);
+  color: #fca5a5;
+}
+
+html[data-bs-theme='dark'] .gn-form__logo-remove:hover {
+  background: rgba(248, 113, 113, 0.24);
+}
+
+html[data-bs-theme='dark'] .gn-form__toggle-track {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+html[data-bs-theme='dark'] .gn-form__toggle-title {
+  color: #f5f5f7;
+}
+
+html[data-bs-theme='dark'] .gn-form__toggle-hint {
+  color: rgba(245, 245, 247, 0.5);
+}
+</style>

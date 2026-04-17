@@ -29,14 +29,12 @@ export const useDashboardStore = defineStore('dashboard', {
         c.services +
         c.solutions +
         c.blogPosts +
-        c.projects +
         c.team +
         c.partners +
         c.clients +
         c.certifications +
         c.faqs +
         c.testimonials +
-        c.stats +
         c.contactRequests +
         c.jobPositions
       )

@@ -184,26 +184,28 @@ export const useContactRequestsStore = defineStore('contactRequests', {
       try {
         const variables: Record<string, unknown> = {}
 
-        // Only add status filter if it has a value
         if (this.filters.status) {
           variables.status = this.filters.status
         }
 
-        const { data, error } = await useAsyncQuery<ContactRequestsResponse>(
-          GET_CONTACT_REQUESTS,
-          variables
-        )
+        const { $apollo } = useNuxtApp()
+        const apolloClient = $apollo.defaultClient
 
-        if (error.value) {
-          throw new Error(error.value.message || 'Failed to fetch contact requests')
+        const response = await apolloClient.query<ContactRequestsResponse>({
+          query: GET_CONTACT_REQUESTS,
+          variables,
+          fetchPolicy: 'network-only',
+        })
+
+        if (response?.errors?.length) {
+          throw new Error(response.errors[0].message || 'Failed to fetch contact requests')
         }
 
-        if (data.value) {
-          this.setContactRequests(data.value.contactRequests)
+        if (response.data) {
+          this.setContactRequests(response.data.contactRequests || [])
         }
       } catch (err: any) {
         this.setError(err.message || 'Failed to load contact requests')
-        // Set empty array on error
         this.setContactRequests([])
       } finally {
         this.setLoading(false)
@@ -215,18 +217,22 @@ export const useContactRequestsStore = defineStore('contactRequests', {
       this.setError(null)
 
       try {
-        const { data, error } = await useAsyncQuery<ContactRequestResponse>(
-          GET_CONTACT_REQUEST,
-          { id }
-        )
+        const { $apollo } = useNuxtApp()
+        const apolloClient = $apollo.defaultClient
 
-        if (error.value) {
-          throw new Error(error.value.message || 'Failed to fetch contact request')
+        const response = await apolloClient.query<ContactRequestResponse>({
+          query: GET_CONTACT_REQUEST,
+          variables: { id },
+          fetchPolicy: 'network-only',
+        })
+
+        if (response?.errors?.length) {
+          throw new Error(response.errors[0].message || 'Failed to fetch contact request')
         }
 
-        if (data.value?.contactRequest) {
-          this.setCurrentContactRequest(data.value.contactRequest)
-          return data.value.contactRequest
+        if (response.data?.contactRequest) {
+          this.setCurrentContactRequest(response.data.contactRequest)
+          return response.data.contactRequest
         }
 
         throw new Error('Contact request not found')
@@ -244,7 +250,7 @@ export const useContactRequestsStore = defineStore('contactRequests', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<UpdateContactRequestResponse>({
           mutation: UPDATE_CONTACT_REQUEST,
@@ -286,7 +292,7 @@ export const useContactRequestsStore = defineStore('contactRequests', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<DeleteContactRequestResponse>({
           mutation: DELETE_CONTACT_REQUEST,

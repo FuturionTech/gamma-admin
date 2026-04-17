@@ -55,7 +55,6 @@ export const UPDATE_BLOG_POST = gql`
 export const DELETE_BLOG_POST = gql`
   mutation DeleteBlogPost($id: ID!) {
     deleteBlogPost(id: $id) {
-      id
       success
       message
     }

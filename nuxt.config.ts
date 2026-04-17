@@ -23,6 +23,8 @@ export default defineNuxtConfig({
         public: {
             gqlHost: process.env.GQL_HOST || 'https://gamma-api.on-forge.com/graphql',
             authOrigin: process.env.AUTH_ORIGIN || 'https://gamma-api.on-forge.com/api/auth',
+            // ⚠️ TEMP: Set BYPASS_AUTH=true in .env to skip authentication
+            bypassAuth: process.env.BYPASS_AUTH === 'true',
         }
     },
 
@@ -46,6 +48,7 @@ export default defineNuxtConfig({
     css: [
         "~/assets/sass/style.scss",
         "~/assets/sass/plugins.scss",
+        "~/assets/sass/gn-design.css",
         '~/public/assets/plugins/global/plugins.bundle.css',
         '~/public/assets/css/menu-highlighting.css',
         'flatpickr/dist/flatpickr.min.css'
@@ -58,11 +61,9 @@ export default defineNuxtConfig({
     '~/domains/shared/index.ts',
     '~/domains/services/index.ts',
     '~/domains/solutions/index.ts',
-    '~/domains/projects/index.ts',
     '~/domains/blog/index.ts',
     '~/domains/team/index.ts',
     '~/domains/faqs/index.ts',
-    '~/domains/stats/index.ts',
     '~/domains/certifications/index.ts',
     '~/domains/clients/index.ts',
     '~/domains/partners/index.ts',
@@ -91,9 +92,12 @@ export default defineNuxtConfig({
   // entities (services, blog posts, etc.) happens at the model layer, not via
   // the i18n module.
   i18n: {
+    restructureDir: false,
     locales: [
-      { code: 'en', iso: 'en-US', name: 'English' },
+      { code: 'en', iso: 'en-US', name: 'English', file: 'en.json' },
+      { code: 'fr', iso: 'fr-FR', name: 'Français', file: 'fr.json' },
     ],
+    langDir: 'locales',
     defaultLocale: 'en',
     strategy: 'no_prefix',
     detectBrowserLanguage: false,

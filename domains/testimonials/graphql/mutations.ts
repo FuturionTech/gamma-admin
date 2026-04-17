@@ -39,7 +39,6 @@ export const UPDATE_TESTIMONIAL = gql`
 export const DELETE_TESTIMONIAL = gql`
   mutation DeleteTestimonial($id: ID!) {
     deleteTestimonial(id: $id) {
-      id
       success
       message
     }

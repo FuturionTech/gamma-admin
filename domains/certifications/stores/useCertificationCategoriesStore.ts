@@ -71,16 +71,20 @@ export const useCertificationCategoriesStore = defineStore('certificationCategor
       this.setError(null)
 
       try {
-        const { data, error } = await useAsyncQuery<CertificationCategoriesResponse>(
-          GET_CERTIFICATION_CATEGORIES
-        )
+        const { $apollo } = useNuxtApp()
+        const apolloClient = $apollo.defaultClient
 
-        if (error.value) {
-          throw new Error(error.value.message || 'Failed to fetch categories')
+        const response = await apolloClient.query<CertificationCategoriesResponse>({
+          query: GET_CERTIFICATION_CATEGORIES,
+          fetchPolicy: 'network-only',
+        })
+
+        if (response?.errors?.length) {
+          throw new Error(response.errors[0].message || 'Failed to fetch categories')
         }
 
-        if (data.value) {
-          this.setCategories(data.value.certificationCategories)
+        if (response.data) {
+          this.setCategories(response.data.certificationCategories || [])
         }
       } catch (err: any) {
         this.setError(err.message || 'Failed to load categories')
@@ -95,18 +99,22 @@ export const useCertificationCategoriesStore = defineStore('certificationCategor
       this.setError(null)
 
       try {
-        const { data, error } = await useAsyncQuery<CertificationCategoryResponse>(
-          GET_CERTIFICATION_CATEGORY,
-          { id }
-        )
+        const { $apollo } = useNuxtApp()
+        const apolloClient = $apollo.defaultClient
 
-        if (error.value) {
-          throw new Error(error.value.message || 'Failed to fetch category')
+        const response = await apolloClient.query<CertificationCategoryResponse>({
+          query: GET_CERTIFICATION_CATEGORY,
+          variables: { id },
+          fetchPolicy: 'network-only',
+        })
+
+        if (response?.errors?.length) {
+          throw new Error(response.errors[0].message || 'Failed to fetch category')
         }
 
-        if (data.value) {
-          this.setCurrentCategory(data.value.certificationCategory)
-          return data.value.certificationCategory
+        if (response.data?.certificationCategory) {
+          this.setCurrentCategory(response.data.certificationCategory)
+          return response.data.certificationCategory
         }
       } catch (err: any) {
         this.setError(err.message || 'Failed to load category')
@@ -122,7 +130,7 @@ export const useCertificationCategoriesStore = defineStore('certificationCategor
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<CreateCertificationCategoryResponse>({
           mutation: CREATE_CERTIFICATION_CATEGORY,
@@ -153,7 +161,7 @@ export const useCertificationCategoriesStore = defineStore('certificationCategor
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<UpdateCertificationCategoryResponse>({
           mutation: UPDATE_CERTIFICATION_CATEGORY,
@@ -192,7 +200,7 @@ export const useCertificationCategoriesStore = defineStore('certificationCategor
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<DeleteCertificationCategoryResponse>({
           mutation: DELETE_CERTIFICATION_CATEGORY,

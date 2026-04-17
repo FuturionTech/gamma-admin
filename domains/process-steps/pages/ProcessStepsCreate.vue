@@ -173,20 +173,6 @@
                       <div class="form-text">Hex color for the icon.</div>
                     </div>
 
-                    <!-- Order -->
-                    <div class="mb-7">
-                      <label class="fw-semibold fs-6 mb-2">Display Order</label>
-                      <input
-                        type="number"
-                        v-model.number="form.order"
-                        class="form-control form-control-solid"
-                        :class="{ 'is-invalid': errors.order }"
-                        placeholder="0"
-                        min="0"
-                      />
-                      <div v-if="errors.order" class="invalid-feedback">{{ errors.order }}</div>
-                    </div>
-
                     <!-- Is Active -->
                     <div class="mb-7">
                       <label class="fw-semibold fs-6 mb-2">Status</label>
@@ -327,10 +313,6 @@ const validateForm = (): boolean => {
     } else {
       errors.value.slug = 'Slug is required'
     }
-  }
-
-  if (form.order !== null && form.order !== undefined && form.order < 0) {
-    errors.value.order = 'Order must be a positive number'
   }
 
   return Object.keys(errors.value).length === 0

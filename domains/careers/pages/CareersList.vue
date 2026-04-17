@@ -1,11 +1,9 @@
 <template>
-  <div class="careers-list">
-    <!-- Page Header -->
-    <PageHeader
-      title="Job Positions"
-      subtitle="Manage your organization's career opportunities"
-    />
-
+  <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+    <div class="d-flex flex-column flex-column-fluid">
+      <div id="kt_app_content" class="app-content flex-column-fluid">
+        <div id="kt_app_content_container" class="app-container container-fluid">
+          <div class="careers-list">
     <!-- Statistics Cards -->
     <div class="row g-5 g-xl-8 mb-5 mb-xl-8" v-if="!careersStore.isLoading">
       <div class="col-xl-3">
@@ -165,19 +163,6 @@
               </option>
             </select>
 
-            <!-- Export -->
-            <button
-              type="button"
-              class="btn btn-light-primary"
-              @click="handleExport"
-            >
-              <i class="ki-duotone ki-exit-up fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-              </i>
-              Export
-            </button>
-
             <!-- Create New -->
             <NuxtLink
               to="/careers/positions/create"
@@ -250,8 +235,8 @@
                 <td>
                   <div class="d-flex flex-column">
                     <NuxtLink
-                      :to="`/careers/positions/${job.id}`"
-                      class="text-gray-800 text-hover-primary fw-bold mb-1"
+                      :to="`/careers/positions/${job.id}/edit`"
+                      class="text-gray-800 fw-bold text-hover-primary mb-1 d-block"
                     >
                       {{ job.title }}
                     </NuxtLink>
@@ -300,62 +285,30 @@
                   <span class="text-gray-600">{{ formatRelativeDate(job.posted_date) }}</span>
                 </td>
                 <td class="text-end">
+                  <NuxtLink
+                    :to="`/careers/positions/${job.id}/edit`"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                    title="Edit"
+                  >
+                    <i class="ki-duotone ki-pencil fs-3">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                    </i>
+                  </NuxtLink>
                   <button
                     type="button"
-                    class="btn btn-sm btn-icon btn-light btn-active-light-primary"
-                    data-kt-menu-trigger="click"
-                    data-kt-menu-placement="bottom-end"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-danger"
+                    title="Delete"
+                    @click="handleDelete(job)"
                   >
-                    <i class="ki-duotone ki-dots-vertical fs-2">
+                    <i class="ki-duotone ki-trash fs-3">
                       <span class="path1"></span>
                       <span class="path2"></span>
                       <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
                     </i>
                   </button>
-
-                  <div
-                    class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                    data-kt-menu="true"
-                  >
-                    <div class="menu-item px-3">
-                      <NuxtLink
-                        :to="`/careers/positions/${job.id}`"
-                        class="menu-link px-3"
-                      >
-                        View
-                      </NuxtLink>
-                    </div>
-                    <div class="menu-item px-3">
-                      <NuxtLink
-                        :to="`/careers/positions/${job.id}/edit`"
-                        class="menu-link px-3"
-                      >
-                        Edit
-                      </NuxtLink>
-                    </div>
-                    <div class="menu-item px-3">
-                      <a
-                        href="#"
-                        class="menu-link px-3"
-                        @click.prevent="handleToggleStatus(job)"
-                      >
-                        {{
-                          job.status === 'ACTIVE'
-                            ? 'Close'
-                            : 'Open'
-                        }}
-                      </a>
-                    </div>
-                    <div class="menu-item px-3">
-                      <a
-                        href="#"
-                        class="menu-link px-3 text-danger"
-                        @click.prevent="handleDelete(job)"
-                      >
-                        Delete
-                      </a>
-                    </div>
-                  </div>
                 </td>
               </tr>
             </tbody>
@@ -421,6 +374,10 @@
       </div>
     </div>
   </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -449,8 +406,7 @@ const {
 const {
   confirmAndDeleteJobPosition,
   toggleJobPositionStatus,
-  bulkDeleteJobPositions,
-  exportJobPositionsToCSV
+  bulkDeleteJobPositions
 } = useCareerActions()
 
 // Search and filters
@@ -523,17 +479,13 @@ const handleBulkDelete = async () => {
   }
 }
 
-const handleExport = () => {
-  exportJobPositionsToCSV()
-}
+breadcrumbStore.setBreadcrumb([
+  { title: 'Dashboard', path: '/' },
+  { title: 'Job Positions', path: '/careers/positions' },
+])
 
 // Lifecycle
 onMounted(async () => {
-  breadcrumbStore.setBreadcrumb([
-    { title: 'Home', path: '/' },
-    { title: 'Job Positions', path: '/careers/positions' }
-  ])
-
   await careersStore.initialize()
 })
 </script>

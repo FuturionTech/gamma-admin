@@ -1,7 +1,8 @@
 <template>
-  <!-- Page Header -->
-  <PageHeader title="Certifications" subtitle="Manage your certifications and awards" />
-
+  <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+    <div class="d-flex flex-column flex-column-fluid">
+      <div id="kt_app_content" class="app-content flex-column-fluid">
+        <div id="kt_app_content_container" class="app-container container-fluid">
     <!-- Statistics Cards -->
     <div class="row g-5 g-xl-8 mb-5 mb-xl-8" v-if="!certificationsStore.isLoading">
       <div class="col-xl-3">
@@ -141,19 +142,6 @@
               </option>
             </select>
 
-            <!-- Export -->
-            <button
-              type="button"
-              class="btn btn-light-primary"
-              @click="handleExport"
-            >
-              <i class="ki-duotone ki-exit-up fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-              </i>
-              Export
-            </button>
-
             <!-- Create New -->
             <NuxtLink
               to="/certifications/create"
@@ -232,7 +220,12 @@
                 </td>
                 <td>
                   <div class="d-flex flex-column">
-                    <span class="text-gray-800 fw-bold">{{ certification.title }}</span>
+                    <NuxtLink
+                      :to="`/certifications/${certification.id}/edit`"
+                      class="text-gray-800 fw-bold text-hover-primary mb-1 d-block"
+                    >
+                      {{ certification.title }}
+                    </NuxtLink>
                     <span class="text-muted fs-7" v-if="certification.issued_date">
                       Issued: {{ formatDate(certification.issued_date) }}
                     </span>
@@ -265,65 +258,39 @@
                 <td class="text-end">
                   <button
                     type="button"
-                    class="btn btn-sm btn-icon btn-light btn-active-light-primary"
-                    data-kt-menu-trigger="click"
-                    data-kt-menu-placement="bottom-end"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-success me-2"
+                    title="Download"
+                    @click="handleDownload(certification)"
                   >
-                    <i class="ki-duotone ki-dots-vertical fs-2">
+                    <i class="ki-duotone ki-file-down fs-3">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                    </i>
+                  </button>
+                  <NuxtLink
+                    :to="`/certifications/${certification.id}/edit`"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                    title="Edit"
+                  >
+                    <i class="ki-duotone ki-pencil fs-3">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                    </i>
+                  </NuxtLink>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-danger"
+                    title="Delete"
+                    @click="handleDelete(certification)"
+                  >
+                    <i class="ki-duotone ki-trash fs-3">
                       <span class="path1"></span>
                       <span class="path2"></span>
                       <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
                     </i>
                   </button>
-
-                  <div
-                    class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4"
-                    data-kt-menu="true"
-                  >
-                    <div class="menu-item px-3">
-                      <NuxtLink
-                        :to="`/certifications/${certification.id}`"
-                        class="menu-link px-3"
-                      >
-                        View
-                      </NuxtLink>
-                    </div>
-                    <div class="menu-item px-3">
-                      <a
-                        href="#"
-                        class="menu-link px-3"
-                        @click.prevent="handleDownload(certification)"
-                      >
-                        Download
-                      </a>
-                    </div>
-                    <div class="menu-item px-3">
-                      <NuxtLink
-                        :to="`/certifications/${certification.id}/edit`"
-                        class="menu-link px-3"
-                      >
-                        Edit
-                      </NuxtLink>
-                    </div>
-                    <div class="menu-item px-3">
-                      <a
-                        href="#"
-                        class="menu-link px-3"
-                        @click.prevent="handleToggleStatus(certification)"
-                      >
-                        {{ certification.is_active ? 'Deactivate' : 'Activate' }}
-                      </a>
-                    </div>
-                    <div class="menu-item px-3">
-                      <a
-                        href="#"
-                        class="menu-link px-3 text-danger"
-                        @click.prevent="handleDelete(certification)"
-                      >
-                        Delete
-                      </a>
-                    </div>
-                  </div>
                 </td>
               </tr>
             </tbody>
@@ -386,6 +353,10 @@
         </div>
       </div>
     </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -413,7 +384,6 @@ const {
   confirmAndDeleteCertification,
   toggleCertificationStatus,
   bulkDeleteCertifications,
-  exportCertificationsToCSV,
   downloadCertificationFile
 } = useCertificationActions()
 
@@ -477,21 +447,17 @@ const handleBulkDelete = async () => {
   }
 }
 
-const handleExport = () => {
-  exportCertificationsToCSV()
-}
-
 const handleDownload = (certification: Certification) => {
   downloadCertificationFile(certification)
 }
 
+breadcrumbStore.setBreadcrumb([
+  { title: 'Dashboard', path: '/' },
+  { title: 'Certifications', path: '/certifications' },
+])
+
 // Lifecycle
 onMounted(async () => {
-  breadcrumbStore.setBreadcrumb([
-    { title: 'Home', path: '/' },
-    { title: 'Certifications', path: '/certifications' }
-  ])
-
   await certificationsStore.initialize()
   await categoriesStore.initialize()
 })

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useAnalyticsStore } from '../stores/useAnalyticsStore'
+import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
 import type { FunnelStep } from '../components/FunnelChart.vue'
 import type { StackedSegment } from '../components/StackedBar.vue'
 import type { DatePreset } from '../types'
@@ -9,6 +10,12 @@ import flatpickr from 'flatpickr'
 definePageMeta({
   middleware: 'auth'
 })
+
+const breadcrumbStore = useBreadcrumbStore()
+breadcrumbStore.setBreadcrumb([
+  { title: 'Dashboard', path: '/' },
+  { title: 'Analytics', path: '/analytics' },
+])
 
 const analyticsStore = useAnalyticsStore()
 
@@ -77,7 +84,6 @@ const humanizePath = (path: string): string => {
     '/privacy-policy': 'Privacy Policy',
     '/terms': 'Terms of Service',
     '/team': 'Our Team',
-    '/projects': 'Projects',
     '/partners': 'Partners'
   }
   if (pathMap[path]) return pathMap[path]
@@ -266,7 +272,6 @@ onBeforeUnmount(() => {
                ═══════════════════════════════════════════ -->
           <div class="d-flex flex-wrap flex-stack mb-6 gap-3">
             <div>
-              <h1 class="fw-bolder fs-2x text-dark mb-1">Website Analytics</h1>
               <span v-if="dateRangeLabel" class="text-gray-500 fs-7">{{ dateRangeLabel }}</span>
             </div>
 

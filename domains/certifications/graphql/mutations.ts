@@ -41,7 +41,6 @@ export const UPDATE_CERTIFICATION = gql`
 export const DELETE_CERTIFICATION = gql`
   mutation DeleteCertification($id: ID!) {
     deleteCertification(id: $id) {
-      id
       success
       message
     }
@@ -73,7 +72,6 @@ export const UPDATE_CERTIFICATION_CATEGORY = gql`
 export const DELETE_CERTIFICATION_CATEGORY = gql`
   mutation DeleteCertificationCategory($id: ID!) {
     deleteCertificationCategory(id: $id) {
-      id
       success
       message
     }

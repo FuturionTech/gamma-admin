@@ -61,7 +61,6 @@ export const UPDATE_PROCESS_STEP = gql`
 export const DELETE_PROCESS_STEP = gql`
   mutation DeleteProcessStep($id: ID!) {
     deleteProcessStep(id: $id) {
-      id
       success
       message
     }
@@ -101,7 +100,6 @@ export const UPDATE_PROCESS_STEP_ITEM = gql`
 export const DELETE_PROCESS_STEP_ITEM = gql`
   mutation DeleteProcessStepItem($id: ID!) {
     deleteProcessStepItem(id: $id) {
-      id
       success
       message
     }

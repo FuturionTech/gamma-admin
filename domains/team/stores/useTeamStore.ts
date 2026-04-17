@@ -218,20 +218,45 @@ export const useTeamStore = defineStore('team', {
     },
 
     async fetchSocialMediaPlatforms() {
+      // Default client-side catalog used until the backend exposes
+      // a `socialMediaPlatforms` query. The `id` values double as icon
+      // names and are stable strings that can be persisted alongside
+      // the URL in the team social links table.
+      const defaultPlatforms: SocialMediaPlatform[] = [
+        { id: 'linkedin', name: 'LinkedIn', icon: 'linkedin', base_url: 'https://linkedin.com/in/', created_at: '', updated_at: '' },
+        { id: 'twitter', name: 'X (Twitter)', icon: 'twitter', base_url: 'https://x.com/', created_at: '', updated_at: '' },
+        { id: 'instagram', name: 'Instagram', icon: 'instagram', base_url: 'https://instagram.com/', created_at: '', updated_at: '' },
+        { id: 'facebook', name: 'Facebook', icon: 'facebook', base_url: 'https://facebook.com/', created_at: '', updated_at: '' },
+        { id: 'youtube', name: 'YouTube', icon: 'youtube', base_url: 'https://youtube.com/@', created_at: '', updated_at: '' },
+        { id: 'github', name: 'GitHub', icon: 'github', base_url: 'https://github.com/', created_at: '', updated_at: '' },
+        { id: 'dribbble', name: 'Dribbble', icon: 'dribbble', base_url: 'https://dribbble.com/', created_at: '', updated_at: '' },
+        { id: 'figma', name: 'Figma', icon: 'figma', base_url: 'https://figma.com/@', created_at: '', updated_at: '' },
+        { id: 'website', name: 'Website', icon: 'globe', base_url: 'https://', created_at: '', updated_at: '' },
+      ]
+
       try {
-        const { data, error } = await useAsyncQuery<SocialMediaPlatformsResponse>(
-          GET_SOCIAL_MEDIA_PLATFORMS
-        )
+        const { $apollo } = useNuxtApp() as unknown as {
+          $apollo: { defaultClient: { query: (opts: { query: unknown; fetchPolicy?: string }) => Promise<{ data: SocialMediaPlatformsResponse | null; errors?: unknown[] }> } }
+        }
+        const response = await $apollo.defaultClient.query({
+          query: GET_SOCIAL_MEDIA_PLATFORMS,
+          fetchPolicy: 'network-only',
+        })
 
-        if (error.value) {
-          throw new Error(error.value.message || 'Failed to fetch social media platforms')
+        if (response.errors && response.errors.length > 0) {
+          throw new Error('Failed to fetch social media platforms')
         }
 
-        if (data.value) {
-          this.setSocialMediaPlatforms(data.value.socialMediaPlatforms)
+        if (response.data?.socialMediaPlatforms && response.data.socialMediaPlatforms.length > 0) {
+          this.setSocialMediaPlatforms(response.data.socialMediaPlatforms)
+          return
         }
-      } catch (err: any) {
-        // Don't set global error for this, just log it
+
+        // Empty backend response → fall through to defaults
+        this.setSocialMediaPlatforms(defaultPlatforms)
+      } catch {
+        // Backend schema doesn't expose the query yet — use the client-side defaults
+        this.setSocialMediaPlatforms(defaultPlatforms)
       }
     },
 
@@ -241,7 +266,7 @@ export const useTeamStore = defineStore('team', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<CreateTeamResponse>({
           mutation: CREATE_TEAM,
@@ -273,7 +298,7 @@ export const useTeamStore = defineStore('team', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<UpdateTeamResponse>({
           mutation: UPDATE_TEAM,
@@ -315,7 +340,7 @@ export const useTeamStore = defineStore('team', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<DeleteTeamResponse>({
           mutation: DELETE_TEAM,

@@ -147,17 +147,21 @@ export const useProcessStepsStore = defineStore('processSteps', {
           variables.is_active = this.filters.is_active
         }
 
-        const { data, error } = await useAsyncQuery<ProcessStepsResponse>(
-          GET_PROCESS_STEPS,
-          variables
-        )
+        const { $apollo } = useNuxtApp()
+        const apolloClient = $apollo.defaultClient
 
-        if (error.value) {
-          throw new Error(error.value.message || 'Failed to fetch process steps')
+        const response = await apolloClient.query<ProcessStepsResponse>({
+          query: GET_PROCESS_STEPS,
+          variables,
+          fetchPolicy: 'network-only',
+        })
+
+        if (response?.errors?.length) {
+          throw new Error(response.errors[0].message || 'Failed to fetch process steps')
         }
 
-        if (data.value) {
-          this.setProcessSteps(data.value.processSteps)
+        if (response.data) {
+          this.setProcessSteps(response.data.processSteps || [])
         }
       } catch (err: any) {
         this.setError(err.message || 'Failed to load process steps')
@@ -172,18 +176,22 @@ export const useProcessStepsStore = defineStore('processSteps', {
       this.setError(null)
 
       try {
-        const { data, error } = await useAsyncQuery<ProcessStepResponse>(
-          GET_PROCESS_STEP,
-          { id }
-        )
+        const { $apollo } = useNuxtApp()
+        const apolloClient = $apollo.defaultClient
 
-        if (error.value) {
-          throw new Error(error.value.message || 'Failed to fetch process step')
+        const response = await apolloClient.query<ProcessStepResponse>({
+          query: GET_PROCESS_STEP,
+          variables: { id },
+          fetchPolicy: 'network-only',
+        })
+
+        if (response?.errors?.length) {
+          throw new Error(response.errors[0].message || 'Failed to fetch process step')
         }
 
-        if (data.value) {
-          this.setCurrentProcessStep(data.value.processStep)
-          return data.value.processStep
+        if (response.data?.processStep) {
+          this.setCurrentProcessStep(response.data.processStep)
+          return response.data.processStep
         }
       } catch (err: any) {
         this.setError(err.message || 'Failed to load process step')
@@ -199,7 +207,7 @@ export const useProcessStepsStore = defineStore('processSteps', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<CreateProcessStepResponse>({
           mutation: CREATE_PROCESS_STEP,
@@ -230,7 +238,7 @@ export const useProcessStepsStore = defineStore('processSteps', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<UpdateProcessStepResponse>({
           mutation: UPDATE_PROCESS_STEP,
@@ -270,7 +278,7 @@ export const useProcessStepsStore = defineStore('processSteps', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<DeleteProcessStepResponse>({
           mutation: DELETE_PROCESS_STEP,
@@ -332,7 +340,7 @@ export const useProcessStepsStore = defineStore('processSteps', {
     async createItem(input: CreateProcessStepItemInput) {
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<CreateProcessStepItemResponse>({
           mutation: CREATE_PROCESS_STEP_ITEM,
@@ -360,7 +368,7 @@ export const useProcessStepsStore = defineStore('processSteps', {
     async updateItem(id: string, input: UpdateProcessStepItemInput) {
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<UpdateProcessStepItemResponse>({
           mutation: UPDATE_PROCESS_STEP_ITEM,
@@ -388,7 +396,7 @@ export const useProcessStepsStore = defineStore('processSteps', {
     async deleteItem(id: string) {
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<DeleteProcessStepItemResponse>({
           mutation: DELETE_PROCESS_STEP_ITEM,

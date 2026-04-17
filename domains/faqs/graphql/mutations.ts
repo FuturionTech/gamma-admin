@@ -33,7 +33,6 @@ export const UPDATE_FAQ = gql`
 export const DELETE_FAQ = gql`
   mutation DeleteFAQ($id: ID!) {
     deleteFAQ(id: $id) {
-      id
       success
       message
     }

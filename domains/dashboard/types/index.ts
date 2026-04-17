@@ -4,14 +4,12 @@ export interface ContentCounts {
   services: number
   solutions: number
   blogPosts: number
-  projects: number
   team: number
   partners: number
   clients: number
   certifications: number
   faqs: number
   testimonials: number
-  stats: number
   contactRequests: number
   jobPositions: number
   industries: number
@@ -65,7 +63,6 @@ export interface DashboardState {
 export type ActivityType =
   | 'contact_request'
   | 'blog_post'
-  | 'project'
   | 'team_member'
 
 export type ActivityStatus = 'completed' | 'in_progress' | 'pending'

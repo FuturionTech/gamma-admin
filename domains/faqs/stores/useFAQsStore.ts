@@ -246,7 +246,7 @@ export const useFAQsStore = defineStore('faqs', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<CreateFAQResponse>({
           mutation: CREATE_FAQ,
@@ -278,7 +278,7 @@ export const useFAQsStore = defineStore('faqs', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<UpdateFAQResponse>({
           mutation: UPDATE_FAQ,
@@ -320,7 +320,7 @@ export const useFAQsStore = defineStore('faqs', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<DeleteFAQResponse>({
           mutation: DELETE_FAQ,

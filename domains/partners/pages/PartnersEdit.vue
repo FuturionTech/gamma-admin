@@ -113,28 +113,6 @@
                   <div class="form-text">Partner's official website (optional)</div>
                 </div>
 
-                <!-- Display Order -->
-                <div class="mb-7">
-                  <label class="form-label">Display Order</label>
-                  <input
-                    type="number"
-                    v-model.number="form.order"
-                    class="form-control"
-                    :class="{
-                      'is-invalid': touched.order && errors.order,
-                      'is-valid': touched.order && form.order !== null && !errors.order
-                    }"
-                    min="0"
-                    placeholder="0"
-                    @blur="validateField('order')"
-                    @input="clearError('order')"
-                  />
-                  <div v-if="touched.order && errors.order" class="invalid-feedback d-block">
-                    {{ errors.order }}
-                  </div>
-                  <div class="form-text">Display order (lower numbers appear first)</div>
-                </div>
-
                 <!-- Active Status -->
                 <div class="mb-7">
                   <div class="form-check form-switch form-check-custom form-check-solid">
@@ -320,14 +298,6 @@ const validateField = (field: string): boolean => {
       delete errors.value.website_url
       return true
 
-    case 'order':
-      if (form.order !== null && form.order !== undefined && form.order < 0) {
-        errors.value.order = 'Order must be a positive number'
-        return false
-      }
-      delete errors.value.order
-      return true
-
     default:
       return true
   }
@@ -342,7 +312,6 @@ const validateForm = (): boolean => {
   touched.value = {
     name: true,
     website_url: true,
-    order: true,
     logo_url: true
   }
 
@@ -360,10 +329,6 @@ const validateForm = (): boolean => {
 
   if (form.website_url && !isValidUrl(form.website_url)) {
     errors.value.website_url = 'Please enter a valid URL (e.g., https://example.com)'
-  }
-
-  if (form.order !== null && form.order !== undefined && form.order < 0) {
-    errors.value.order = 'Order must be a positive number'
   }
 
   return Object.keys(errors.value).length === 0

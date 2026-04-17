@@ -73,6 +73,20 @@ export const useCurrentUser = () => {
     return user.value.roles[0];
   });
 
+  // Human-readable label for the primary role. Falls back to humanizing the
+  // slug (e.g. `super_admin` → `Super Admin`) when no display_name is set.
+  const primaryRoleLabel = computed((): string => {
+    const role = primaryRole.value;
+    if (!role) return '';
+    if (role.display_name) return role.display_name;
+    if (!role.name) return '';
+    return role.name
+      .split(/[_\-\s]+/)
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  });
+
   // Get all permissions from all roles
   const allPermissions = computed((): string[] => {
     if (!user.value?.roles) return [];
@@ -97,6 +111,7 @@ export const useCurrentUser = () => {
     fullName,
     initials,
     primaryRole,
+    primaryRoleLabel,
     allPermissions,
     hasPermission,
     hasAnyPermission,

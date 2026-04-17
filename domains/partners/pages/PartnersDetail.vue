@@ -30,11 +30,6 @@
             <div class="shimmer mb-2" style="height: 18px; width: 120px;"></div>
             <div class="shimmer" style="height: 20px; width: 200px;"></div>
           </div>
-          <!-- Order Skeleton -->
-          <div class="mb-7">
-            <div class="shimmer mb-2" style="height: 18px; width: 100px;"></div>
-            <div class="shimmer" style="height: 20px; width: 60px;"></div>
-          </div>
         </div>
       </div>
     </div>
@@ -152,11 +147,6 @@
             </div>
           </div>
 
-          <!-- Order -->
-          <div class="mb-7">
-            <label class="fw-bold fs-6 mb-2">Display Order</label>
-            <div class="text-gray-800">{{ partner.order }}</div>
-          </div>
         </div>
       </div>
     </div>

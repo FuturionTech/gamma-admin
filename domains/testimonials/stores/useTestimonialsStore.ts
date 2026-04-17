@@ -225,7 +225,7 @@ export const useTestimonialsStore = defineStore('testimonials', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<CreateTestimonialResponse>({
           mutation: CREATE_TESTIMONIAL,
@@ -257,7 +257,7 @@ export const useTestimonialsStore = defineStore('testimonials', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<UpdateTestimonialResponse>({
           mutation: UPDATE_TESTIMONIAL,
@@ -299,7 +299,7 @@ export const useTestimonialsStore = defineStore('testimonials', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<DeleteTestimonialResponse>({
           mutation: DELETE_TESTIMONIAL,

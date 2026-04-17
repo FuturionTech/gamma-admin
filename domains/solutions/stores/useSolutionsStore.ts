@@ -136,17 +136,21 @@ export const useSolutionsStore = defineStore('solutions', {
           variables.is_active = this.filters.is_active
         }
 
-        const { data, error } = await useAsyncQuery<SolutionsResponse>(
-          GET_SOLUTIONS,
-          variables
-        )
+        const { $apollo } = useNuxtApp()
+        const apolloClient = $apollo.defaultClient
 
-        if (error.value) {
-          throw new Error(error.value.message || 'Failed to fetch solutions')
+        const response = await apolloClient.query<SolutionsResponse>({
+          query: GET_SOLUTIONS,
+          variables,
+          fetchPolicy: 'network-only',
+        })
+
+        if (response?.errors?.length) {
+          throw new Error(response.errors[0].message || 'Failed to fetch solutions')
         }
 
-        if (data.value) {
-          this.setSolutions(data.value.solutions)
+        if (response.data) {
+          this.setSolutions(response.data.solutions || [])
         }
       } catch (err: any) {
         this.setError(err.message || 'Failed to load solutions')
@@ -161,18 +165,22 @@ export const useSolutionsStore = defineStore('solutions', {
       this.setError(null)
 
       try {
-        const { data, error } = await useAsyncQuery<SolutionResponse>(
-          GET_SOLUTION,
-          { slug }
-        )
+        const { $apollo } = useNuxtApp()
+        const apolloClient = $apollo.defaultClient
 
-        if (error.value) {
-          throw new Error(error.value.message || 'Failed to fetch solution')
+        const response = await apolloClient.query<SolutionResponse>({
+          query: GET_SOLUTION,
+          variables: { slug },
+          fetchPolicy: 'network-only',
+        })
+
+        if (response?.errors?.length) {
+          throw new Error(response.errors[0].message || 'Failed to fetch solution')
         }
 
-        if (data.value) {
-          this.setCurrentSolution(data.value.solution)
-          return data.value.solution
+        if (response.data?.solution) {
+          this.setCurrentSolution(response.data.solution)
+          return response.data.solution
         }
       } catch (err: any) {
         this.setError(err.message || 'Failed to load solution')
@@ -210,7 +218,7 @@ export const useSolutionsStore = defineStore('solutions', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<CreateSolutionResponse>({
           mutation: CREATE_SOLUTION,
@@ -241,7 +249,7 @@ export const useSolutionsStore = defineStore('solutions', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<UpdateSolutionResponse>({
           mutation: UPDATE_SOLUTION,
@@ -281,7 +289,7 @@ export const useSolutionsStore = defineStore('solutions', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<DeleteSolutionResponse>({
           mutation: DELETE_SOLUTION,

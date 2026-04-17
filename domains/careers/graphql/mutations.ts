@@ -55,7 +55,6 @@ export const UPDATE_JOB_POSITION = gql`
 export const DELETE_JOB_POSITION = gql`
   mutation DeleteJobPosition($id: ID!) {
     deleteJobPosition(id: $id) {
-      id
       success
       message
     }

@@ -1,7 +1,8 @@
 <template>
-  <!-- Page Header -->
-  <PageHeader title="Contact Requests" subtitle="Manage customer contact requests" />
-
+  <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+    <div class="d-flex flex-column flex-column-fluid">
+      <div id="kt_app_content" class="app-content flex-column-fluid">
+        <div id="kt_app_content_container" class="app-container container-fluid">
     <!-- Statistics Cards -->
     <div class="row g-5 g-xl-8 mb-5 mb-xl-8" v-if="!contactRequestsStore.isLoading">
       <div class="col-xl-3">
@@ -110,18 +111,6 @@
               <option value="RESOLVED">Resolved</option>
             </select>
 
-            <!-- Export -->
-            <button
-              type="button"
-              class="btn btn-light-primary"
-              @click="handleExport"
-            >
-              <i class="ki-duotone ki-exit-up fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-              </i>
-              Export
-            </button>
           </div>
 
           <!-- Bulk Actions -->
@@ -204,7 +193,12 @@
                 </td>
                 <td>
                   <div class="d-flex flex-column">
-                    <span class="text-gray-800 fw-bold">{{ getFullName(contactRequest) }}</span>
+                    <NuxtLink
+                      :to="`/contact-requests/${contactRequest.id}`"
+                      class="text-gray-800 fw-bold text-hover-primary mb-1 d-block"
+                    >
+                      {{ getFullName(contactRequest) }}
+                    </NuxtLink>
                     <span class="text-muted fs-7" v-if="contactRequest.phone">{{ formatPhone(contactRequest.phone) }}</span>
                   </div>
                 </td>
@@ -241,68 +235,18 @@
                 <td class="text-end">
                   <button
                     type="button"
-                    class="btn btn-sm btn-icon btn-light btn-active-light-primary"
-                    data-kt-menu-trigger="click"
-                    data-kt-menu-placement="bottom-end"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-danger"
+                    title="Delete"
+                    @click="handleDelete(contactRequest)"
                   >
-                    <i class="ki-duotone ki-dots-vertical fs-2">
+                    <i class="ki-duotone ki-trash fs-3">
                       <span class="path1"></span>
                       <span class="path2"></span>
                       <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
                     </i>
                   </button>
-
-                  <div
-                    class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-175px py-4"
-                    data-kt-menu="true"
-                  >
-                    <div class="menu-item px-3">
-                      <NuxtLink
-                        :to="`/contact-requests/${contactRequest.id}`"
-                        class="menu-link px-3"
-                      >
-                        View
-                      </NuxtLink>
-                    </div>
-                    <div class="menu-item px-3">
-                      <a
-                        href="#"
-                        class="menu-link px-3"
-                        @click.prevent="handleCopyEmail(contactRequest.email)"
-                      >
-                        Copy Email
-                      </a>
-                    </div>
-                    <div class="separator my-2"></div>
-                    <div class="menu-item px-3" v-if="contactRequest.status !== 'IN_PROGRESS'">
-                      <a
-                        href="#"
-                        class="menu-link px-3"
-                        @click.prevent="handleStatusUpdate(contactRequest.id, 'IN_PROGRESS')"
-                      >
-                        Mark In Progress
-                      </a>
-                    </div>
-                    <div class="menu-item px-3" v-if="contactRequest.status !== 'RESOLVED'">
-                      <a
-                        href="#"
-                        class="menu-link px-3"
-                        @click.prevent="handleStatusUpdate(contactRequest.id, 'RESOLVED')"
-                      >
-                        Mark Resolved
-                      </a>
-                    </div>
-                    <div class="separator my-2"></div>
-                    <div class="menu-item px-3">
-                      <a
-                        href="#"
-                        class="menu-link px-3 text-danger"
-                        @click.prevent="handleDelete(contactRequest)"
-                      >
-                        Delete
-                      </a>
-                    </div>
-                  </div>
                 </td>
               </tr>
             </tbody>
@@ -360,6 +304,10 @@
         </div>
       </div>
     </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -389,7 +337,6 @@ const {
   updateStatus,
   bulkUpdateStatus,
   bulkDeleteContactRequests,
-  exportContactRequestsToCSV,
   copyEmailToClipboard
 } = useContactRequestActions()
 
@@ -463,17 +410,13 @@ const handleBulkDelete = async () => {
   }
 }
 
-const handleExport = () => {
-  exportContactRequestsToCSV()
-}
+breadcrumbStore.setBreadcrumb([
+  { title: 'Dashboard', path: '/' },
+  { title: 'Contact Requests', path: '/contact-requests' },
+])
 
 // Lifecycle
 onMounted(async () => {
-  breadcrumbStore.setBreadcrumb([
-    { title: 'Home', path: '/' },
-    { title: 'Contact Requests', path: '/contact-requests' }
-  ])
-
   await contactRequestsStore.initialize()
 })
 </script>

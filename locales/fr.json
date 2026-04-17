@@ -1,0 +1,56 @@
+{
+  "auth": {
+    "brand": {
+      "name": "Gamma Neutral",
+      "tagline": "Vos données ont des réponses. Nous posons les bonnes questions.",
+      "eyebrow": "Conseil en données & IA",
+      "location": "Basé à Toronto · Cabinet de conseil en IA & ingénierie des données"
+    },
+    "login": {
+      "eyebrow": "Espace administration",
+      "title": "Bon retour.",
+      "subtitle": "Connectez-vous à la console Gamma Neutral",
+      "description": "Nous vous enverrons un code de vérification à usage unique pour vous connecter en toute sécurité.",
+      "emailLabel": "Adresse email",
+      "emailPlaceholder": "vous{'@'}exemple.com",
+      "helper": {
+        "email": "Nous enverrons un code à 6 chiffres à cette adresse email."
+      },
+      "submit": "Envoyer le code",
+      "submitting": "Envoi du code…",
+      "errors": {
+        "invalidEmail": "Saisissez une adresse email valide.",
+        "generic": "Impossible d'envoyer le code. Réessayez.",
+        "unknown": "Une erreur inattendue est survenue. Réessayez."
+      },
+      "support": "Besoin d'aide ?",
+      "supportAction": "Contacter le support",
+      "termsPrefix": "En continuant, vous acceptez nos",
+      "terms": "Conditions d'utilisation",
+      "and": "et notre",
+      "privacy": "Politique de confidentialité"
+    },
+    "otp": {
+      "eyebrow": "Vérification",
+      "title": "Entrez votre code",
+      "sentToIntro": "Nous avons envoyé un code à 6 chiffres à",
+      "codeLabel": "Code à 6 chiffres",
+      "validity": "Ce code est valide pendant 15 minutes.",
+      "submit": "Vérifier et se connecter",
+      "verifying": "Vérification…",
+      "errors": {
+        "incomplete": "Saisissez les 6 chiffres du code.",
+        "invalid": "Code invalide ou expiré. Demandez un nouveau code.",
+        "session": "Session expirée. Veuillez recommencer.",
+        "resend": "Impossible d'envoyer un nouveau code. Réessayez.",
+        "unknown": "Une erreur inattendue est survenue. Réessayez."
+      },
+      "resendPrompt": "Vous n'avez pas reçu le code ?",
+      "resendAction": "Renvoyer le code",
+      "resendIn": "Nouveau code disponible dans {seconds}s",
+      "resending": "Envoi en cours…",
+      "backToLogin": "Utiliser une autre méthode",
+      "codeResent": "Un nouveau code a été envoyé."
+    }
+  }
+}

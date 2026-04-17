@@ -41,7 +41,6 @@ export const UPDATE_SOLUTION = gql`
 export const DELETE_SOLUTION = gql`
   mutation DeleteSolution($id: ID!) {
     deleteSolution(id: $id) {
-      id
       success
       message
     }

@@ -26,39 +26,44 @@ export default defineNuxtModule({
     })
 
     // Register pages as routes
+    // Literal paths (/services/categories/*) BEFORE param paths (/services/:id)
     nuxt.hook('pages:extend', (pages) => {
       pages.push(
         {
           name: 'services',
           path: '/services',
           file: resolver.resolve('./pages/ServicesList.vue'),
-          meta: {
-            requiresAuth: true
-          }
+          meta: { requiresAuth: true },
         },
         {
           name: 'services-create',
           path: '/services/create',
           file: resolver.resolve('./pages/ServicesCreate.vue'),
-          meta: {
-            requiresAuth: true
-          }
+          meta: { requiresAuth: true },
         },
         {
-          name: 'services-detail',
-          path: '/services/:id',
-          file: resolver.resolve('./pages/ServicesDetail.vue'),
-          meta: {
-            requiresAuth: true
-          }
+          name: 'service-categories',
+          path: '/services/categories',
+          file: resolver.resolve('./pages/ServiceCategoriesList.vue'),
+          meta: { requiresAuth: true },
+        },
+        {
+          name: 'service-categories-create',
+          path: '/services/categories/create',
+          file: resolver.resolve('./pages/ServiceCategoriesCreate.vue'),
+          meta: { requiresAuth: true },
+        },
+        {
+          name: 'service-categories-edit',
+          path: '/services/categories/:id/edit',
+          file: resolver.resolve('./pages/ServiceCategoriesEdit.vue'),
+          meta: { requiresAuth: true },
         },
         {
           name: 'services-edit',
           path: '/services/:id/edit',
           file: resolver.resolve('./pages/ServicesEdit.vue'),
-          meta: {
-            requiresAuth: true
-          }
+          meta: { requiresAuth: true },
         }
       )
     })

@@ -103,19 +103,6 @@
               <option :value="false">Inactive</option>
             </select>
 
-            <!-- Export -->
-            <button
-              type="button"
-              class="btn btn-light-primary"
-              @click="handleExport"
-            >
-              <i class="ki-duotone ki-exit-up fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-              </i>
-              Export
-            </button>
-
             <!-- Create New -->
             <NuxtLink
               to="/partners/create"
@@ -180,7 +167,7 @@
 
               <!-- Logo -->
               <div class="card-body text-center pt-5 pb-5">
-                <NuxtLink :to="`/partners/${partner.id}`" class="text-decoration-none">
+                <NuxtLink :to="`/partners/${partner.id}/edit`" class="text-decoration-none d-block">
                   <div class="d-flex justify-content-center align-items-center mb-5" style="height: 120px;">
                     <img
                       v-if="partner.logo_url"
@@ -228,6 +215,7 @@
                   <NuxtLink
                     :to="`/partners/${partner.id}/edit`"
                     class="btn btn-sm btn-light-primary flex-grow-1"
+                    title="Edit"
                   >
                     <i class="ki-duotone ki-pencil fs-3">
                       <span class="path1"></span>
@@ -238,6 +226,7 @@
                   <button
                     type="button"
                     class="btn btn-sm btn-light-danger"
+                    title="Delete"
                     @click="handleDelete(partner)"
                   >
                     <i class="ki-duotone ki-trash fs-3">
@@ -324,8 +313,7 @@ const {
 
 const {
   confirmAndDeletePartner,
-  bulkDeletePartners,
-  exportPartnersToCSV
+  bulkDeletePartners
 } = usePartnerActions()
 
 // Search and filters
@@ -369,10 +357,6 @@ const handleBulkDelete = async () => {
   if (success) {
     selectedIds.value = []
   }
-}
-
-const handleExport = () => {
-  exportPartnersToCSV()
 }
 
 // Lifecycle

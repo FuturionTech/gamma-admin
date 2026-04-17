@@ -1,4 +1,58 @@
 {
+  "auth": {
+    "brand": {
+      "name": "Gamma Neutral",
+      "tagline": "Your data has answers. We ask the right questions.",
+      "eyebrow": "Data & AI Consulting",
+      "location": "Toronto-based · AI & Data Engineering Consultancy"
+    },
+    "login": {
+      "eyebrow": "Administration console",
+      "title": "Welcome back.",
+      "subtitle": "Sign in to the Gamma Neutral console",
+      "description": "We'll send you a one-time verification code to sign in securely.",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "you{'@'}example.com",
+      "helper": {
+        "email": "We'll send a 6-digit code to this email address."
+      },
+      "submit": "Send code",
+      "submitting": "Sending code…",
+      "errors": {
+        "invalidEmail": "Enter a valid email address.",
+        "generic": "We couldn't send a code. Please try again.",
+        "unknown": "An unexpected error occurred. Please try again."
+      },
+      "support": "Having trouble?",
+      "supportAction": "Contact support",
+      "termsPrefix": "By continuing, you agree to our",
+      "terms": "Terms of Service",
+      "and": "and",
+      "privacy": "Privacy Policy"
+    },
+    "otp": {
+      "eyebrow": "Verification",
+      "title": "Enter your code",
+      "sentToIntro": "We sent a 6-digit code to",
+      "codeLabel": "6-digit code",
+      "validity": "This code is valid for 15 minutes.",
+      "submit": "Verify and sign in",
+      "verifying": "Verifying…",
+      "errors": {
+        "incomplete": "Enter all 6 digits of the code.",
+        "invalid": "Invalid or expired code. Request a new one.",
+        "session": "Session expired. Please try again.",
+        "resend": "We couldn't resend the code. Please try again.",
+        "unknown": "An unexpected error occurred. Please try again."
+      },
+      "resendPrompt": "Didn't get the code?",
+      "resendAction": "Resend code",
+      "resendIn": "Resend available in {seconds}s",
+      "resending": "Sending…",
+      "backToLogin": "Use a different method",
+      "codeResent": "A new code has been sent."
+    }
+  },
   "common": {
     "actions": {
       "create": "Create",
@@ -295,8 +349,6 @@
     "solutionsDesc": "Create and manage solutions",
     "blog": "Manage Blog",
     "blogDesc": "Create and publish articles",
-    "projects": "Manage Projects",
-    "projectsDesc": "Create and manage case studies",
     "team": "Manage Team",
     "teamDesc": "Manage team members",
     "partners": "Manage Partners",
@@ -309,15 +361,13 @@
       "services": "Services",
       "solutions": "Solutions",
       "blog": "Blog Posts",
-      "projects": "Projects",
       "team": "Team Members",
       "partners": "Partners",
       "clients": "Clients",
       "certifications": "Certifications",
       "faqs": "FAQs",
       "careers": "Career Opportunities",
-      "testimonials": "Testimonials",
-      "stats": "Statistics"
+      "testimonials": "Testimonials"
     },
     "active": "Active",
     "inactive": "Inactive",

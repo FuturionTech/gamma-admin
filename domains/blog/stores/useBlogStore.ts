@@ -298,7 +298,7 @@ export const useBlogStore = defineStore('blog', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         // Auto-publish if status is PUBLISHED and no published_at is set
         if (input.status === 'published' && !input.published_at) {
@@ -334,7 +334,7 @@ export const useBlogStore = defineStore('blog', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         // Auto-publish if changing status to PUBLISHED
         if (input.status === 'published' && !input.published_at) {
@@ -382,7 +382,7 @@ export const useBlogStore = defineStore('blog', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<DeleteBlogPostResponse>({
           mutation: DELETE_BLOG_POST,

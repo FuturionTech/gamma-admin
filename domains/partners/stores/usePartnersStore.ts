@@ -185,7 +185,7 @@ export const usePartnersStore = defineStore('partners', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<CreatePartnerResponse>({
           mutation: CREATE_PARTNER,
@@ -217,7 +217,7 @@ export const usePartnersStore = defineStore('partners', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<UpdatePartnerResponse>({
           mutation: UPDATE_PARTNER,
@@ -259,7 +259,7 @@ export const usePartnersStore = defineStore('partners', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<DeletePartnerResponse>({
           mutation: DELETE_PARTNER,

@@ -241,7 +241,7 @@ export const useCertificationsStore = defineStore('certifications', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<CreateCertificationResponse>({
           mutation: CREATE_CERTIFICATION,
@@ -272,7 +272,7 @@ export const useCertificationsStore = defineStore('certifications', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<UpdateCertificationResponse>({
           mutation: UPDATE_CERTIFICATION,
@@ -312,7 +312,7 @@ export const useCertificationsStore = defineStore('certifications', {
 
       try {
         const { $apollo } = useNuxtApp()
-        const apolloClient = $apollo.default
+        const apolloClient = $apollo.defaultClient
 
         const response = await apolloClient.mutate<DeleteCertificationResponse>({
           mutation: DELETE_CERTIFICATION,

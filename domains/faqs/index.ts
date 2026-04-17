@@ -40,17 +40,31 @@ export default defineNuxtModule({
           name: 'faqs-create',
           path: '/faqs/create',
           file: resolver.resolve('./pages/FAQsCreate.vue'),
-          meta: {
-            requiresAuth: true
-          }
+          meta: { requiresAuth: true },
+        },
+        {
+          name: 'faq-categories',
+          path: '/faqs/categories',
+          file: resolver.resolve('./pages/FaqCategoriesList.vue'),
+          meta: { requiresAuth: true },
+        },
+        {
+          name: 'faq-categories-create',
+          path: '/faqs/categories/create',
+          file: resolver.resolve('./pages/FaqCategoriesCreate.vue'),
+          meta: { requiresAuth: true },
+        },
+        {
+          name: 'faq-categories-edit',
+          path: '/faqs/categories/:id/edit',
+          file: resolver.resolve('./pages/FaqCategoriesEdit.vue'),
+          meta: { requiresAuth: true },
         },
         {
           name: 'faqs-edit',
           path: '/faqs/:id/edit',
           file: resolver.resolve('./pages/FAQsEdit.vue'),
-          meta: {
-            requiresAuth: true
-          }
+          meta: { requiresAuth: true },
         }
       )
     })

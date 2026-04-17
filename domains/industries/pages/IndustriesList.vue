@@ -142,19 +142,6 @@
               </option>
             </select>
 
-            <!-- Export -->
-            <button
-              type="button"
-              class="btn btn-light-primary"
-              @click="handleExport"
-            >
-              <i class="ki-duotone ki-exit-up fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-              </i>
-              Export
-            </button>
-
             <!-- Create New -->
             <NuxtLink
               to="/industries/create"
@@ -225,19 +212,17 @@
                   </div>
                 </td>
                 <td>
-                  <img
-                    v-if="industry.icon"
-                    :src="industry.icon"
-                    class="w-40px"
-                    :alt="industry.title"
-                  />
-                  <i v-else :class="getCategoryIcon(industry.category)" class="fs-2x text-gray-400"></i>
+                  <div class="symbol symbol-40px">
+                    <div class="symbol-label gn-list-icon" :style="iconTileStyle(industry.icon_color)">
+                      <GIcon :name="industry.icon || 'briefcase'" :size="20" />
+                    </div>
+                  </div>
                 </td>
                 <td>
                   <div class="d-flex flex-column">
                     <NuxtLink
-                      :to="`/industries/${industry.id}`"
-                      class="text-gray-800 fw-bold text-hover-primary"
+                      :to="`/industries/${industry.id}/edit`"
+                      class="text-gray-800 fw-bold text-hover-primary mb-1 d-block"
                     >
                       {{ industry.title }}
                     </NuxtLink>
@@ -275,58 +260,30 @@
                   <span class="badge badge-light">{{ industry.order }}</span>
                 </td>
                 <td class="text-end">
+                  <NuxtLink
+                    :to="`/industries/${industry.id}/edit`"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                    title="Edit"
+                  >
+                    <i class="ki-duotone ki-pencil fs-3">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                    </i>
+                  </NuxtLink>
                   <button
                     type="button"
-                    class="btn btn-sm btn-icon btn-light btn-active-light-primary"
-                    data-kt-menu-trigger="click"
-                    data-kt-menu-placement="bottom-end"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-danger"
+                    title="Delete"
+                    @click="handleDelete(industry)"
                   >
-                    <i class="ki-duotone ki-dots-vertical fs-2">
+                    <i class="ki-duotone ki-trash fs-3">
                       <span class="path1"></span>
                       <span class="path2"></span>
                       <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
                     </i>
                   </button>
-
-                  <div
-                    class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                    data-kt-menu="true"
-                  >
-                    <div class="menu-item px-3">
-                      <NuxtLink
-                        :to="`/industries/${industry.id}`"
-                        class="menu-link px-3"
-                      >
-                        View
-                      </NuxtLink>
-                    </div>
-                    <div class="menu-item px-3">
-                      <NuxtLink
-                        :to="`/industries/${industry.id}/edit`"
-                        class="menu-link px-3"
-                      >
-                        Edit
-                      </NuxtLink>
-                    </div>
-                    <div class="menu-item px-3">
-                      <a
-                        href="#"
-                        class="menu-link px-3"
-                        @click.prevent="handleToggleStatus(industry)"
-                      >
-                        {{ industry.is_active ? 'Deactivate' : 'Activate' }}
-                      </a>
-                    </div>
-                    <div class="menu-item px-3">
-                      <a
-                        href="#"
-                        class="menu-link px-3 text-danger"
-                        @click.prevent="handleDelete(industry)"
-                      >
-                        Delete
-                      </a>
-                    </div>
-                  </div>
                 </td>
               </tr>
             </tbody>
@@ -403,8 +360,12 @@ import { useIndustriesStore } from '../stores/useIndustriesStore'
 import { useIndustryFormatters } from '../composables/useIndustryFormatters'
 import { useIndustryActions } from '../composables/useIndustryActions'
 import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
+import { useListIconTile } from '~/composables/useListIconTile'
 import { IndustryCategory, INDUSTRY_CATEGORY_CONFIG } from '../types'
 import type { Industry } from '../types'
+import GIcon from '~/components/icons/GIcon.vue'
+
+const { iconTileStyle } = useListIconTile()
 
 const industriesStore = useIndustriesStore()
 const breadcrumbStore = useBreadcrumbStore()
@@ -421,8 +382,7 @@ const {
 const {
   confirmAndDeleteIndustry,
   toggleIndustryStatus,
-  bulkDeleteIndustries,
-  exportIndustriesToCSV
+  bulkDeleteIndustries
 } = useIndustryActions()
 
 // Category options for filter dropdown
@@ -489,10 +449,6 @@ const handleBulkDelete = async () => {
   if (success) {
     selectedIds.value = []
   }
-}
-
-const handleExport = () => {
-  exportIndustriesToCSV()
 }
 
 // Lifecycle

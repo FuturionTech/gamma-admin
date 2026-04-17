@@ -171,19 +171,6 @@
               </option>
             </select>
 
-            <!-- Export -->
-            <button
-              type="button"
-              class="btn btn-light-primary"
-              @click="handleExport"
-            >
-              <i class="ki-duotone ki-exit-up fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-              </i>
-              Export
-            </button>
-
             <!-- Create New -->
             <NuxtLink
               to="/services/create"
@@ -267,22 +254,20 @@
                   </div>
                 </td>
                 <td>
-                  <img
-                    v-if="service.icon"
-                    :src="resolveIcon(service.icon)"
-                    class="w-40px"
-                    :alt="service.title"
-                  />
-                  <i v-else class="ki-duotone ki-category fs-2x text-gray-400">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                    <span class="path3"></span>
-                    <span class="path4"></span>
-                  </i>
+                  <div class="symbol symbol-40px">
+                    <div class="symbol-label gn-list-icon" :style="iconTileStyle(service.icon_color)">
+                      <GIcon :name="service.icon || 'layers'" :size="20" />
+                    </div>
+                  </div>
                 </td>
                 <td>
                   <div class="d-flex flex-column">
-                    <span class="text-gray-800 fw-bold">{{ service.title }}</span>
+                    <NuxtLink
+                      :to="`/services/${service.id}/edit`"
+                      class="text-gray-800 fw-bold text-hover-primary mb-1 d-block"
+                    >
+                      {{ service.title }}
+                    </NuxtLink>
                     <span class="text-muted fs-7" v-if="service.description">
                       {{ truncate(service.description, 50) }}
                     </span>
@@ -313,58 +298,30 @@
                   <span class="badge badge-light">{{ service.order }}</span>
                 </td>
                 <td class="text-end">
+                  <NuxtLink
+                    :to="`/services/${service.id}/edit`"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                    title="Edit"
+                  >
+                    <i class="ki-duotone ki-pencil fs-3">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                    </i>
+                  </NuxtLink>
                   <button
                     type="button"
-                    class="btn btn-sm btn-icon btn-light btn-active-light-primary"
-                    data-kt-menu-trigger="click"
-                    data-kt-menu-placement="bottom-end"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-danger"
+                    title="Delete"
+                    @click="handleDelete(service)"
                   >
-                    <i class="ki-duotone ki-dots-vertical fs-2">
+                    <i class="ki-duotone ki-trash fs-3">
                       <span class="path1"></span>
                       <span class="path2"></span>
                       <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
                     </i>
                   </button>
-
-                  <div
-                    class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                    data-kt-menu="true"
-                  >
-                    <div class="menu-item px-3">
-                      <NuxtLink
-                        :to="`/services/edit/${service.id}`"
-                        class="menu-link px-3"
-                      >
-                        View
-                      </NuxtLink>
-                    </div>
-                    <div class="menu-item px-3">
-                      <NuxtLink
-                        :to="`/services/edit/${service.id}`"
-                        class="menu-link px-3"
-                      >
-                        Edit
-                      </NuxtLink>
-                    </div>
-                    <div class="menu-item px-3">
-                      <a
-                        href="#"
-                        class="menu-link px-3"
-                        @click.prevent="handleToggleStatus(service)"
-                      >
-                        {{ service.is_active ? 'Deactivate' : 'Activate' }}
-                      </a>
-                    </div>
-                    <div class="menu-item px-3">
-                      <a
-                        href="#"
-                        class="menu-link px-3 text-danger"
-                        @click.prevent="handleDelete(service)"
-                      >
-                        Delete
-                      </a>
-                    </div>
-                  </div>
                 </td>
               </tr>
             </tbody>
@@ -447,8 +404,12 @@ import { useServicesStore } from '../stores/useServicesStore'
 import { useServiceFormatters } from '../composables/useServiceFormatters'
 import { useServiceActions } from '../composables/useServiceActions'
 import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
+import { useListIconTile } from '~/composables/useListIconTile'
 import type { Service } from '../types'
 import ServiceCard from '../components/ServiceCard.vue'
+import GIcon from '~/components/icons/GIcon.vue'
+
+const { iconTileStyle } = useListIconTile()
 
 const servicesStore = useServicesStore()
 const breadcrumbStore = useBreadcrumbStore()
@@ -463,8 +424,7 @@ const {
 const {
   confirmAndDeleteService,
   toggleServiceStatus,
-  bulkDeleteServices,
-  exportServicesToCSV
+  bulkDeleteServices
 } = useServiceActions()
 
 // View mode, Search and filters
@@ -526,10 +486,6 @@ const handleBulkDelete = async () => {
   if (success) {
     selectedIds.value = []
   }
-}
-
-const handleExport = () => {
-  exportServicesToCSV()
 }
 
 const resolveIcon = (icon: string) => {

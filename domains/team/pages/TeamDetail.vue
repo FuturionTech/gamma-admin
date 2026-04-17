@@ -164,12 +164,6 @@
             <div class="text-gray-800 fw-bold">{{ team.role }}</div>
           </div>
 
-          <!-- Order -->
-          <div class="mb-7">
-            <div class="fw-semibold text-gray-600 mb-2">Display Order</div>
-            <span class="badge badge-light-primary badge-lg">{{ team.order }}</span>
-          </div>
-
           <!-- Created At -->
           <div class="mb-7">
             <div class="fw-semibold text-gray-600 mb-2">Created At</div>

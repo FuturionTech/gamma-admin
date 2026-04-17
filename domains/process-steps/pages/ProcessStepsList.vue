@@ -124,19 +124,6 @@
                     <option :value="false">Inactive</option>
                   </select>
 
-                  <!-- Export -->
-                  <button
-                    type="button"
-                    class="btn btn-light-primary"
-                    @click="handleExport"
-                  >
-                    <i class="ki-duotone ki-exit-up fs-2">
-                      <span class="path1"></span>
-                      <span class="path2"></span>
-                    </i>
-                    Export
-                  </button>
-
                   <!-- Create New -->
                   <NuxtLink
                     to="/process-steps/create"
@@ -212,25 +199,15 @@
                       </td>
                       <td>
                         <div class="d-flex align-items-center">
-                          <div
-                            v-if="step.icon"
-                            class="symbol symbol-40px me-3"
-                          >
-                            <span
-                              class="symbol-label"
-                              :style="step.icon_color ? `background-color: ${step.icon_color}15;` : ''"
-                            >
-                              <i
-                                :class="step.icon"
-                                class="fs-2"
-                                :style="step.icon_color ? `color: ${step.icon_color};` : ''"
-                              ></i>
-                            </span>
+                          <div class="symbol symbol-40px me-3">
+                            <div class="symbol-label gn-list-icon" :style="iconTileStyle(step.icon_color)">
+                              <GIcon :name="step.icon || 'circle-dot'" :size="20" />
+                            </div>
                           </div>
                           <div class="d-flex flex-column">
                             <NuxtLink
-                              :to="`/process-steps/${step.id}`"
-                              class="text-gray-800 fw-bold text-hover-primary"
+                              :to="`/process-steps/${step.id}/edit`"
+                              class="text-gray-800 fw-bold text-hover-primary mb-1 d-block"
                             >
                               {{ step.title }}
                             </NuxtLink>
@@ -263,58 +240,30 @@
                         <span class="badge badge-light">{{ step.order }}</span>
                       </td>
                       <td class="text-end">
+                        <NuxtLink
+                          :to="`/process-steps/${step.id}/edit`"
+                          class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                          title="Edit"
+                        >
+                          <i class="ki-duotone ki-pencil fs-3">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                          </i>
+                        </NuxtLink>
                         <button
                           type="button"
-                          class="btn btn-sm btn-icon btn-light btn-active-light-primary"
-                          data-kt-menu-trigger="click"
-                          data-kt-menu-placement="bottom-end"
+                          class="btn btn-sm btn-icon btn-light btn-active-light-danger"
+                          title="Delete"
+                          @click="handleDelete(step)"
                         >
-                          <i class="ki-duotone ki-dots-vertical fs-2">
+                          <i class="ki-duotone ki-trash fs-3">
                             <span class="path1"></span>
                             <span class="path2"></span>
                             <span class="path3"></span>
+                            <span class="path4"></span>
+                            <span class="path5"></span>
                           </i>
                         </button>
-
-                        <div
-                          class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                          data-kt-menu="true"
-                        >
-                          <div class="menu-item px-3">
-                            <NuxtLink
-                              :to="`/process-steps/${step.id}`"
-                              class="menu-link px-3"
-                            >
-                              View
-                            </NuxtLink>
-                          </div>
-                          <div class="menu-item px-3">
-                            <NuxtLink
-                              :to="`/process-steps/${step.id}/edit`"
-                              class="menu-link px-3"
-                            >
-                              Edit
-                            </NuxtLink>
-                          </div>
-                          <div class="menu-item px-3">
-                            <a
-                              href="#"
-                              class="menu-link px-3"
-                              @click.prevent="handleToggleStatus(step)"
-                            >
-                              {{ step.is_active ? 'Deactivate' : 'Activate' }}
-                            </a>
-                          </div>
-                          <div class="menu-item px-3">
-                            <a
-                              href="#"
-                              class="menu-link px-3 text-danger"
-                              @click.prevent="handleDelete(step)"
-                            >
-                              Delete
-                            </a>
-                          </div>
-                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -390,7 +339,11 @@ import { useProcessStepsStore } from '../stores/useProcessStepsStore'
 import { useProcessStepFormatters } from '../composables/useProcessStepFormatters'
 import { useProcessStepActions } from '../composables/useProcessStepActions'
 import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
+import { useListIconTile } from '~/composables/useListIconTile'
 import type { ProcessStep } from '../types'
+import GIcon from '~/components/icons/GIcon.vue'
+
+const { iconTileStyle } = useListIconTile()
 
 const processStepsStore = useProcessStepsStore()
 const breadcrumbStore = useBreadcrumbStore()
@@ -405,8 +358,7 @@ const {
 const {
   confirmAndDeleteProcessStep,
   toggleProcessStepStatus,
-  bulkDeleteProcessSteps,
-  exportProcessStepsToCSV
+  bulkDeleteProcessSteps
 } = useProcessStepActions()
 
 // Search and filters
@@ -462,10 +414,6 @@ const handleBulkDelete = async () => {
   if (success) {
     selectedIds.value = []
   }
-}
-
-const handleExport = () => {
-  exportProcessStepsToCSV()
 }
 
 // Lifecycle

@@ -63,7 +63,6 @@ export const UPDATE_TEAM = gql`
 export const DELETE_TEAM = gql`
   mutation DeleteTeam($id: ID!) {
     deleteTeam(id: $id) {
-      id
       success
       message
     }

@@ -41,7 +41,6 @@ export const UPDATE_INDUSTRY = gql`
 export const DELETE_INDUSTRY = gql`
   mutation DeleteIndustry($id: ID!) {
     deleteIndustry(id: $id) {
-      id
       success
       message
     }

@@ -26,8 +26,13 @@
 
       <!-- Title -->
       <div class="mb-5">
-        <h3 class="fs-4 fw-bold text-gray-800 mb-2">
-          {{ certification.title }}
+        <h3 class="fs-4 fw-bold mb-2">
+          <NuxtLink
+            :to="`/certifications/${certification.id}`"
+            class="text-gray-800 text-hover-primary text-decoration-none"
+          >
+            {{ certification.title }}
+          </NuxtLink>
         </h3>
         <div class="text-muted fs-7" v-if="certification.issued_date">
           Issued: {{ formatDate(certification.issued_date) }}
@@ -54,7 +59,8 @@
       <div class="d-flex gap-2">
         <NuxtLink
           :to="`/certifications/${certification.id}`"
-          class="btn btn-sm btn-light-primary flex-grow-1"
+          class="btn btn-sm btn-light-info flex-grow-1"
+          title="View"
         >
           <i class="ki-duotone ki-eye fs-2">
             <span class="path1"></span>
@@ -63,14 +69,39 @@
           </i>
           View
         </NuxtLink>
+        <NuxtLink
+          :to="`/certifications/${certification.id}/edit`"
+          class="btn btn-sm btn-icon btn-light-primary"
+          title="Edit"
+        >
+          <i class="ki-duotone ki-pencil fs-2">
+            <span class="path1"></span>
+            <span class="path2"></span>
+          </i>
+        </NuxtLink>
         <button
           type="button"
-          class="btn btn-sm btn-icon btn-light-primary"
+          class="btn btn-sm btn-icon btn-light-success"
+          title="Download"
           @click="handleDownload"
         >
           <i class="ki-duotone ki-file-down fs-2">
             <span class="path1"></span>
             <span class="path2"></span>
+          </i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm btn-icon btn-light-danger"
+          title="Delete"
+          @click="handleDelete"
+        >
+          <i class="ki-duotone ki-trash fs-2">
+            <span class="path1"></span>
+            <span class="path2"></span>
+            <span class="path3"></span>
+            <span class="path4"></span>
+            <span class="path5"></span>
           </i>
         </button>
       </div>
@@ -98,9 +129,13 @@ const {
   isRecent
 } = useCertificationFormatters()
 
-const { downloadCertificationFile } = useCertificationActions()
+const { downloadCertificationFile, confirmAndDeleteCertification } = useCertificationActions()
 
 const handleDownload = () => {
   downloadCertificationFile(props.certification)
+}
+
+const handleDelete = async () => {
+  await confirmAndDeleteCertification(props.certification)
 }
 </script>

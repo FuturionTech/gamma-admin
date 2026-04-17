@@ -4,7 +4,7 @@ import { gql } from '@apollo/client/core';
  * Dashboard Content Queries — aligned with actual gamma-api GraphQL schema.
  *
  * API conventions:
- *   - @all directives (services, solutions, blogPosts, projects, clients, faqs, stats,
+ *   - @all directives (services, solutions, blogPosts, clients, faqs,
  *     contactRequests, jobPositions) return flat arrays, no paginatorInfo.
  *   - @paginate directives (teams, partners, testimonials, certifications, banners)
  *     accept `first` + `page` and return { data, paginatorInfo }.
@@ -26,10 +26,6 @@ export const GET_DASHBOARD_OVERVIEW = gql`
       id
       status
       view_count
-    }
-    projects {
-      id
-      status
     }
     teams(first: 1000) {
       data {
@@ -64,11 +60,6 @@ export const GET_DASHBOARD_OVERVIEW = gql`
         is_active
         rating
       }
-    }
-    stats {
-      id
-      is_active
-      value
     }
     contactRequests {
       id

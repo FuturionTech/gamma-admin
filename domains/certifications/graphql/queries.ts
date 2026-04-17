@@ -51,6 +51,7 @@ export const GET_CERTIFICATION_CATEGORIES = gql`
     certificationCategories {
       id
       name
+      certifications_count
       created_at
       updated_at
     }

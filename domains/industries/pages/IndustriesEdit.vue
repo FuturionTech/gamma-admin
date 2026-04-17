@@ -1,313 +1,210 @@
 <template>
-  <!-- Page Header -->
-  <PageHeader
-    :title="industry ? 'Edit Industry' : 'Loading...'"
-    :subtitle="industry?.title"
-  />
+  <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+    <div class="d-flex flex-column flex-column-fluid">
+      <div id="kt_app_content" class="app-content flex-column-fluid">
+        <div id="kt_app_content_container" class="app-container container-fluid">
 
-  <!-- Loading State -->
-  <div v-if="industriesStore.isLoading" class="card">
-    <div class="card-body">
-      <FormSkeleton :fields="6" :showActions="true" />
-    </div>
-  </div>
+          <div v-if="industriesStore.isLoading && !industry" class="gn-form__shimmer" />
 
-  <!-- Error State -->
-  <div
-    v-else-if="industriesStore.hasError"
-    class="alert alert-danger d-flex align-items-center p-5"
-  >
-    <i class="ki-duotone ki-shield-cross fs-2hx text-danger me-4">
-      <span class="path1"></span>
-      <span class="path2"></span>
-      <span class="path3"></span>
-    </i>
-    <div class="d-flex flex-column">
-      <h4 class="mb-1 text-dark">An error occurred</h4>
-      <span>{{ industriesStore.error }}</span>
-    </div>
-  </div>
+          <form v-else-if="industry" class="gn-form" @submit.prevent="submit">
+            <header class="gn-form__hero">
+              <div class="gn-form__hero-icon" :style="heroStyle">
+                <GIcon :name="form.icon || 'briefcase'" :size="42" />
+              </div>
+              <div class="gn-form__hero-body">
+                <span class="gn-form__eyebrow">Edit industry</span>
+                <h1 class="gn-form__title">{{ form.title || industry.title }}</h1>
+                <p class="gn-form__subtitle">Update this industry sector's details.</p>
+              </div>
+              <div class="gn-form__hero-actions">
+                <button type="button" class="gn-form__btn gn-form__btn--danger-ghost" @click="handleDelete" :disabled="isSubmitting">
+                  <GIcon name="trash-2" :size="16" /> Delete
+                </button>
+                <NuxtLink to="/industries" class="gn-form__btn gn-form__btn--ghost">Cancel</NuxtLink>
+                <button type="submit" class="gn-form__btn gn-form__btn--primary" :disabled="isSubmitting">
+                  <GIcon name="check" :size="16" />
+                  {{ isSubmitting ? 'Saving…' : 'Save changes' }}
+                </button>
+              </div>
+            </header>
 
-  <!-- Form -->
-  <div v-else-if="industry" class="card">
-      <!-- Tabs Navigation -->
-      <div class="card-header border-0">
-        <div class="card-title">
-          <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bold" role="tablist">
-            <li class="nav-item" role="presentation">
-              <a
-                class="nav-link"
-                :class="{ active: activeTab === 'basic' }"
-                data-bs-toggle="tab"
-                href="#basic-info-tab"
-                role="tab"
-                @click="activeTab = 'basic'"
-              >
-                <i class="ki-duotone ki-note-2 fs-2 me-2">
-                  <span class="path1"></span>
-                  <span class="path2"></span>
-                  <span class="path3"></span>
-                  <span class="path4"></span>
-                </i>
-                Basic Information
-              </a>
-            </li>
-            <li class="nav-item" role="presentation">
-              <a
-                class="nav-link"
-                :class="{ active: activeTab === 'settings' }"
-                data-bs-toggle="tab"
-                href="#settings-tab"
-                role="tab"
-                @click="activeTab = 'settings'"
-              >
-                <i class="ki-duotone ki-setting-2 fs-2 me-2">
-                  <span class="path1"></span>
-                  <span class="path2"></span>
-                </i>
-                Settings
-              </a>
-            </li>
-          </ul>
-        </div>
+            <section class="gn-form__card">
+              <div class="gn-form__card-header">
+                <h3 class="gn-form__card-title">Industry details</h3>
+                <LocaleToggle v-model="locale" />
+              </div>
 
-        <!-- Delete Button -->
-        <div class="card-toolbar">
-          <button
-            type="button"
-            class="btn btn-light-danger"
-            @click="handleDelete"
-            :disabled="isSubmitting"
-          >
-            <i class="ki-duotone ki-trash fs-2">
-              <span class="path1"></span>
-              <span class="path2"></span>
-              <span class="path3"></span>
-              <span class="path4"></span>
-              <span class="path5"></span>
-            </i>
-            Delete
-          </button>
+              <div class="gn-form__fields">
+                <div class="gn-form__field">
+                  <label class="gn-form__label" for="ind-title">
+                    Title <span class="gn-form__locale-badge">{{ locale.toUpperCase() }}</span>
+                  </label>
+                  <input id="ind-title" v-model="form.title" type="text" class="gn-form__input" placeholder="e.g. Banks & Financial Services" required maxlength="255" />
+                </div>
+
+                <div class="gn-form__field">
+                  <label class="gn-form__label" for="ind-short">
+                    Short description <span class="gn-form__locale-badge">{{ locale.toUpperCase() }}</span>
+                  </label>
+                  <input id="ind-short" v-model="form.short_description" type="text" class="gn-form__input" placeholder="One-sentence summary" maxlength="300" />
+                </div>
+
+                <div class="gn-form__field">
+                  <label class="gn-form__label" for="ind-desc">
+                    Description <span class="gn-form__locale-badge">{{ locale.toUpperCase() }}</span>
+                  </label>
+                  <textarea id="ind-desc" v-model="form.description" class="gn-form__textarea" rows="5" placeholder="Full description of what this industry covers" />
+                </div>
+
+                <div class="gn-form__row">
+                  <div class="gn-form__field">
+                    <label class="gn-form__label" for="ind-category">Category</label>
+                    <select id="ind-category" v-model="form.category" class="gn-form__select">
+                      <option value="">Select a category</option>
+                      <option v-for="cat in CATEGORIES" :key="cat.value" :value="cat.value">{{ cat.label }}</option>
+                    </select>
+                  </div>
+
+                  <div class="gn-form__field">
+                    <label class="gn-form__label" for="ind-icon">Icon</label>
+                    <IconPicker v-model="form.icon" placeholder="Pick an icon" />
+                  </div>
+                </div>
+
+                <div class="gn-form__row">
+                  <div class="gn-form__field">
+                    <label class="gn-form__label" for="ind-color">Icon color</label>
+                    <div style="display:flex;align-items:center;gap:0.75rem">
+                      <input v-model="form.icon_color" type="color" style="width:40px;height:40px;border:0;padding:0;border-radius:10px;cursor:pointer" />
+                      <input v-model="form.icon_color" type="text" class="gn-form__input" placeholder="#8b5cf6" style="flex:1" />
+                    </div>
+                  </div>
+
+                  <div class="gn-form__field">
+                    <label class="gn-form__label">Status</label>
+                    <label style="display:flex;align-items:center;gap:0.75rem;cursor:pointer;padding:0.65rem 0">
+                      <input v-model="form.is_active" type="checkbox" style="width:18px;height:18px;accent-color:#7c3aed" />
+                      <span style="font-size:0.9rem;font-weight:500">{{ form.is_active ? 'Active — visible on public site' : 'Inactive — hidden from public site' }}</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </form>
+
+          <div v-else class="gn-form__empty">
+            <h3>Industry not found</h3>
+            <NuxtLink to="/industries" class="gn-form__btn gn-form__btn--primary">Back to industries</NuxtLink>
+          </div>
+
         </div>
       </div>
-
-      <div class="card-body">
-        <!-- Submitting State -->
-        <div v-if="isSubmitting" class="text-center py-20">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-
-        <!-- Form -->
-        <form v-else @submit.prevent="handleSubmit">
-          <div class="tab-content">
-            <!-- Basic Info Tab -->
-            <div
-              class="tab-pane fade"
-              :class="{ 'show active': activeTab === 'basic' }"
-              id="basic-info-tab"
-              role="tabpanel"
-            >
-              <IndustryFormBasicInfo
-                v-model="form"
-                :errors="errors"
-              />
-            </div>
-
-            <!-- Settings Tab -->
-            <div
-              class="tab-pane fade"
-              :class="{ 'show active': activeTab === 'settings' }"
-              id="settings-tab"
-              role="tabpanel"
-            >
-              <IndustryFormSettings
-                v-model="form"
-                :errors="errors"
-                :iconPreview="iconPreview"
-                @iconChanged="handleIconChange"
-                @iconRemoved="handleIconRemove"
-              />
-            </div>
-          </div>
-
-          <!-- Form Actions -->
-          <div class="d-flex justify-content-end gap-3 mt-10 pt-10 border-top">
-            <NuxtLink
-              to="/industries"
-              class="btn btn-light"
-            >
-              Cancel
-            </NuxtLink>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              :disabled="!isFormValid || isSubmitting"
-            >
-              <span v-if="!isSubmitting">
-                <i class="ki-duotone ki-check fs-2"></i>
-                Save Changes
-              </span>
-              <span v-else>
-                <span class="spinner-border spinner-border-sm me-2"></span>
-                Loading...
-              </span>
-            </button>
-          </div>
-        </form>
-      </div>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import Swal from 'sweetalert2'
 import { useIndustriesStore } from '../stores/useIndustriesStore'
-import { useIndustryFormatters } from '../composables/useIndustryFormatters'
 import { useIndustryActions } from '../composables/useIndustryActions'
 import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
-import type { IndustryFormData, Industry } from '../types'
+import { useLocaleForm } from '~/composables/useLocaleForm'
+import { GET_INDUSTRY } from '../graphql/queries'
+import GIcon from '~/components/icons/GIcon.vue'
+import IconPicker from '~/components/icons/IconPicker.vue'
+import LocaleToggle from '~/components/LocaleToggle.vue'
 
-const industriesStore = useIndustriesStore()
-const breadcrumbStore = useBreadcrumbStore()
+definePageMeta({ middleware: 'auth' })
+
 const route = useRoute()
 const router = useRouter()
-const { showSuccess, showError } = useNotification()
-const { generateSlug } = useIndustryFormatters()
+const industriesStore = useIndustriesStore()
+const breadcrumbStore = useBreadcrumbStore()
 const { confirmAndDeleteIndustry } = useIndustryActions()
+
+const CATEGORIES = [
+  { value: 'FINANCIAL_SERVICES', label: 'Financial Services' },
+  { value: 'HEALTHCARE', label: 'Healthcare' },
+  { value: 'GOVERNMENT', label: 'Government' },
+  { value: 'EDUCATION', label: 'Education' },
+  { value: 'MANUFACTURING', label: 'Manufacturing' },
+  { value: 'RETAIL', label: 'Retail' },
+  { value: 'NGO', label: 'NGO' },
+]
 
 const industryId = computed(() => route.params.id as string)
 const industry = computed(() => industriesStore.currentIndustry)
 
-// Form state
-const form = reactive<IndustryFormData>({
-  title: '',
-  description: null,
-  short_description: null,
-  icon: null,
-  icon_color: null,
-  category: null,
-  slug: null,
-  order: 0,
-  is_active: true,
-  iconFile: null
-})
-
-const errors = ref<Record<string, string>>({})
-const activeTab = ref<'basic' | 'settings'>('basic')
-const isSubmitting = ref(false)
-const iconPreview = ref('')
-
-// Validation
-const isFormValid = computed(() => {
-  return (
-    form.title.trim() !== '' &&
-    (form.slug?.trim() || '') !== '' &&
-    Object.keys(errors.value).length === 0
-  )
-})
-
-const validateForm = (): boolean => {
-  errors.value = {}
-
-  if (!form.title.trim()) {
-    errors.value.title = 'Title is required'
-  } else if (form.title.length > 255) {
-    errors.value.title = 'Title cannot exceed 255 characters'
-  }
-
-  if (!form.slug?.trim()) {
-    if (form.title.trim()) {
-      form.slug = generateSlug(form.title)
-    } else {
-      errors.value.slug = 'Slug is required'
-    }
-  }
-
-  if (form.order !== null && form.order !== undefined && form.order < 0) {
-    errors.value.order = 'Order must be a positive number'
-  }
-
-  return Object.keys(errors.value).length === 0
-}
-
-// Populate form with existing industry data
-const populateForm = (industry: Industry) => {
-  form.title = industry.title
-  form.description = industry.description
-  form.short_description = industry.short_description
-  form.icon = industry.icon
-  form.icon_color = industry.icon_color
-  form.category = industry.category
-  form.slug = industry.slug
-  form.order = industry.order
-  form.is_active = industry.is_active
-
-  if (industry.icon) {
-    iconPreview.value = industry.icon
-  }
-}
-
-// Watch for industry changes
-watch(
-  () => industriesStore.currentIndustry,
-  (newIndustry) => {
-    if (newIndustry) {
-      populateForm(newIndustry)
-    }
+const {
+  locale,
+  form,
+  loadAll,
+  loadTranslation,
+  getSubmitPayload,
+  fetchBothLocales,
+} = useLocaleForm({
+  translatableKeys: ['title', 'short_description', 'description'],
+  defaults: {
+    title: '',
+    short_description: '',
+    description: '',
+    category: '',
+    icon: '',
+    icon_color: '',
+    is_active: true,
   },
-  { immediate: true }
+})
+
+const isSubmitting = ref(false)
+
+const heroStyle = computed(() => {
+  const c = form.icon_color as string
+  if (!c || c.length !== 7) return {}
+  const r = parseInt(c.slice(1, 3), 16)
+  const g = parseInt(c.slice(3, 5), 16)
+  const b = parseInt(c.slice(5, 7), 16)
+  return {
+    background: `linear-gradient(135deg, rgba(${r},${g},${b},0.18) 0%, rgba(${r},${g},${b},0.28) 100%)`,
+    borderColor: `rgba(${r},${g},${b},0.45)`,
+    color: c,
+  }
+})
+
+watch(
+  industry,
+  (value) => {
+    if (!value) return
+    breadcrumbStore.setBreadcrumb([
+      { title: 'Dashboard', path: '/' },
+      { title: 'Industries', path: '/industries' },
+      { title: value.title, path: `/industries/${industryId.value}/edit` },
+    ])
+  },
+  { immediate: true },
 )
 
-// Handlers
-const handleIconChange = (file: File) => {
-  form.iconFile = file
-
-  // Create preview
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    iconPreview.value = e.target?.result as string
-  }
-  reader.readAsDataURL(file)
-}
-
-const handleIconRemove = () => {
-  form.icon = null
-  form.iconFile = null
-  iconPreview.value = ''
-}
-
-const handleSubmit = async () => {
-  if (!validateForm()) {
-    showError('Please fix the errors before submitting')
-    return
-  }
-
+const submit = async () => {
+  const payload = getSubmitPayload()
+  if (!payload.title || !industry.value) return
   isSubmitting.value = true
-
   try {
-    // Prepare input
-    const input = {
-      title: form.title,
-      description: form.description || null,
-      short_description: form.short_description || null,
-      icon: iconPreview.value || form.icon || null,
-      icon_color: form.icon_color || null,
-      category: form.category || null,
-      slug: form.slug || generateSlug(form.title),
-      order: form.order ?? 0,
-      is_active: form.is_active ?? true
-    }
-
-    // Update industry
-    await industriesStore.updateIndustry(industryId.value, input)
-
-    showSuccess('Industry updated successfully')
-
-    // Redirect to list
-    await router.push('/industries')
-  } catch (error: any) {
-    showError(error.message || 'Failed to save industry')
+    await industriesStore.updateIndustry(
+      industryId.value,
+      {
+        title: (payload.title as string).trim(),
+        short_description: (payload.short_description as string)?.trim() || null,
+        description: (payload.description as string)?.trim() || null,
+        category: (payload.category as string) || null,
+        icon: (payload.icon as string) || null,
+        icon_color: (payload.icon_color as string) || null,
+        is_active: payload.is_active as boolean,
+      },
+      payload.locale,
+    )
+    await Swal.fire({ title: 'Saved', text: `Content saved (${payload.locale.toUpperCase()})`, icon: 'success', timer: 1800, showConfirmButton: false })
+  } catch (err: any) {
+    await Swal.fire({ title: 'Failed', text: err.message, icon: 'error' })
   } finally {
     isSubmitting.value = false
   }
@@ -315,27 +212,23 @@ const handleSubmit = async () => {
 
 const handleDelete = async () => {
   if (!industry.value) return
-
   const deleted = await confirmAndDeleteIndustry(industry.value)
-  if (deleted) {
-    await router.push('/industries')
-  }
+  if (deleted) router.push('/industries')
 }
 
-// Lifecycle
 onMounted(async () => {
-  // Fetch industry
   try {
     await industriesStore.fetchIndustry(industryId.value)
 
     if (industry.value) {
-      breadcrumbStore.setBreadcrumb([
-        { title: 'Home', path: '/' },
-        { title: 'Industries', path: '/industries' },
-        { title: industry.value.title, path: `/industries/${industryId.value}/edit` }
-      ])
+      await fetchBothLocales(
+        GET_INDUSTRY,
+        { id: industryId.value },
+        (data: any) => data?.industry || null,
+      )
     }
-  } catch (error) {
+  } catch (err) {
+    console.error('[IndustriesEdit] Failed to fetch', err)
   }
 })
 </script>

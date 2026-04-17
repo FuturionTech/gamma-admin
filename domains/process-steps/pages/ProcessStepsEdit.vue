@@ -1,487 +1,144 @@
 <template>
-  <!-- Loading State -->
-  <div v-if="processStepsStore.isLoading && !processStep" class="card">
-    <div class="card-body">
-      <FormSkeleton :fields="6" :showActions="true" />
-    </div>
-  </div>
+  <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+    <div class="d-flex flex-column flex-column-fluid">
+      <div id="kt_app_content" class="app-content flex-column-fluid">
+        <div id="kt_app_content_container" class="app-container container-fluid">
 
-  <!-- Error State -->
-  <div
-    v-else-if="processStepsStore.hasError"
-    class="alert alert-danger d-flex align-items-center p-5"
-  >
-    <i class="ki-duotone ki-shield-cross fs-2hx text-danger me-4">
-      <span class="path1"></span>
-      <span class="path2"></span>
-      <span class="path3"></span>
-    </i>
-    <div class="d-flex flex-column">
-      <h4 class="mb-1 text-dark">An error occurred</h4>
-      <span>{{ processStepsStore.error }}</span>
-    </div>
-  </div>
-
-  <!-- Form -->
-  <div v-else-if="processStep">
-    <div class="card">
-      <!-- Tabs Navigation -->
-      <div class="card-header border-0">
-        <div class="card-title">
-          <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bold" role="tablist">
-            <li class="nav-item" role="presentation">
-              <a
-                class="nav-link"
-                :class="{ active: activeTab === 'basic' }"
-                data-bs-toggle="tab"
-                href="#basic-info-tab"
-                role="tab"
-                @click="activeTab = 'basic'"
-              >
-                <i class="ki-duotone ki-note-2 fs-2 me-2">
-                  <span class="path1"></span>
-                  <span class="path2"></span>
-                  <span class="path3"></span>
-                  <span class="path4"></span>
-                </i>
-                Basic Information
-              </a>
-            </li>
-            <li class="nav-item" role="presentation">
-              <a
-                class="nav-link"
-                :class="{ active: activeTab === 'settings' }"
-                data-bs-toggle="tab"
-                href="#settings-tab"
-                role="tab"
-                @click="activeTab = 'settings'"
-              >
-                <i class="ki-duotone ki-setting-2 fs-2 me-2">
-                  <span class="path1"></span>
-                  <span class="path2"></span>
-                </i>
-                Settings
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Delete Button -->
-        <div class="card-toolbar">
-          <button
-            type="button"
-            class="btn btn-light-danger"
-            @click="handleDelete"
-            :disabled="isSubmitting"
-          >
-            <i class="ki-duotone ki-trash fs-2">
-              <span class="path1"></span>
-              <span class="path2"></span>
-              <span class="path3"></span>
-              <span class="path4"></span>
-              <span class="path5"></span>
-            </i>
-            Delete
-          </button>
-        </div>
-      </div>
-
-      <div class="card-body">
-        <!-- Submitting State -->
-        <div v-if="isSubmitting" class="text-center py-20">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-
-        <!-- Form -->
-        <form v-else @submit.prevent="handleSubmit">
-          <div class="tab-content">
-            <!-- Basic Info Tab -->
-            <div
-              class="tab-pane fade"
-              :class="{ 'show active': activeTab === 'basic' }"
-              id="basic-info-tab"
-              role="tabpanel"
-            >
-              <!-- Title -->
-              <div class="mb-7">
-                <label class="required fw-semibold fs-6 mb-2">Title</label>
-                <input
-                  type="text"
-                  v-model="form.title"
-                  class="form-control form-control-solid"
-                  :class="{ 'is-invalid': errors.title }"
-                  placeholder="e.g., Discovery"
-                />
-                <div v-if="errors.title" class="invalid-feedback">{{ errors.title }}</div>
+          <div v-if="loading" class="gn-form" style="pointer-events:none">
+            <div class="gn-skeleton__hero">
+              <div class="gn-skeleton__icon gn-skeleton__pulse" />
+              <div style="flex:1;display:flex;flex-direction:column;gap:0.6rem">
+                <div class="gn-skeleton__line gn-skeleton__pulse" style="width:120px;height:12px" />
+                <div class="gn-skeleton__line gn-skeleton__pulse" style="width:260px;height:28px" />
+                <div class="gn-skeleton__line gn-skeleton__pulse" style="width:220px;height:14px" />
               </div>
-
-              <!-- Slug -->
-              <div class="mb-7">
-                <label class="required fw-semibold fs-6 mb-2">Slug</label>
-                <input
-                  type="text"
-                  v-model="form.slug"
-                  class="form-control form-control-solid"
-                  :class="{ 'is-invalid': errors.slug }"
-                  placeholder="auto-generated-slug"
-                />
-                <div v-if="errors.slug" class="invalid-feedback">{{ errors.slug }}</div>
-              </div>
-
-              <!-- Step Number -->
-              <div class="mb-7">
-                <label class="required fw-semibold fs-6 mb-2">Step Number</label>
-                <input
-                  type="number"
-                  v-model.number="form.step_number"
-                  class="form-control form-control-solid"
-                  :class="{ 'is-invalid': errors.step_number }"
-                  placeholder="1"
-                  min="1"
-                />
-                <div v-if="errors.step_number" class="invalid-feedback">{{ errors.step_number }}</div>
-              </div>
-
-              <!-- Short Description -->
-              <div class="mb-7">
-                <label class="fw-semibold fs-6 mb-2">Short Description</label>
-                <input
-                  type="text"
-                  v-model="form.short_description"
-                  class="form-control form-control-solid"
-                  placeholder="A brief summary of this step"
-                />
-              </div>
-
-              <!-- Description -->
-              <div class="mb-7">
-                <label class="fw-semibold fs-6 mb-2">Description</label>
-                <textarea
-                  v-model="form.description"
-                  class="form-control form-control-solid"
-                  rows="5"
-                  placeholder="Detailed description of this process step"
-                ></textarea>
+              <div style="display:flex;gap:0.5rem">
+                <div class="gn-skeleton__btn gn-skeleton__pulse" />
+                <div class="gn-skeleton__btn gn-skeleton__pulse" />
+                <div class="gn-skeleton__btn gn-skeleton__pulse" style="width:110px" />
               </div>
             </div>
-
-            <!-- Settings Tab -->
-            <div
-              class="tab-pane fade"
-              :class="{ 'show active': activeTab === 'settings' }"
-              id="settings-tab"
-              role="tabpanel"
-            >
-              <!-- Icon -->
-              <div class="mb-7">
-                <label class="fw-semibold fs-6 mb-2">Icon</label>
-                <input
-                  type="text"
-                  v-model="form.icon"
-                  class="form-control form-control-solid"
-                  placeholder="e.g., ki-duotone ki-magnifier"
-                />
-                <div class="form-text">CSS class name for the icon (ki-duotone or bi-* icons).</div>
-                <div v-if="form.icon" class="mt-3">
-                  <span class="text-muted me-2">Preview:</span>
-                  <i :class="form.icon" class="fs-2x"></i>
+            <div class="gn-skeleton__card">
+              <div style="display:flex;justify-content:space-between;margin-bottom:1.25rem">
+                <div class="gn-skeleton__line gn-skeleton__pulse" style="width:100px;height:13px" />
+                <div class="gn-skeleton__line gn-skeleton__pulse" style="width:160px;height:34px;border-radius:10px" />
+              </div>
+              <div style="display:flex;flex-direction:column;gap:1.1rem">
+                <div v-for="i in 4" :key="i" style="display:flex;flex-direction:column;gap:0.4rem">
+                  <div class="gn-skeleton__line gn-skeleton__pulse" style="width:80px;height:11px" />
+                  <div class="gn-skeleton__line gn-skeleton__pulse" style="height:42px;border-radius:12px" />
                 </div>
               </div>
+            </div>
+            <div class="gn-skeleton__card">
+              <div class="gn-skeleton__line gn-skeleton__pulse" style="width:90px;height:13px;margin-bottom:1rem" />
+              <div v-for="i in 3" :key="i" class="gn-skeleton__line gn-skeleton__pulse" style="height:56px;border-radius:12px;margin-bottom:0.5rem" />
+            </div>
+          </div>
 
-              <!-- Icon Color -->
-              <div class="mb-7">
-                <label class="fw-semibold fs-6 mb-2">Icon Color</label>
-                <div class="d-flex align-items-center gap-3">
-                  <input
-                    type="color"
-                    v-model="iconColorValue"
-                    class="form-control form-control-color"
-                    style="width: 50px; height: 40px;"
-                  />
-                  <input
-                    type="text"
-                    v-model="form.icon_color"
-                    class="form-control form-control-solid"
-                    placeholder="#8b5cf6"
-                  />
+          <div v-else-if="processStep" class="gn-form">
+            <!-- Hero -->
+            <header class="gn-form__hero">
+              <div class="gn-form__hero-icon">
+                <GIcon :name="form.icon || 'circle-dot'" :size="42" />
+              </div>
+              <div class="gn-form__hero-body">
+                <span class="gn-form__eyebrow">Edit process step</span>
+                <h1 class="gn-form__title">{{ currentForm.title || processStep.title }}</h1>
+                <p class="gn-form__subtitle">Step {{ processStep.step_number }} of the consulting methodology.</p>
+              </div>
+              <div class="gn-form__hero-actions">
+                <button type="button" class="gn-form__btn gn-form__btn--danger-ghost" @click="handleDelete" :disabled="saving">
+                  <GIcon name="trash-2" :size="16" /> Delete
+                </button>
+                <NuxtLink to="/process-steps" class="gn-form__btn gn-form__btn--ghost">Cancel</NuxtLink>
+                <button type="button" class="gn-form__btn gn-form__btn--primary" :disabled="saving" @click="saveStep">
+                  <GIcon name="check" :size="16" />
+                  {{ saving ? 'Saving…' : 'Save changes' }}
+                </button>
+              </div>
+            </header>
+
+            <!-- Step details card -->
+            <section class="gn-form__card">
+              <div class="gn-form__card-header">
+                <h3 class="gn-form__card-title">Step details</h3>
+                <LocaleToggle v-model="locale" />
+              </div>
+
+              <div class="gn-form__fields">
+                <div class="gn-form__field">
+                  <label class="gn-form__label">Title <span class="gn-form__locale-badge">{{ locale.toUpperCase() }}</span></label>
+                  <input v-model="currentForm.title" type="text" class="gn-form__input" placeholder="e.g. Discovery" />
                 </div>
-              </div>
 
-              <!-- Order -->
-              <div class="mb-7">
-                <label class="fw-semibold fs-6 mb-2">Display Order</label>
-                <input
-                  type="number"
-                  v-model.number="form.order"
-                  class="form-control form-control-solid"
-                  :class="{ 'is-invalid': errors.order }"
-                  placeholder="0"
-                  min="0"
-                />
-                <div v-if="errors.order" class="invalid-feedback">{{ errors.order }}</div>
-              </div>
+                <div class="gn-form__field">
+                  <label class="gn-form__label">Short description <span class="gn-form__locale-badge">{{ locale.toUpperCase() }}</span></label>
+                  <input v-model="currentForm.short_description" type="text" class="gn-form__input" placeholder="Brief summary of this step" maxlength="300" />
+                </div>
 
-              <!-- Is Active -->
-              <div class="mb-7">
-                <label class="fw-semibold fs-6 mb-2">Status</label>
-                <div class="form-check form-switch form-check-custom form-check-solid">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    v-model="form.is_active"
-                    id="is_active"
-                  />
-                  <label class="form-check-label fw-semibold text-muted" for="is_active">
-                    {{ form.is_active ? 'Active' : 'Inactive' }}
+                <div class="gn-form__field">
+                  <label class="gn-form__label">Description <span class="gn-form__locale-badge">{{ locale.toUpperCase() }}</span></label>
+                  <textarea v-model="currentForm.description" class="gn-form__textarea" rows="4" placeholder="Detailed description of this process step" />
+                </div>
+
+                <div class="gn-form__field">
+                  <label class="gn-form__label">Icon</label>
+                  <IconPicker v-model="form.icon" placeholder="Pick an icon" />
+                </div>
+
+                <div class="gn-form__field">
+                  <label class="gn-form__label">Status</label>
+                  <label style="display:flex;align-items:center;gap:0.75rem;cursor:pointer;padding:0.5rem 0">
+                    <input v-model="form.is_active" type="checkbox" style="width:18px;height:18px;accent-color:#7c3aed" />
+                    <span style="font-size:0.9rem;font-weight:500">{{ form.is_active ? 'Active — visible on public site' : 'Inactive — hidden' }}</span>
                   </label>
                 </div>
               </div>
-            </div>
-          </div>
+            </section>
 
-          <!-- Form Actions -->
-          <div class="d-flex justify-content-end gap-3 mt-10 pt-10 border-top">
-            <NuxtLink
-              to="/process-steps"
-              class="btn btn-light"
-            >
-              Cancel
-            </NuxtLink>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              :disabled="!isFormValid || isSubmitting"
-            >
-              <span v-if="!isSubmitting">
-                <i class="ki-duotone ki-check fs-2"></i>
-                Save Changes
-              </span>
-              <span v-else>
-                <span class="spinner-border spinner-border-sm me-2"></span>
-                Loading...
-              </span>
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Items Section -->
-    <div class="card mt-5">
-      <div class="card-header border-0 pt-5">
-        <h3 class="card-title align-items-start flex-column">
-          <span class="card-label fw-bold fs-3 mb-1">Sub-Items</span>
-          <span class="text-muted mt-1 fw-semibold fs-7">
-            {{ processStep.items?.length || 0 }} item(s) in this step
-          </span>
-        </h3>
-        <div class="card-toolbar">
-          <button
-            type="button"
-            class="btn btn-sm btn-primary"
-            @click="showAddItemForm = !showAddItemForm"
-          >
-            <i class="ki-duotone ki-plus fs-2"></i>
-            Add Item
-          </button>
-        </div>
-      </div>
-
-      <div class="card-body py-3">
-        <!-- Add Item Form -->
-        <div v-if="showAddItemForm" class="border rounded p-5 mb-5 bg-light-primary">
-          <h5 class="fw-bold mb-4">New Item</h5>
-          <div class="row g-4">
-            <div class="col-md-6">
-              <label class="required fw-semibold fs-6 mb-2">Title</label>
-              <input
-                type="text"
-                v-model="newItemForm.title"
-                class="form-control form-control-solid"
-                placeholder="Item title"
-              />
-            </div>
-            <div class="col-md-3">
-              <label class="fw-semibold fs-6 mb-2">Icon</label>
-              <input
-                type="text"
-                v-model="newItemForm.icon"
-                class="form-control form-control-solid"
-                placeholder="ki-duotone ki-..."
-              />
-            </div>
-            <div class="col-md-3">
-              <label class="fw-semibold fs-6 mb-2">Order</label>
-              <input
-                type="number"
-                v-model.number="newItemForm.order"
-                class="form-control form-control-solid"
-                placeholder="0"
-                min="0"
-              />
-            </div>
-            <div class="col-12">
-              <label class="fw-semibold fs-6 mb-2">Description</label>
-              <textarea
-                v-model="newItemForm.description"
-                class="form-control form-control-solid"
-                rows="2"
-                placeholder="Item description"
-              ></textarea>
-            </div>
-            <div class="col-12 d-flex justify-content-end gap-2">
-              <button
-                type="button"
-                class="btn btn-sm btn-light"
-                @click="cancelAddItem"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                class="btn btn-sm btn-primary"
-                @click="handleCreateItem"
-                :disabled="!newItemForm.title.trim() || isItemSubmitting"
-              >
-                <span v-if="!isItemSubmitting">Add Item</span>
-                <span v-else>
-                  <span class="spinner-border spinner-border-sm me-1"></span>
-                  Adding...
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Items List -->
-        <div v-if="processStep.items && processStep.items.length > 0">
-          <div
-            v-for="(item, index) in sortedItems"
-            :key="item.id"
-            class="d-flex align-items-center border rounded p-4 mb-3"
-            :class="{ 'bg-light-warning': editingItemId === item.id }"
-          >
-            <!-- Item Display Mode -->
-            <template v-if="editingItemId !== item.id">
-              <div class="d-flex align-items-center flex-grow-1">
-                <span class="badge badge-light-primary me-3">{{ item.order }}</span>
-                <div v-if="item.icon" class="me-3">
-                  <i :class="item.icon" class="fs-2 text-gray-600"></i>
+            <!-- Sub-items -->
+            <section class="gn-form__card">
+              <div class="gn-form__card-header">
+                <div>
+                  <h3 class="gn-form__card-title" style="margin-bottom:0.15rem">
+                    Sub-items
+                    <span v-if="items.length" class="gn-form__locale-badge">{{ items.length }}</span>
+                  </h3>
+                  <p style="margin:0;font-size:0.8rem;color:var(--gn-text-muted)">Detailed deliverables within this step</p>
                 </div>
-                <div class="flex-grow-1">
-                  <div class="fw-bold text-gray-800">{{ item.title }}</div>
-                  <div class="text-muted fs-7" v-if="item.description">
-                    {{ truncate(item.description, 80) }}
-                  </div>
-                </div>
-              </div>
-              <div class="d-flex gap-1">
-                <button
-                  type="button"
-                  class="btn btn-sm btn-icon btn-light-primary"
-                  @click="startEditItem(item)"
-                  title="Edit"
-                >
-                  <i class="ki-duotone ki-pencil fs-4">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                  </i>
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-sm btn-icon btn-light-danger"
-                  @click="handleDeleteItem(item)"
-                  title="Delete"
-                >
-                  <i class="ki-duotone ki-trash fs-4">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                    <span class="path3"></span>
-                    <span class="path4"></span>
-                    <span class="path5"></span>
-                  </i>
+                <button type="button" class="gn-form__btn gn-form__btn--ghost" style="padding:0.45rem 0.9rem;font-size:0.8rem" @click="addItem">
+                  <GIcon name="plus" :size="14" /> Add
                 </button>
               </div>
-            </template>
 
-            <!-- Item Edit Mode -->
-            <template v-else>
-              <div class="flex-grow-1">
-                <div class="row g-3">
-                  <div class="col-md-6">
-                    <input
-                      type="text"
-                      v-model="editItemForm.title"
-                      class="form-control form-control-solid form-control-sm"
-                      placeholder="Title"
-                    />
-                  </div>
-                  <div class="col-md-3">
-                    <input
-                      type="text"
-                      v-model="editItemForm.icon"
-                      class="form-control form-control-solid form-control-sm"
-                      placeholder="Icon class"
-                    />
-                  </div>
-                  <div class="col-md-3">
-                    <input
-                      type="number"
-                      v-model.number="editItemForm.order"
-                      class="form-control form-control-solid form-control-sm"
-                      placeholder="Order"
-                      min="0"
-                    />
-                  </div>
-                  <div class="col-12">
-                    <textarea
-                      v-model="editItemForm.description"
-                      class="form-control form-control-solid form-control-sm"
-                      rows="2"
-                      placeholder="Description"
-                    ></textarea>
-                  </div>
-                  <div class="col-12 d-flex justify-content-end gap-2">
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-light"
-                      @click="cancelEditItem"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-primary"
-                      @click="handleUpdateItem(item.id)"
-                      :disabled="!editItemForm.title.trim() || isItemSubmitting"
-                    >
-                      <span v-if="!isItemSubmitting">Save</span>
-                      <span v-else>
-                        <span class="spinner-border spinner-border-sm me-1"></span>
-                        Saving...
-                      </span>
-                    </button>
-                  </div>
-                </div>
+              <div v-if="items.length === 0" style="text-align:center;padding:1.5rem;color:var(--gn-text-muted);font-size:0.88rem">
+                No sub-items yet. Click "Add" to create one.
               </div>
-            </template>
-          </div>
-        </div>
 
-        <!-- No Items -->
-        <div v-else class="text-center py-10">
-          <i class="ki-duotone ki-notepad fs-3x text-gray-400 mb-3">
-            <span class="path1"></span>
-            <span class="path2"></span>
-            <span class="path3"></span>
-            <span class="path4"></span>
-            <span class="path5"></span>
-          </i>
-          <div class="text-gray-500 fs-6">
-            No items yet. Click "Add Item" to create one.
+              <draggable v-else v-model="items" item-key="_key" handle=".gn-form__drag-handle" ghost-class="gn-form__feature-row--ghost" class="gn-form__fields" style="margin-top:0.75rem" @end="handleItemReorder">
+                <template #item="{ element: item, index: idx }">
+                  <div class="gn-form__feature-row">
+                    <div class="gn-form__drag-handle"><GIcon name="grip-vertical" :size="16" /></div>
+                    <div style="flex:1;display:flex;flex-direction:column;gap:0.5rem">
+                      <input v-model="item.title" type="text" class="gn-form__input" :placeholder="`Item ${idx + 1} title`" />
+                      <input v-model="item.description" type="text" class="gn-form__input" placeholder="Description (optional)" style="font-size:0.86rem" />
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:0.3rem">
+                      <button type="button" class="gn-form__icon-action" title="Save" @click="saveItem(item)" :disabled="!item.title?.trim()"><GIcon name="check" :size="14" /></button>
+                      <button type="button" class="gn-form__icon-action gn-form__icon-action--danger" title="Delete" @click="removeItem(item, idx)"><GIcon name="trash-2" :size="14" /></button>
+                    </div>
+                  </div>
+                </template>
+              </draggable>
+            </section>
           </div>
+
+          <div v-else class="gn-form__empty">
+            <h3>Process step not found</h3>
+            <NuxtLink to="/process-steps" class="gn-form__btn gn-form__btn--primary">Back to process steps</NuxtLink>
+          </div>
+
         </div>
       </div>
     </div>
@@ -490,263 +147,163 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, watch } from 'vue'
+import Swal from 'sweetalert2'
+import draggable from 'vuedraggable'
 import { useProcessStepsStore } from '../stores/useProcessStepsStore'
 import { useProcessStepFormatters } from '../composables/useProcessStepFormatters'
 import { useProcessStepActions } from '../composables/useProcessStepActions'
 import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
-import type { ProcessStep, ProcessStepItem, ProcessStepFormData, ProcessStepItemFormData } from '../types'
+import { GET_PROCESS_STEP } from '../graphql/queries'
+import { UPDATE_PROCESS_STEP, CREATE_PROCESS_STEP_ITEM, UPDATE_PROCESS_STEP_ITEM, DELETE_PROCESS_STEP_ITEM } from '../graphql/mutations'
+import GIcon from '~/components/icons/GIcon.vue'
+import IconPicker from '~/components/icons/IconPicker.vue'
+import LocaleToggle from '~/components/LocaleToggle.vue'
 
-const processStepsStore = useProcessStepsStore()
-const breadcrumbStore = useBreadcrumbStore()
+definePageMeta({ middleware: 'auth' })
+
 const route = useRoute()
 const router = useRouter()
-const { showSuccess, showError } = useNotification()
-const { generateSlug, truncate } = useProcessStepFormatters()
-const { confirmAndDeleteProcessStep, confirmAndDeleteItem } = useProcessStepActions()
+const processStepsStore = useProcessStepsStore()
+const breadcrumbStore = useBreadcrumbStore()
+const { generateSlug } = useProcessStepFormatters()
+const { confirmAndDeleteProcessStep } = useProcessStepActions()
 
-const processStepId = computed(() => route.params.id as string)
+const stepId = computed(() => route.params.id as string)
 const processStep = computed(() => processStepsStore.currentProcessStep)
+const locale = ref<'en' | 'fr'>('en')
+const saving = ref(false)
+const loading = ref(true)
 
-// Form state
-const form = reactive<ProcessStepFormData>({
+const form = reactive({
   title: '',
-  description: null,
-  short_description: null,
-  step_number: 1,
-  icon: null,
-  icon_color: null,
-  slug: null,
-  order: 0,
-  is_active: true
+  short_description: '',
+  description: '',
+  icon: '',
+  is_active: true,
 })
 
-const errors = ref<Record<string, string>>({})
-const activeTab = ref<'basic' | 'settings'>('basic')
-const isSubmitting = ref(false)
-
-// Color picker sync
-const iconColorValue = computed({
-  get: () => form.icon_color || '#8b5cf6',
-  set: (val: string) => { form.icon_color = val }
-})
-
-// Item management state
-const showAddItemForm = ref(false)
-const editingItemId = ref<string | null>(null)
-const isItemSubmitting = ref(false)
-
-const newItemForm = reactive<ProcessStepItemFormData>({
+const formFr = reactive({
   title: '',
-  description: null,
-  icon: null,
-  order: 0
+  short_description: '',
+  description: '',
 })
 
-const editItemForm = reactive<ProcessStepItemFormData>({
-  title: '',
-  description: null,
-  icon: null,
-  order: 0
-})
+const currentForm = computed(() => locale.value === 'fr' ? formFr : form)
 
-const sortedItems = computed(() => {
-  if (!processStep.value?.items) return []
-  return [...processStep.value.items].sort((a, b) => a.order - b.order)
-})
-
-// Validation
-const isFormValid = computed(() => {
-  return (
-    form.title.trim() !== '' &&
-    form.step_number > 0 &&
-    (form.slug?.trim() || '') !== '' &&
-    Object.keys(errors.value).length === 0
-  )
-})
-
-const validateForm = (): boolean => {
-  errors.value = {}
-
-  if (!form.title.trim()) {
-    errors.value.title = 'Title is required'
-  } else if (form.title.length > 255) {
-    errors.value.title = 'Title cannot exceed 255 characters'
-  }
-
-  if (!form.step_number || form.step_number < 1) {
-    errors.value.step_number = 'Step number is required and must be at least 1'
-  }
-
-  if (!form.slug?.trim()) {
-    if (form.title.trim()) {
-      form.slug = generateSlug(form.title)
-    } else {
-      errors.value.slug = 'Slug is required'
-    }
-  }
-
-  if (form.order !== null && form.order !== undefined && form.order < 0) {
-    errors.value.order = 'Order must be a positive number'
-  }
-
-  return Object.keys(errors.value).length === 0
+const loadFormData = (data: any, target: any) => {
+  target.title = data.title || ''
+  target.short_description = data.short_description || ''
+  target.description = data.description || ''
 }
 
-// Populate form with existing data
-const populateForm = (step: ProcessStep) => {
-  form.title = step.title
-  form.description = step.description ?? null
-  form.short_description = step.short_description ?? null
-  form.step_number = step.step_number
-  form.icon = step.icon ?? null
-  form.icon_color = step.icon_color ?? null
-  form.slug = step.slug
-  form.order = step.order
-  form.is_active = step.is_active
-}
+// Items
+interface ItemEntry { id?: string; _key: string; title: string; description: string }
+const items = ref<ItemEntry[]>([])
+let itemCounter = 0
 
-// Watch for process step changes
-watch(
-  () => processStepsStore.currentProcessStep,
-  (newStep) => {
-    if (newStep) {
-      populateForm(newStep)
-    }
-  },
-  { immediate: true }
-)
+const addItem = () => { items.value.push({ _key: `new-${++itemCounter}`, title: '', description: '' }) }
 
-// Step form handlers
-const handleSubmit = async () => {
-  if (!validateForm()) {
-    showError('Please fix the errors before submitting')
-    return
-  }
-
-  isSubmitting.value = true
-
+const saveItem = async (item: ItemEntry) => {
+  if (!item.title?.trim()) return
+  const api = useApi()
   try {
-    const input = {
-      title: form.title,
-      description: form.description || null,
-      short_description: form.short_description || null,
-      step_number: form.step_number,
-      icon: form.icon || null,
-      icon_color: form.icon_color || null,
-      slug: form.slug || generateSlug(form.title),
-      order: form.order ?? 0,
-      is_active: form.is_active ?? true
+    if (item.id) {
+      await api.mutate(UPDATE_PROCESS_STEP_ITEM, { variables: { id: item.id, input: { title: item.title.trim(), description: item.description?.trim() || null } }, locale: locale.value })
+    } else {
+      const data = await api.mutate<any>(CREATE_PROCESS_STEP_ITEM, { variables: { input: { process_step_id: stepId.value, title: item.title.trim(), description: item.description?.trim() || null } }, locale: locale.value })
+      item.id = data.createProcessStepItem.id
+      item._key = item.id
     }
+    await Swal.fire({ title: 'Saved', icon: 'success', timer: 1200, showConfirmButton: false })
+  } catch (err: any) { await Swal.fire({ title: 'Failed', text: err.message, icon: 'error' }) }
+}
 
-    await processStepsStore.updateProcessStep(processStepId.value, input)
+const removeItem = async (item: ItemEntry, idx: number) => {
+  if (!item.id) { items.value.splice(idx, 1); return }
+  const r = await Swal.fire({ title: 'Delete?', text: item.title, icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc2626', confirmButtonText: 'Delete' })
+  if (!r.isConfirmed) return
+  try { await useApi().mutate(DELETE_PROCESS_STEP_ITEM, { variables: { id: item.id } }); items.value.splice(idx, 1) }
+  catch (err: any) { await Swal.fire({ title: 'Failed', text: err.message, icon: 'error' }) }
+}
 
-    showSuccess('Process step updated successfully')
+const handleItemReorder = async () => {
+  // Items don't have a dedicated sort mutation yet — silent for now
+}
 
-    await router.push('/process-steps')
-  } catch (error: any) {
-    showError(error.message || 'Failed to update process step')
-  } finally {
-    isSubmitting.value = false
-  }
+const reloadItems = async () => {
+  try {
+    const data = await useApi().query<any>(GET_PROCESS_STEP, { variables: { id: stepId.value }, locale: locale.value, fetchPolicy: 'no-cache' })
+    items.value = (data.processStep?.items || []).map((i: any) => ({ id: i.id, _key: i.id, title: i.title || '', description: i.description || '' }))
+  } catch { /* ignore */ }
+}
+
+watch(locale, () => { reloadItems() })
+
+// Save step
+const saveStep = async () => {
+  const t = locale.value === 'fr' ? formFr : form
+  if (!t.title?.trim()) return
+  saving.value = true
+  try {
+    await useApi().mutate(UPDATE_PROCESS_STEP, {
+      variables: {
+        id: stepId.value,
+        input: {
+          title: t.title.trim(),
+          short_description: t.short_description?.trim() || null,
+          description: t.description?.trim() || null,
+          icon: form.icon || null,
+          slug: generateSlug(form.title || t.title),
+          is_active: form.is_active,
+        },
+      },
+      locale: locale.value,
+    })
+    await Swal.fire({ title: 'Saved', text: `Content saved (${locale.value.toUpperCase()})`, icon: 'success', timer: 1800, showConfirmButton: false })
+  } catch (err: any) {
+    await Swal.fire({ title: 'Failed', text: err.message, icon: 'error' })
+  } finally { saving.value = false }
 }
 
 const handleDelete = async () => {
   if (!processStep.value) return
-
-  const deleted = await confirmAndDeleteProcessStep(processStep.value)
-  if (deleted) {
-    await router.push('/process-steps')
-  }
+  if (await confirmAndDeleteProcessStep(processStep.value)) router.push('/process-steps')
 }
 
-// Item handlers
-const resetNewItemForm = () => {
-  newItemForm.title = ''
-  newItemForm.description = null
-  newItemForm.icon = null
-  newItemForm.order = 0
-}
+watch(processStep, (v) => {
+  if (!v) return
+  breadcrumbStore.setBreadcrumb([
+    { title: 'Dashboard', path: '/' },
+    { title: 'Process Steps', path: '/process-steps' },
+    { title: v.title, path: `/process-steps/${stepId.value}/edit` },
+  ])
+}, { immediate: true })
 
-const cancelAddItem = () => {
-  showAddItemForm.value = false
-  resetNewItemForm()
-}
-
-const handleCreateItem = async () => {
-  if (!newItemForm.title.trim()) return
-
-  isItemSubmitting.value = true
-
-  try {
-    await processStepsStore.createItem({
-      process_step_id: processStepId.value,
-      title: newItemForm.title,
-      description: newItemForm.description || null,
-      icon: newItemForm.icon || null,
-      order: newItemForm.order ?? 0
-    })
-
-    showSuccess('Item added successfully')
-    resetNewItemForm()
-    showAddItemForm.value = false
-  } catch (error: any) {
-    showError(error.message || 'Failed to add item')
-  } finally {
-    isItemSubmitting.value = false
-  }
-}
-
-const startEditItem = (item: ProcessStepItem) => {
-  editingItemId.value = item.id
-  editItemForm.title = item.title
-  editItemForm.description = item.description ?? null
-  editItemForm.icon = item.icon ?? null
-  editItemForm.order = item.order
-}
-
-const cancelEditItem = () => {
-  editingItemId.value = null
-}
-
-const handleUpdateItem = async (itemId: string) => {
-  if (!editItemForm.title.trim()) return
-
-  isItemSubmitting.value = true
-
-  try {
-    await processStepsStore.updateItem(itemId, {
-      title: editItemForm.title,
-      description: editItemForm.description || null,
-      icon: editItemForm.icon || null,
-      order: editItemForm.order ?? 0
-    })
-
-    showSuccess('Item updated successfully')
-    editingItemId.value = null
-  } catch (error: any) {
-    showError(error.message || 'Failed to update item')
-  } finally {
-    isItemSubmitting.value = false
-  }
-}
-
-const handleDeleteItem = async (item: ProcessStepItem) => {
-  await confirmAndDeleteItem(item)
-}
-
-// Lifecycle
 onMounted(async () => {
+  loading.value = true
   try {
-    await processStepsStore.fetchProcessStep(processStepId.value)
+    await processStepsStore.fetchProcessStep(stepId.value)
 
     if (processStep.value) {
-      breadcrumbStore.setBreadcrumb([
-        { title: 'Home', path: '/' },
-        { title: 'Process Steps', path: '/process-steps' },
-        { title: processStep.value.title, path: `/process-steps/${processStepId.value}/edit` }
-      ])
+      const api = useApi()
+      const enData = await api.query<any>(GET_PROCESS_STEP, { variables: { id: stepId.value }, locale: 'en', fetchPolicy: 'no-cache' })
+      const frData = await api.query<any>(GET_PROCESS_STEP, { variables: { id: stepId.value }, locale: 'fr', fetchPolicy: 'no-cache' })
+
+      if (enData.processStep) {
+        loadFormData(enData.processStep, form)
+        form.icon = enData.processStep.icon || ''
+        form.is_active = enData.processStep.is_active ?? true
+      }
+      if (frData.processStep) {
+        loadFormData(frData.processStep, formFr)
+      }
+
+      items.value = (enData.processStep?.items || []).map((i: any) => ({
+        id: i.id, _key: i.id, title: i.title || '', description: i.description || '',
+      }))
     }
-  } catch (error) {
-  }
+  } catch (err) {
+    console.error('[ProcessStepsEdit] Failed to fetch', err)
+  } finally { loading.value = false }
 })
 </script>

@@ -20,7 +20,6 @@ export const UPDATE_CONTACT_REQUEST = gql`
 export const DELETE_CONTACT_REQUEST = gql`
   mutation DeleteContactRequest($id: ID!) {
     deleteContactRequest(id: $id) {
-      id
       success
       message
     }

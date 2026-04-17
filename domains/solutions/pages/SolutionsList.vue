@@ -1,7 +1,8 @@
 <template>
-  <!-- Page Header -->
-  <PageHeader title="Solutions" subtitle="Manage your solutions" />
-
+  <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+    <div class="d-flex flex-column flex-column-fluid">
+      <div id="kt_app_content" class="app-content flex-column-fluid">
+        <div id="kt_app_content_container" class="app-container container-fluid">
     <!-- Statistics Cards -->
     <div class="row g-5 g-xl-8 mb-5 mb-xl-8" v-if="!solutionsStore.isLoading">
       <div class="col-xl-3 col-md-6">
@@ -111,19 +112,6 @@
               <option :value="false">Inactive</option>
             </select>
 
-            <!-- Export -->
-            <button
-              type="button"
-              class="btn btn-light-primary"
-              @click="handleExport"
-            >
-              <i class="ki-duotone ki-exit-up fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-              </i>
-              Export
-            </button>
-
             <!-- Create New -->
             <NuxtLink
               to="/solutions/create"
@@ -168,20 +156,20 @@
             <tbody class="fw-semibold text-gray-600">
               <tr v-for="solution in solutionsStore.filteredSolutions" :key="solution.id">
                 <td>
-                  <img
-                    v-if="solution.icon"
-                    :src="resolveIcon(solution.icon)"
-                    class="w-40px"
-                    :alt="solution.title"
-                  />
-                  <i v-else class="ki-duotone ki-grid-2 fs-2x text-gray-400">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                  </i>
+                  <div class="symbol symbol-40px">
+                    <div class="symbol-label gn-list-icon" :style="iconTileStyle(solution.icon_color)">
+                      <GIcon :name="solution.icon || 'puzzle'" :size="20" />
+                    </div>
+                  </div>
                 </td>
                 <td>
                   <div class="d-flex flex-column">
-                    <NuxtLink :to="`/solutions/${solution.id}`" class="text-gray-800 fw-bold text-hover-primary">{{ solution.title }}</NuxtLink>
+                    <NuxtLink
+                      :to="`/solutions/${solution.id}/edit`"
+                      class="text-gray-800 fw-bold text-hover-primary mb-1 d-block"
+                    >
+                      {{ solution.title }}
+                    </NuxtLink>
                     <span class="text-muted fs-7" v-if="solution.subtitle">
                       {{ solution.subtitle }}
                     </span>
@@ -206,24 +194,29 @@
                 </td>
                 <td class="text-end">
                   <NuxtLink
-                    :to="`/solutions/${solution.id}`"
-                    class="btn btn-sm btn-icon btn-light btn-active-light-info me-2"
-                  >
-                    <i class="ki-duotone ki-eye fs-3">
-                      <span class="path1"></span>
-                      <span class="path2"></span>
-                      <span class="path3"></span>
-                    </i>
-                  </NuxtLink>
-                  <NuxtLink
                     :to="`/solutions/${solution.id}/edit`"
                     class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2"
+                    title="Edit"
                   >
                     <i class="ki-duotone ki-pencil fs-3">
                       <span class="path1"></span>
                       <span class="path2"></span>
                     </i>
                   </NuxtLink>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-icon btn-light btn-active-light-danger"
+                    title="Delete"
+                    @click="handleDelete(solution)"
+                  >
+                    <i class="ki-duotone ki-trash fs-3">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                      <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
+                    </i>
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -269,22 +262,38 @@
         </div>
       </div>
     </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useSolutionsStore } from '../stores/useSolutionsStore'
 import { useSolutionActions } from '../composables/useSolutionActions'
+import { useBreadcrumbStore } from '~/domains/shared/stores/breadcrumbStore'
+import { useListIconTile } from '~/composables/useListIconTile'
+import type { Solution } from '../types'
 import SolutionCard from '../components/SolutionCard.vue'
 import SolutionCardSkeleton from '../components/SolutionCardSkeleton.vue'
+import GIcon from '~/components/icons/GIcon.vue'
+
+const { iconTileStyle } = useListIconTile()
 
 definePageMeta({
   layout: 'default',
   middleware: ['auth']
 })
 
+const breadcrumbStore = useBreadcrumbStore()
+breadcrumbStore.setBreadcrumb([
+  { title: 'Dashboard', path: '/' },
+  { title: 'Solutions', path: '/solutions' },
+])
+
 const solutionsStore = useSolutionsStore()
-const { exportSolutionsToCSV } = useSolutionActions()
+const { confirmAndDeleteSolution } = useSolutionActions()
 
 const viewMode = ref<'grid' | 'table'>('grid')
 const searchQuery = ref('')
@@ -298,13 +307,16 @@ const handleStatusFilter = () => {
   solutionsStore.applyStatusFilter(statusFilter.value)
 }
 
-const handleExport = () => {
-  exportSolutionsToCSV()
-}
-
 const handleSolutionDeleted = () => {
   // Refresh list after deletion
   solutionsStore.fetchSolutions()
+}
+
+const handleDelete = async (solution: Solution) => {
+  const deleted = await confirmAndDeleteSolution(solution)
+  if (deleted) {
+    handleSolutionDeleted()
+  }
 }
 
 const resolveIcon = (icon: string) => {
